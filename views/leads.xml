@@ -79,7 +79,7 @@
                     <button name="act_admission" type="object" string="Admission"
                             class="btn-convert" invisible="state != 'deal'"/>
                     <button name="act_lost_lead" type="object" string="Lost"
-                            class="btn-lost" invisible="state in ['lost','qualified']"/>\
+                            class="btn-lost" invisible="state in ['lost','qualified']"/>
                     <button name="act_return_to_new_lead" type="object" string="Return to New Lead"
                             class="btn-lost" invisible="state != 'lost'"/>
                     <!--                                   <button string="Cancel" class="btn-default" special="cancel"/>-->
@@ -164,9 +164,9 @@
                             <field name="admission_date" invisible="state != 'qualified'"/>
                         </group>
                         <group string="Course -Branch-Batch">
-                            <field name="course_id"/>
-                            <field name="branch_id"/>
-                            <field name="batch_id"/>
+                            <field name="course_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                            <field name="branch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                            <field name="batch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
                         </group>
                         <group name="lost_reason" string="Lost Reason" invisible="state != 'lost'">
                             <field name="lost_reason" style="background-color:#f54720 color:white;"/>

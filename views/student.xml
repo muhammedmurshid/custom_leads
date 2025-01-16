@@ -6,6 +6,7 @@
         <field name="inherit_id" ref="openeducat_core.view_op_student_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="branch_id"/>
                 <field name="admission_officer_id"/>
             </xpath>
         </field>

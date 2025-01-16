@@ -10,12 +10,14 @@
     'category': 'Specific Category',
     'license': 'LGPL-3',
     'depends': [
-        'base','website', 'openeducat_core'  # List of module dependencies
+        'base','website', 'openeducat_core', 'logic_base_17'  # List of module dependencies
 
         # Add other module dependencies here
     ],
     'data': [
+        'security/groups.xml',
         'security/ir.model.access.csv',
+        'security/rules.xml',
         'views/leads.xml',
         'views/source.xml',
         'views/connection.xml',

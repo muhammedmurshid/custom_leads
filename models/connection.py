@@ -80,6 +80,9 @@ class QualifiedLead(models.TransientModel):
     middle_name = fields.Char(string="Middle Name")
     last_name = fields.Char(string="Last Name", required=1)
     name = fields.Char(string="Name")
+    batch_id = fields.Many2one('op.batch', string="Batch", )
+    course_id = fields.Many2one('op.course', string="Course", )
+    branch_id = fields.Many2one('op.branch', string="Branch", )
     gender = fields.Selection([
         ('m', 'Male'),
         ('f', 'Female'),
@@ -87,8 +90,6 @@ class QualifiedLead(models.TransientModel):
     ], 'Gender', required=True, default='m')
     birth_date = fields.Date('Birth Date', required=1)
     email = fields.Char(string="Email", required=1)
-    course = fields.Many2one('op.course', string="Course")
-    batch_id = fields.Many2one('op.batch', string="Batch", required=1)
     mobile = fields.Char(string="Mobile")
 
     @api.onchange('email')
@@ -131,7 +132,8 @@ class QualifiedLead(models.TransientModel):
             'birth_date': self.birth_date,
             'email': self.email,
             'batch_id': self.batch_id.id,
-            'course_id': self.course.id,
+            'course_id': self.course_id.id,
+            'branch_id': self.branch_id.id,
             'state':'confirm',
             'mobile': self.mobile,
             'admission_officer_id': self.lead_id.lead_owner.user_id.id

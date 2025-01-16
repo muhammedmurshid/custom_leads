@@ -16,10 +16,10 @@ class LeadsForm(models.Model):
     email_address = fields.Char(string='Email Address')
     phone_number = fields.Char(string='Mobile Number', required=True)
     probability = fields.Float(string='Probability')
-    admission_status = fields.Boolean(string='Admission', readonly=False)
-    date_of_adding = fields.Date(string='Date of Adding', default=fields.Datetime.now)
+    admission_status = fields.Boolean(string='Admission', readonly=1)
+    date_of_adding = fields.Date(string='Date of Adding', default=fields.Datetime.now, readonly=1)
     last_update_date = fields.Datetime(string='Last Updated Date')
-    course_id = fields.Char(string='Course')
+    course_id = fields.Many2one('op.course',string='Course')
     reference_no = fields.Char("Reference", default=lambda self: _('New'),
                                copy=False, readonly=True, tracking=True)
     # touch_ids = fields.One2many('leads.own.touch.points', 'touch_id', string='Touch Points')
@@ -38,14 +38,14 @@ class LeadsForm(models.Model):
     )
     place = fields.Char('Place')
     # leads_assign = fields.Many2one('hr.employee', string='Assign to', )
-    lead_owner = fields.Many2one('hr.employee', string='Lead Owner', default=lambda self: self.env.user.employee_id)
+    lead_owner = fields.Many2one('hr.employee', string='Lead Owner', default=lambda self: self.env.user.employee_id.id)
     seminar_lead_id = fields.Integer()
-    admission_date = fields.Datetime(string="Admission Date")
+    admission_date = fields.Datetime(string="Admission Date", readonly=1)
     phone_number_second = fields.Char(string='Phone Number')
-    branch_id = fields.Char(string="Branch")
+    branch_id = fields.Many2one('op.branch', string="Branch")
     course_interested = fields.Char(string="Course Interested")
     academic_year_of_course_attend = fields.Selection([('2023-2024','2023-2024'), ('2024-2025','2024-2025'), ('2025-2026','2025-2026')], string="Academic Year of Course attended")
-    batch_id = fields.Char(string="Batch")
+    batch_id = fields.Many2one('op.batch', string="Batch")
     course_type = fields.Selection(
         [('indian', 'Indian'), ('international', 'International'), ('crash', 'Crash'), ('repeaters', 'Repeaters'),
          ('nil', 'Nil')],
@@ -168,13 +168,19 @@ class LeadsForm(models.Model):
 
     def act_admission(self):
         print()
-        return {'type': 'ir.actions.act_window',
-                'name': _('Admission'),
-                'res_model': 'qualified.lead.form',
-                'target': 'new',
-                'view_mode': 'form',
-                'view_type': 'form',
-                'context': {'default_lead_id': self.id}, }
+        if self.batch_id and self.branch_id and self.course_id:
+            return {'type': 'ir.actions.act_window',
+                    'name': _('Admission'),
+                    'res_model': 'qualified.lead.form',
+                    'target': 'new',
+                    'view_mode': 'form',
+                    'view_type': 'form',
+                    'context': {'default_lead_id': self.id,
+                                'default_batch_id': self.batch_id.id,
+                                'default_course_id': self.course_id.id,
+                                'default_branch_id': self.branch_id.id,}, }
+        else:
+            raise UserError(_('Please ensure that Batch, Branch, and Course are selected before proceeding.'))
 
     def act_return_to_new_lead(self):
         self.state = 'new'
