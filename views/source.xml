@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.actions.act_window" id="action_leads_sources_main_action">
+        <field name="name">Leads Sources</field>
+        <field name="res_model">leads.sources</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="tree_view_leads_sources" model="ir.ui.view">
+        <field name="name">leads.sources.view.tree</field>
+        <field name="model">leads.sources</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="digital_lead"/>
+
+            </tree>
+        </field>
+    </record>
+    <record id="form_view_leads_sources" model="ir.ui.view">
+        <field name="name">leads.sources.view.form</field>
+        <field name="model">leads.sources</field>
+        <field name="arch" type="xml">
+            <form string="Leads">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="digital_lead"/>
+
+
+
+
+                        </group>
+
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <menuitem
+            id="leads_source_menu"
+            name="Leads Source"
+            parent="leads_configuration_menu"
+            sequence="1"
+            action="action_leads_sources_main_action"/>
+</odoo>

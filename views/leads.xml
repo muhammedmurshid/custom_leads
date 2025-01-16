@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.actions.act_window" id="action_leads_main_action">
+        <field name="name">Leads</field>
+        <field name="res_model">leads.logic</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_leads_deals_action">
+        <field name="name">Deals</field>
+        <field name="res_model">leads.logic</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'deal')]</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_leads_admission_action">
+        <field name="name">Admission</field>
+        <field name="res_model">leads.logic</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'qualified')]</field>
+    </record>
+    <record id="tree_view_leads_logic" model="ir.ui.view">
+        <field name="name">leads.logic.view.tree</field>
+        <field name="model">leads.logic</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="reference_no"/>
+                <field name="name"/>
+                <field name="email_address"/>
+                <field name="phone_number"/>
+                <field name="probability"/>
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+    <record id="form_view_leads_logic" model="ir.ui.view">
+        <field name="name">leads.logic.view.form</field>
+        <field name="model">leads.logic</field>
+        <field name="arch" type="xml">
+            <form string="Leads">
+                <style>
+                    .btn-connected {
+                    background-color: #a6f283;
+                    width: 120px;
+                    height: 40px;
+                    font-size: 14px;
+                    text-align: center;
+                    }
+                    .btn-not-connected {
+                    background-color: #f58667;
+                    color: white;
+                    width: 120px;
+                    height: 40px;
+                    font-size: 14px;
+                    text-align: center;
+                    }
+                    .btn-convert {
+                    background-color: #347512;
+                    color:white;
+
+                    }
+                    .btn-lost {
+                    background-color: #db350f;
+                    color:white;
+
+                    }
+                </style>
+
+                <header>
+                    <field name="state" widget="statusbar"/>
+                    <button name="act_attempt_to_connect" type="object" string="Attempted to Contact"
+                            class="btn btn-primary me-1" invisible="state != 'new'"/>
+                    <button name="act_convert" type="object" string="Convert"
+                            class="btn-convert" invisible="state in ['qualified','new','lost','deal']"/>
+                    <button name="act_admission" type="object" string="Admission"
+                            class="btn-convert" invisible="state != 'deal'"/>
+                    <button name="act_lost_lead" type="object" string="Lost"
+                            class="btn-lost" invisible="state in ['lost','qualified']"/>
+                    <!--                                   <button string="Cancel" class="btn-default" special="cancel"/>-->
+                </header>
+                <sheet>
+                    <group>
+                        <field name="current_status" readonly="1" widget="badge"
+                               decoration-info="current_status == 'not_responding'"
+                               decoration-primary="current_status == 'new_lead'"/>
+                        <button
+                                name="act_connected"
+                                type="object"
+                                string="Connected"
+                                class="btn-connected" invisible="state == 'new'"/>
+                        <button
+                                name="act_not_connected"
+                                type="object"
+                                string="Not Connected"
+                                class="btn-not-connected" invisible="state == 'new'"/>
+                    </group>
+                </sheet>
+                <sheet>
+                    <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>
+                    <widget name="web_ribbon" title="Qualified" bg_color="text-bg-success"
+                            invisible="state != 'qualified'"/>
+
+                    <h2>
+                        <field name="reference_no" invisible="state == 'new'" widget="badge"/>
+                    </h2>
+                    <group>
+                        <group string="Lead Information">
+                            <field name="name"/>
+                            <field name="email_address"/>
+                            <field name="phone_number"/>
+                            <field name="phone_number_second"/>
+                            <field name="parent_number"/>
+                            <field name="leads_source"/>
+                            <field name="mode_of_study"/>
+
+                        </group>
+                        <group name="info" string="">
+                            <field name="lead_quality"/>
+                            <field name="lead_status"/>
+                            <field name="country"/>
+                            <field name="district"/>
+                            <field name="place"/>
+                            <field name="campaign"/>
+                            <field name="admission_status"/>
+                            <field name="amount" invisible="state in ['new','in_progress']"/>
+                            <!--                            <field name="leads_assign"/>-->
+
+
+                        </group>
+                        <group name="users" string="Users">
+                            <field name="create_uid"/>
+                            <field name="lead_owner"/>
+                            <field name="tele_caller_id"/>
+                        </group>
+                        <group string="Course Details">
+                            <field name="course_type"/>
+                            <field name="course_interested"/>
+                        </group>
+
+                        <group>
+                            <!--                            <field name="referred_by"/>-->
+                            <!--                            <field name="lead_referral_staff_id"/>-->
+
+                            <!--                            <field name="platform"/>-->
+                            <!--                            <field name="remarks"/>-->
+
+                        </group>
+                        <group string="Educational Details">
+                            <field name="college_name"/>
+                            <field name="last_studied_course"/>
+                            <field name="academic_year_of_course_attend"/>
+
+                        </group>
+                        <group string="Dates">
+                            <field name="date_of_adding"/>
+                            <field name="last_update_date"/>
+                            <field name="closing_date" invisible="state != 'deal'"/>
+                            <field name="admission_date" invisible="state != 'qualified'"/>
+                        </group>
+                        <group string="Course -Branch-Batch">
+                            <field name="course_id"/>
+                            <field name="branch_id"/>
+                            <field name="batch_id"/>
+                        </group>
+                        <group name="lost_reason" string="Lost Reason" invisible="state != 'lost'">
+                            <field name="lost_reason" style="background-color:#f54720 color:white;"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="ir_sequence_leads_logic" model="ir.sequence">
+        <field name="name">Reference Numbers</field>
+        <field name="code">leads.logic</field>
+        <field name="prefix">LS</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <menuitem id="leads_main_menu"
+              name="Leads"
+              web_icon="custom_leads,static/description/icon.png"/>
+    <menuitem
+            id="leads_sub_menu"
+            name="Leads"
+            parent="leads_main_menu"
+            sequence="1"
+            action="action_leads_main_action"/>
+    <menuitem
+            id="leads_deals_menu"
+            name="Deals"
+            parent="leads_main_menu"
+            sequence="2"
+            action="action_leads_deals_action"/>
+    <menuitem
+            id="leads_configuration_menu"
+            name="Configuration"
+            parent="leads_main_menu"
+            sequence="10"
+            action="action_leads_sources_main_action"/>
+    <menuitem
+            id="leads_admission_menu"
+            name="Admission"
+            parent="leads_main_menu"
+            sequence="4"
+            action="action_leads_admission_action"/>
+</odoo>
