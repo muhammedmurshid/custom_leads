@@ -7,3 +7,5 @@ class LeadsSources(models.Model):
 
     name = fields.Char('Name', required=True)
     digital_lead = fields.Boolean('Digital Lead', default=False)
+    source = fields.Selection([('inbound_source', 'Inbound Source'), ('outbound_source', 'Outbound Source')],
+                              string="Source")

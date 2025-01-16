@@ -22,7 +22,9 @@
         'views/source.xml',
         'views/connection.xml',
         'views/convert_lead.xml',
-        'views/student.xml'
+        'views/student.xml',
+        'views/allocation.xml',
+        'data/actions.xml'
 
     ],
 

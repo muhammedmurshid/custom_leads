@@ -113,16 +113,18 @@ class LeadsForm(models.Model):
         [('facebook', 'Facebook'), ('instagram', 'Instagram'), ('website', 'Website'), ('just_dial', 'Just Dial'),
          ('other', 'Other')],
         string='Platform')
+    expected_joining_date = fields.Date(string="Expected Joining Date")
+    not_response_note = fields.Text(string="Not Respond Reason")
     current_status = fields.Selection([('new_lead', 'New Lead'), ('not_responding', 'Not Responding'), ('deal', 'Deal'), ('admission', 'Admission'), ('lost', 'Lost')], string="Current Status", default="new_lead")
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        """ Create a sequence for the student model """
-        for vals in vals_list:
-            if vals.get('reference_no', _('New')) == _('New'):
-                vals['reference_no'] = (self.env['ir.sequence'].
-                                  next_by_code('leads.logic'))
-        return super().create(vals_list)
+    # @api.model_create_multi
+    # def create(self, vals_list):
+    #     """ Create a sequence for the student model """
+    #     for vals in vals_list:
+    #         if vals.get('reference_no', _('New')) == _('New'):
+    #             vals['reference_no'] = (self.env['ir.sequence'].
+    #                               next_by_code('leads.logic'))
+    #     return super().create(vals_list)
 
     def act_attempt_to_connect(self):
         self.current_status = 'not_responding'
@@ -184,3 +186,98 @@ class LeadsForm(models.Model):
 
     def act_return_to_new_lead(self):
         self.state = 'new'
+
+    @api.model
+    def allocate_leads(self, lead_ids):
+        # Fetch tele-callers who can handle leads
+        tele_caller_group = self.env.ref('custom_leads.group_lead_tele_callers')
+        if tele_caller_group:  # Update the module name
+            tele_callers = self.env['res.users'].search([('groups_id', 'in', [tele_caller_group.id])])
+        else:
+            return []
+        # Fetch lead users for inbound source
+        lead_user_group = self.env.ref('custom_leads.group_lead_users')  # Update the module name
+        if lead_user_group:
+            lead_users = self.env['res.users'].search([('groups_id', 'in', [lead_user_group.id])])
+        else:
+            return []
+        lead_objects = self.browse(lead_ids)
+        if not tele_callers and not lead_users:
+            raise ValueError("No users available to allocate leads.")
+
+        # Logic for outbound and inbound leads
+        for lead in lead_objects:
+            if lead.leads_source.source == 'outbound_source':
+                print('out')
+                # Assign to tele-callers in FIFO order
+                tele_caller_list = tele_callers.sorted(key=lambda tc: tc.create_date)
+                tele_caller_count = len(tele_caller_list)
+                tele_caller_id = tele_caller_list[lead.id % tele_caller_count].id
+                lead.write({'tele_caller_id': tele_caller_id})
+
+            elif lead.leads_source.source == 'inbound_source':
+                print('in')
+                # Assign to lead users in FIFO order
+                lead_user_list = lead_users.sorted(key=lambda user: user.create_date)
+                lead_user_count = len(lead_user_list)
+                lead_user_id = lead_user_list[lead.id % lead_user_count].id
+                lead.write({'lead_owner': lead_user_id})
+
+    @api.model
+    def create(self, values):
+        if values.get('reference_no', _('New')) == _('New'):
+            values['reference_no'] = self.env['ir.sequence'].next_by_code(
+                'leads.logic') or _('New')
+        # Create the lead
+        lead = super(LeadsForm, self).create(values)
+
+        # Allocate the lead to tele-callers or lead users
+        self.allocate_leads([lead.id])
+
+        # Notify the assigned tele-caller, if any
+        if lead.tele_caller_id:
+            # Create the notification
+            notification_ids = [(0, 0, {
+                'res_partner_id': lead.tele_caller_id.partner_id.id,
+                'notification_type': 'inbox'
+            })]
+
+            # Create the mail message
+            self.env['mail.message'].create({
+                'message_type': "notification",
+                'body': f"Lead '{lead.name}' has been assigned to you.",
+                'subject': "Lead Assigned",
+                'model': 'leads.logic',
+                'res_id': lead.id,
+                'partner_ids': [(4, lead.tele_caller_id.partner_id.id)],
+                'author_id': self.env.user.partner_id.id,
+                'notification_ids': notification_ids,
+            })
+
+        return lead
+
+    updated_remarks = fields.Text(string="Updated Remarks")
+
+    @api.constrains('updated_remarks', 'lead_quality')
+    def _check_updated_remarks(self):
+        for record in self:
+            if record.lead_quality:
+                if record.lead_quality == 'bad_lead':
+                    if not record.updated_remarks:
+                        raise ValidationError("Updated Remarks is required when Lead Quality is 'Bad Lead'.")
+                    if len(record.updated_remarks) < 140:
+                        raise ValidationError("Updated Remarks must be at least 140 characters long.")
+
+    def action_bulk_lead_allocation_tele_callers(self):
+        active_ids = self.env.context.get('active_ids', [])
+        print(active_ids, 'current rec')
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Allocation',
+            'res_model': 'allocation.tele_callers.wizard',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'target': 'new',
+            'context': {'parent_obj': active_ids}
+
+        }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Odoo View Definition for Whatsapp Message Form -->
+    <record id="lead_connection_form_view" model="ir.ui.view">
+        <field name="name">allocation.tele_callers.wizard.view.form</field>
+        <field name="model">allocation.tele_callers.wizard</field>
+        <field name="priority" eval="8"/>
+        <field name="arch" type="xml">
+            <form string="Allocation Form">
+                <group>
+
+                    <group>
+                        <field name="assign_to"/>
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="action_add_assigned_user" string="Allocate to Tele Caller" type="object" class="oe_highlight"/>
+                    <button name="cancel" string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

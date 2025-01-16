@@ -34,6 +34,11 @@ class ConnectionForm(models.TransientModel):
 
     def act_connect(self):
         print('hi')
+        self.lead_id.write({
+            'lead_quality': self.lead_quality,
+            'expected_joining_date': self.expected_joining_date,
+
+        })
 
 
 class NotConnectionForm(models.TransientModel):
@@ -41,6 +46,13 @@ class NotConnectionForm(models.TransientModel):
 
     notes = fields.Text(string="Notes")
     lead_id = fields.Many2one('leads.logic', string="Lead")
+
+    def act_done(self):
+        self.lead_id.write({
+            'not_response_note': self.notes,
+            'lead_quality': 'not_responding',
+            'current_status': 'not_responding'
+        })
 
 class ConvertLead(models.TransientModel):
     _name = 'convert.lead'
@@ -55,7 +67,8 @@ class ConvertLead(models.TransientModel):
             'amount': self.amount,
             'closing_date': self.closing_date,
             'state': 'deal',
-            'current_status': 'deal'
+            'current_status': 'deal',
+            'lead_quality': 'waiting_for_admission'
         })
 
 class LostLead(models.TransientModel):
@@ -64,11 +77,20 @@ class LostLead(models.TransientModel):
     lead_id = fields.Many2one('leads.logic', string="Lead")
     reason = fields.Text(string="Lost Reason")
 
+    @api.constrains('reason')
+    def _check_updated_remarks(self):
+        for record in self:
+            if not record.reason:
+                raise ValidationError("Reason is required when Lead is 'Bad Lead'.")
+            if len(record.reason) < 140:
+                raise ValidationError("Reason must be at least 140 characters long.")
+
     def act_lost_lead(self):
         self.lead_id.write({
             'state': 'lost',
             'lost_reason': self.reason,
-            'current_status': 'lost'
+            'current_status': 'lost',
+            'updated_remarks': self.reason
         })
 
 class QualifiedLead(models.TransientModel):
@@ -119,7 +141,8 @@ class QualifiedLead(models.TransientModel):
             'state': 'qualified',
             'admission_status': True,
             'admission_date': fields.Datetime.now(),
-            'current_status': 'admission'
+            'current_status': 'admission',
+            'lead_quality': 'admission'
 
         })
         student = self.env['op.student'].create({
@@ -136,5 +159,6 @@ class QualifiedLead(models.TransientModel):
             'branch_id': self.branch_id.id,
             'state':'confirm',
             'mobile': self.mobile,
-            'admission_officer_id': self.lead_id.lead_owner.user_id.id
+            'admission_officer_id': self.lead_id.lead_owner.user_id.id,
+            'admission_date': fields.Date.today()
         })

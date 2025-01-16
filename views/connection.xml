@@ -13,7 +13,7 @@
                             <field name="lead_quality"/>
                             <field name="expected_joining_date" invisible="lead_quality not in ['hot','warm']"
                                    required="lead_quality in ['hot','warm']"/>
-                            <field name="lead_id"/>
+                            <field name="lead_id" invisible="1"/>
                         </group>
                     </page>
                     <page string="Tasks" name="tasks">
@@ -31,7 +31,7 @@
 
 
                 <footer>
-                    <!--                   <button name="action_send_message" string="Send" type="object"/>-->
+                    <button name="act_connect" string="Connect" type="object" class="oe_highlight"/>
                     <button name="cancel" string="Cancel" special="cancel"/>
                 </footer>
             </form>
@@ -48,6 +48,7 @@
                     <page string="Fields and Notes" name="fields_and_notes">
                         <group>
                             <field name="notes"/>
+                            <field name="lead_id" invisible="1"/>
 
                         </group>
                     </page>
@@ -56,7 +57,7 @@
 
 
                 <footer>
-                    <!--                   <button name="action_send_message" string="Send" type="object"/>-->
+                    <button name="act_done" string="Done" type="object"/>
                     <button name="cancel" string="Cancel" special="cancel"/>
                 </footer>
             </form>
@@ -71,7 +72,7 @@
                 <notebook>
                     <page string="Fields and Notes" name="fields_and_notes">
                         <group>
-                            <field name="lead_id"/>
+                            <field name="lead_id" invisible="1"/>
                             <field name="reason" required="1"/>
 
                         </group>
