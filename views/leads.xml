@@ -209,7 +209,7 @@
             name="Configuration"
             parent="leads_main_menu"
             sequence="10"
-            action="action_leads_sources_main_action"/>
+            />
     <menuitem
             id="leads_admission_menu"
             name="Admission"
