@@ -23,11 +23,17 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="reference_no"/>
+                <field name="date_of_adding" string="Added Date" widget="badge"/>
                 <field name="name"/>
-                <field name="email_address"/>
-                <field name="phone_number"/>
+                <field name="phone_number" string="Mobile"/>
+                <field name="phone_number_second" string="Phone"/>
+                <field name="email_address" string="Email"/>
+                <field name="lead_quality" widget="badge"/>
                 <field name="probability"/>
-                <field name="state" widget="badge"/>
+                <field name="admission_status"/>
+                <field name="state" decoration-info="state == 'new'"
+                       decoration-success="state == 'qualified'"
+                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>
             </tree>
         </field>
     </record>
@@ -73,7 +79,9 @@
                     <button name="act_admission" type="object" string="Admission"
                             class="btn-convert" invisible="state != 'deal'"/>
                     <button name="act_lost_lead" type="object" string="Lost"
-                            class="btn-lost" invisible="state in ['lost','qualified']"/>
+                            class="btn-lost" invisible="state in ['lost','qualified']"/>\
+                    <button name="act_return_to_new_lead" type="object" string="Return to New Lead"
+                            class="btn-lost" invisible="state != 'lost'"/>
                     <!--                                   <button string="Cancel" class="btn-default" special="cancel"/>-->
                 </header>
                 <sheet>
@@ -85,12 +93,12 @@
                                 name="act_connected"
                                 type="object"
                                 string="Connected"
-                                class="btn-connected" invisible="state == 'new'"/>
+                                class="btn-connected" invisible="state != 'in_progress'"/>
                         <button
                                 name="act_not_connected"
                                 type="object"
                                 string="Not Connected"
-                                class="btn-not-connected" invisible="state == 'new'"/>
+                                class="btn-not-connected" invisible="state != 'in_progress'"/>
                     </group>
                 </sheet>
                 <sheet>

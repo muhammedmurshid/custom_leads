@@ -118,6 +118,7 @@ class QualifiedLead(models.TransientModel):
             'state': 'qualified',
             'admission_status': True,
             'admission_date': fields.Datetime.now(),
+            'current_status': 'admission'
 
         })
         student = self.env['op.student'].create({

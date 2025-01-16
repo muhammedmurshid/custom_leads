@@ -175,3 +175,6 @@ class LeadsForm(models.Model):
                 'view_mode': 'form',
                 'view_type': 'form',
                 'context': {'default_lead_id': self.id}, }
+
+    def act_return_to_new_lead(self):
+        self.state = 'new'
