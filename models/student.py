@@ -6,3 +6,9 @@ class StudentFormInherit(models.Model):
     admission_officer_id = fields.Many2one('res.users', string="Admission Officer")
     branch_id = fields.Many2one('op.branch', string="Branch")
     admission_date = fields.Date(string="Admission Date")
+
+
+class MailFormInherit(models.Model):
+    _inherit = 'mail.activity'
+
+    lead_id = fields.Many2one('leads.logic', string="Lead")

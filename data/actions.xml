@@ -6,10 +6,17 @@
         <field name="groups_id" eval="[(4, ref('custom_leads.group_lead_team_lead'))]"/>
         <field name="binding_model_id" ref="model_leads_logic"/>
         <field name="state">code</field>
-        
+
         <field name="code">
             if records:
             action = records.action_bulk_lead_allocation_tele_callers()
         </field>
+    </record>
+
+    <record id="mail_activity_lead_tasks" model="mail.activity.type">
+        <field name="name">Tasks</field>
+        <field name="icon">fa-file-text-o</field>
+        <field name="res_model">leads.logic</field>
+        <field name="delay_count">15</field>
     </record>
 </odoo>

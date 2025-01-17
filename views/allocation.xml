@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <!-- Odoo View Definition for Whatsapp Message Form -->
-    <record id="lead_connection_form_view" model="ir.ui.view">
+    <record id="lead_allocation_form_view" model="ir.ui.view">
         <field name="name">allocation.tele_callers.wizard.view.form</field>
         <field name="model">allocation.tele_callers.wizard</field>
         <field name="priority" eval="8"/>

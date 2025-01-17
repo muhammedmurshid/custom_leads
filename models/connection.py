@@ -6,6 +6,7 @@ from odoo.exceptions import ValidationError, UserError
 
 class ConnectionForm(models.TransientModel):
     _name = 'connect.form'
+    _description = 'Connection Form'
 
     lead_quality = fields.Selection(
         [('hot', 'Hot'),
@@ -15,8 +16,8 @@ class ConnectionForm(models.TransientModel):
         string='Lead Quality')
     expected_joining_date = fields.Date(string="Expected Joining Date")
     lead_id = fields.Many2one('leads.logic', string="Lead")
-
-    subject = fields.Char(string="Subject")
+    crash_user_id = fields.Many2one('res.users', string="Crash User")
+    subject = fields.Many2one('mail.activity.type', string="Subject")
     task_owner_id = fields.Many2one('res.users', string="Task Owner")
     due_date = fields.Date(string="Due Date")
     status = fields.Selection(
@@ -32,13 +33,25 @@ class ConnectionForm(models.TransientModel):
     description = fields.Text(string="Description")
     date = fields.Datetime(string="Date Time")
 
+    @api.onchange('lead_quality')
+    def _onchange_lead_quality(self):
+        if self.lead_quality:
+            if self.lead_quality != 'crash_lead':
+                self.crash_user_id = False
+            if self.lead_quality != 'warm' or self.lead_quality != 'hot':
+                self.expected_joining_date = False
+
     def act_connect(self):
         print('hi')
         self.lead_id.write({
             'lead_quality': self.lead_quality,
             'expected_joining_date': self.expected_joining_date,
+            'crash_user_id': self.crash_user_id.id,
 
         })
+        self.lead_id.activity_schedule(
+            'custom_leads.mail_activity_lead_tasks', user_id=self.task_owner_id.id, summary= self.description, activity_type_id= self.subject.id, date_deadline= self.due_date,
+            note=f'Task Created.'),
 
 
 class NotConnectionForm(models.TransientModel):

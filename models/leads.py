@@ -12,9 +12,10 @@ class LeadsForm(models.Model):
     _order = 'id desc'
 
     leads_source = fields.Many2one('leads.sources', string='Leads Source', required=True)
+    source_name = fields.Char(string="Source")
     name = fields.Char(string='Lead Name', required=True)
-    email_address = fields.Char(string='Email Address')
-    phone_number = fields.Char(string='Mobile Number', required=True)
+    email_address = fields.Char(string='Email')
+    phone_number = fields.Char(string='Mobile', required=True)
     probability = fields.Float(string='Probability')
     admission_status = fields.Boolean(string='Admission', readonly=1)
     date_of_adding = fields.Date(string='Date of Adding', default=fields.Datetime.now, readonly=1)
@@ -30,6 +31,7 @@ class LeadsForm(models.Model):
          ('nil', 'Nil')],
         string='Lead Quality', default='new')
     lost_reason = fields.Text(string="Lost Reason")
+    crash_user_id = fields.Many2one('res.users', string="Crash User")
     lead_status = fields.Selection(
         [('not_responding', 'Not Responding'),
          ('already_enrolled', 'Already Enrolled'), ('joined_in_another_institute', 'Joined in another institute'),
@@ -58,9 +60,10 @@ class LeadsForm(models.Model):
     last_studied_course = fields.Char(string='Last Studied Course')
     incoming_source = fields.Selection(
         [('social_media', 'Social Media'), ('google', 'Google'), ('hoardings', 'Hoardings'), ('tv_ads', 'TV Ads'),
-         ('through friends', 'Through Friends'), ('whatsapp', 'WhatsApp'), ('other', 'Other')],
-        string='How did you hear about us?')
+         ('through friends', 'Through Friends'), ('whatsapp', 'WhatsApp'), ('re_admission', 'Re-Admission'),('other', 'Other')],
+        string='Incoming Calls / Walk In Source')
     incoming_source_checking = fields.Boolean(string='Incoming Source Checking', )
+
     college_name = fields.Char(string='College/School')
     lead_referral_staff_id = fields.Many2one('res.users', string='Lead Referral Staff')
     referred_by = fields.Selection([('staff', 'Staff'), ('student', 'Student'), ('other', 'Other')],
@@ -109,6 +112,8 @@ class LeadsForm(models.Model):
                                      string='Mode of Study',
                                      required=True)
     assigned_date = fields.Date(string='Assigned Date', readonly=1)
+    digital_lead = fields.Boolean(string="Digital Lead")
+    digital_lead_source = fields.Selection([('just_dial', 'Just Dial'), ('youtube_google', 'Youtube - Google'), ('whatsapp_campaign', 'Whatsapp Campaign'), ('messenger', 'Messenger'), ('facebook', 'Facebook'), ('linkedin', 'Linkedin'), ('instagram', 'Instagram'), ('whatsapp_meta', 'Whatsapp Meta'), ('website', 'Website'), ('google', 'Google')], string="Digital Lead Source")
     platform = fields.Selection(
         [('facebook', 'Facebook'), ('instagram', 'Instagram'), ('website', 'Website'), ('just_dial', 'Just Dial'),
          ('other', 'Other')],
@@ -125,6 +130,37 @@ class LeadsForm(models.Model):
     #             vals['reference_no'] = (self.env['ir.sequence'].
     #                               next_by_code('leads.logic'))
     #     return super().create(vals_list)
+    @api.onchange('leads_source')
+    def _onchange_leads_source(self):
+        if self.leads_source:
+            self.source_name = self.leads_source.name
+            if 'incoming' in self.source_name.lower() or 'walk in' in self.source_name.lower():
+                # Do something when 'incoming' is in the source name
+                self.incoming_source_checking = True
+
+            else:
+                self.incoming_source_checking = 0
+                self.incoming_source = False
+            if self.leads_source.digital_lead == 1:
+                self.digital_lead = 1
+            else:
+                self.digital_lead = 0
+                self.digital_lead_source = False
+
+    @api.onchange('lead_quality')
+    def _onchange_leads_quality(self):
+        if self.lead_quality:
+            if self.lead_quality != 'crash_lead':
+                self.crash_user_id = False
+
+    @api.constrains('phone_number')
+    def _check_duplicate_phone_number(self):
+        for record in self:
+            if record.phone_number:
+                duplicate = self.search([('phone_number', '=', record.phone_number), ('id', '!=', record.id)])
+                if duplicate:
+                    raise ValidationError(
+                        _('The phone number %s already exists. Please use a different number.') % record.phone_number)
 
     def act_attempt_to_connect(self):
         self.current_status = 'not_responding'
@@ -137,10 +173,12 @@ class LeadsForm(models.Model):
                 'res_model': 'connect.form',
                 'target': 'new',
                 'view_mode': 'form',
-                'view_type': 'form',
                 'context': {'default_lead_id': self.id, 'default_task_owner_id': self.lead_owner.user_id.id}, }
 
     def act_not_connected(self):
+        act = self.env['mail.activity'].search([('res_model', '=', 'leads.logic')])
+        for i in act:
+            print(i.res_model, 'model')
         return {'type': 'ir.actions.act_window',
                 'name': _('Connect'),
                 'res_model': 'not.connect.form',

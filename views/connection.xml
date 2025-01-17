@@ -11,6 +11,7 @@
                     <page string="Fields" name="fields">
                         <group>
                             <field name="lead_quality"/>
+                            <field name="crash_user_id" invisible="lead_quality != 'crash_lead'"/>
                             <field name="expected_joining_date" invisible="lead_quality not in ['hot','warm']"
                                    required="lead_quality in ['hot','warm']"/>
                             <field name="lead_id" invisible="1"/>
@@ -18,8 +19,8 @@
                     </page>
                     <page string="Tasks" name="tasks">
                         <group>
-                            <field name="subject"/>
-                            <field name="task_owner_id"/>
+                            <field name="subject" required="1"/>
+                            <field name="task_owner_id" required="1"/>
                             <field name="due_date"/>
                             <field name="status"/>
                             <field name="priority"/>
