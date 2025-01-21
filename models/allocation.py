@@ -21,6 +21,7 @@ class AllocationTeleCallersWizard(models.TransientModel):
 
         leads = self.env['leads.logic'].sudo().search([('id', '=', self._context['parent_obj'])])
         for rec in leads:
+            print(rec, 'recccc')
             rec.sudo().write({
                 'tele_caller_id': self.assign_to.id,
                 # 'lead_quality': 'nil',
@@ -28,30 +29,15 @@ class AllocationTeleCallersWizard(models.TransientModel):
                 'assigned_date': fields.Datetime.now(),
                 # 'over_due': False
             })
-
-
-            # rec.activity_schedule('leads.mail_seminar_leads_done', user_id=rec.tele_caller_ids.id,
-            #                       note=f' You have been assigned new lead.')
-
-    # def action_add_tele_callers_user(self):
-    #     print(self._context['parent_obj'], 'parent_obj')
-    #
-    #     leads = self.env['leads.logic'].sudo().search([('id', '=', self._context['parent_obj'])])
-    #     for rec in leads:
-    #         rec.sudo().write({
-    #             'tele_caller_ids': self.assign_to.id,
-    #             'state': 'tele_caller',
-    #             # 'lead_quality': 'nil',
-    #             'leads_assign': False,
-    #             # 'assigned_date': fields.Datetime.now(),
-    #             # 'over_due': False
-    #         })
+            rec.activity_schedule('custom_leads.mail_activity_lead_tasks', user_id= rec.tele_caller_id.id,
+                                  note=f' You have been assigned new lead.')
 
     def action_add_assign_to_lead_owner(self):
         print(self._context['parent_obj'], 'parent_obj')
 
         leads = self.env['leads.logic'].sudo().search([('id', '=', self._context['parent_obj'])])
         for rec in leads:
+            print(rec, 'recccc')
             rec.sudo().write({
                 'lead_owner': self.assign_to.employee_id.id,
                 # 'lead_quality': 'nil',
@@ -59,3 +45,5 @@ class AllocationTeleCallersWizard(models.TransientModel):
                 'assigned_date': fields.Datetime.now(),
                 # 'over_due': False
             })
+            rec.activity_schedule('custom_leads.mail_activity_lead_tasks', user_id=rec.lead_owner.user_id.id,
+                                  note=f' You have been assigned new lead.')
