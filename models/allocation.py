@@ -29,6 +29,7 @@ class AllocationTeleCallersWizard(models.TransientModel):
                 # 'over_due': False
             })
 
+
             # rec.activity_schedule('leads.mail_seminar_leads_done', user_id=rec.tele_caller_ids.id,
             #                       note=f' You have been assigned new lead.')
 
@@ -45,3 +46,16 @@ class AllocationTeleCallersWizard(models.TransientModel):
     #             # 'assigned_date': fields.Datetime.now(),
     #             # 'over_due': False
     #         })
+
+    def action_add_assign_to_lead_owner(self):
+        print(self._context['parent_obj'], 'parent_obj')
+
+        leads = self.env['leads.logic'].sudo().search([('id', '=', self._context['parent_obj'])])
+        for rec in leads:
+            rec.sudo().write({
+                'lead_owner': self.assign_to.employee_id.id,
+                # 'lead_quality': 'nil',
+                # 'leads_assign': False,
+                'assigned_date': fields.Datetime.now(),
+                # 'over_due': False
+            })

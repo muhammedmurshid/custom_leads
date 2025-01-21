@@ -15,7 +15,8 @@
                 </group>
 
                 <footer>
-                    <button name="action_add_assigned_user" string="Allocate to Tele Caller" type="object" class="oe_highlight"/>
+                    <button name="action_add_assigned_user" string="Assign to Tele Caller" type="object" class="oe_highlight"/>
+                    <button name="action_add_assign_to_lead_owner" string="Assign to Lead Owner" type="object" class="oe_highlight"/>
                     <button name="cancel" string="Cancel" special="cancel"/>
                 </footer>
             </form>
