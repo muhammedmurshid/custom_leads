@@ -10,7 +10,7 @@
     'category': 'Specific Category',
     'license': 'LGPL-3',
     'depends': [
-        'base','website', 'openeducat_core', 'logic_base_17'  # List of module dependencies
+        'base', 'website', 'openeducat_core', 'logic_base_17'  # List of module dependencies
 
         # Add other module dependencies here
     ],
@@ -27,6 +27,11 @@
         'data/actions.xml'
 
     ],
+    'assets': {
+        'web.assets_backend': [
+            '/custom_leads/static/src/css/leads.css',
+        ],
+    },
 
     'installable': True,
     'application': True,

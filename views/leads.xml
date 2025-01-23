@@ -43,31 +43,7 @@
         <field name="arch" type="xml">
             <form string="Leads">
                 <style>
-                    .btn-connected {
-                    background-color: #a6f283;
-                    width: 120px;
-                    height: 40px;
-                    font-size: 14px;
-                    text-align: center;
-                    }
-                    .btn-not-connected {
-                    background-color: #f58667;
-                    color: white;
-                    width: 120px;
-                    height: 40px;
-                    font-size: 14px;
-                    text-align: center;
-                    }
-                    .btn-convert {
-                    background-color: #347512;
-                    color:white;
 
-                    }
-                    .btn-lost {
-                    background-color: #db350f;
-                    color:white;
-
-                    }
                 </style>
 
                 <header>
@@ -105,33 +81,49 @@
                     <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>
                     <widget name="web_ribbon" title="Qualified" bg_color="text-bg-success"
                             invisible="state != 'qualified'"/>
-
                     <h2>
                         <field name="reference_no" invisible="state == 'new'" widget="badge"/>
                     </h2>
                     <group>
+                        <field name="name" style="background-color:#db350f; color:white;"/>
+                        <field name="email_address" style="background-color:#db350f; color:white;"/>
+                        <field name="phone_number" style="background-color:#db350f; color:white;"/>
+
+                    </group>
+                </sheet>
+                <sheet>
+                    <!--                    <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>-->
+                    <!--                    <widget name="web_ribbon" title="Qualified" bg_color="text-bg-success"-->
+                    <!--                            invisible="state != 'qualified'"/>-->
+
+                    <!--                    <h2>-->
+                    <!--                        <field name="reference_no" invisible="state == 'new'" widget="badge"/>-->
+                    <!--                    </h2>-->
+                    <group>
                         <group string="Lead Information">
-                            <field name="name"/>
-                            <field name="email_address"/>
-                            <field name="phone_number"/>
+                            <!--                            <field name="name"/>-->
+                            <!--                            <field name="email_address"/>-->
+                            <!--                            <field name="phone_number"/>-->
                             <field name="phone_number_second"/>
                             <field name="parent_number"/>
-                            <field name="leads_source"/>
+                            <field name="leads_source" style="background-color:#db350f; color:white;"/>
                             <field name="incoming_source_checking" invisible="1"/>
                             <field name="digital_lead" invisible="1"/>
                             <field name="incoming_source" invisible="incoming_source_checking != 1"/>
                             <field name="digital_lead_source" invisible="digital_lead != 1"/>
                             <field name="mode_of_study"/>
+                            <field name="lead_status"/>
 
                         </group>
                         <group name="info" string="">
-                            <field name="lead_quality"/>
+                            <field name="lead_quality" style="background-color:#db350f; color:white;"/>
+                            <field name="call_response"/>
                             <field name="crash_user_id" invisible="lead_quality != 'crash_lead'"/>
                             <field name="updated_remarks" invisible="lead_quality != 'bad_lead'"/>
                             <field name="not_response_note" invisible="lead_quality != 'not_responding'"/>
-                            <field name="lead_status"/>
+                            <!--                            <field name="lead_status"/>-->
                             <field name="country"/>
-                            <field name="district"/>
+                            <field name="district" style="background-color:#db350f; color:white;"/>
                             <field name="place"/>
                             <field name="campaign"/>
                             <field name="admission_status"/>
@@ -146,6 +138,7 @@
                             <field name="tele_caller_id"/>
                         </group>
                         <group string="Course Details">
+                            <field name="academic_year"/>
                             <field name="course_type"/>
                             <field name="course_interested"/>
                         </group>
@@ -167,14 +160,18 @@
                         <group string="Dates">
                             <field name="date_of_adding"/>
                             <field name="last_update_date"/>
-                            <field widget="badge" name="expected_joining_date" invisible="lead_quality not in ['warm','hot']"/>
+                            <field widget="badge" name="expected_joining_date"
+                                   invisible="lead_quality not in ['warm','hot']"/>
                             <field name="closing_date" invisible="state != 'deal'"/>
                             <field name="admission_date" invisible="state != 'qualified'"/>
                         </group>
                         <group string="Course -Branch-Batch">
-                            <field name="course_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
-                            <field name="branch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
-                            <field name="batch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                            <field name="course_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
+                                   style="background-color:#db350f; color:white;"/>
+                            <field name="branch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
+                                   style="background-color:#db350f; color:white;"/>
+                            <field name="batch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
+                                   style="background-color:#db350f; color:white;"/>
                         </group>
                         <group name="lost_reason" string="Lost Reason" invisible="state != 'lost'">
                             <field name="lost_reason" style="background-color:#f54720 color:white;"/>
@@ -198,7 +195,7 @@
                     archivable="false"
                     sample="1" quick_create="0">
                 <field name="lead_quality" default_order="lead_quality"
-                       />
+                />
                 <progressbar field="lead_quality"
                              colors='{"bad_lead": "danger", "cold": "warning", "warm": "info", "hot": "primary", "nil": "secondary", "admission": "success"}'/>
 
@@ -234,20 +231,33 @@
                                 </span>
                                 <span>
                                     <b>Mobile :</b>
-                                    <field name="phone_number" widget="phone"/>
+                                    <field name="phone_number" widget="phone" class="hover-field-value"/>
                                     <br/>
                                 </span>
+
                                 <span>
                                     <b>Lead Owner :</b>
                                     <field name="lead_owner"/>
                                     <field name="lead_owner" widget="many2one_avatar_employee"/>
                                     <br/>
                                 </span>
+                                <span>
+                                    <b>Response :</b>
+                                    <div class="hover-container">
+                                        <!-- Display 'Phone' initially and reveal the phone number on hover -->
+                                        <div class="hover-default">Last Call Response</div>
+                                        <div class="hover-field-value">
+                                            <field name="call_response"/>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                </span>
                             </div>
-<!--                            <field name="lead_quality" position="attributes">-->
-<!--                                <attribute name="fold">1 if record.lead_quality in ('cold', 'warm') else 0-->
-<!--                                </attribute>-->
-<!--                            </field>-->
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="activity_ids" widget="kanban_activity"/>
+                                </div>
+                            </div>
                         </div>
                     </t>
                 </templates>
@@ -293,7 +303,7 @@
             name="Configuration"
             parent="leads_main_menu"
             sequence="10"
-            />
+    />
     <menuitem
             id="leads_admission_menu"
             name="Admission"

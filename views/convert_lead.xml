@@ -35,22 +35,22 @@
             <form string="Admission Form">
                 <div class="mb16 col-8 col-lg-10 px-0">
                     <div class="row">
-                        <h2 class="col-12 col-lg-2">
-                            <field name="title" placeholder="Title"/>
-                        </h2>
+<!--                        <h2 class="col-12 col-lg-2">-->
+<!--                            <field name="title" placeholder="Title"/>-->
+<!--                        </h2>-->
                         <h2 class="col-12 col-lg-10">
 <!--                            <field name="name" placeholder="Name" required="1" invisible="1"/>-->
                             <table>
                                 <tr>
                                     <td style="padding-right:10px;">
-                                        <field name="first_name" required="1" placeholder="First Name"/>
+                                        <field name="name" required="1" placeholder="Student Name"/>
                                     </td>
-                                    <td style="padding-right:10px;">
-                                        <field name="middle_name" placeholder="Middle Name"/>
-                                    </td>
-                                    <td style="padding-right:10px;">
-                                        <field name="last_name" required="1" placeholder="Last Name"/>
-                                    </td>
+<!--                                    <td style="padding-right:10px;">-->
+<!--                                        <field name="middle_name" placeholder="Middle Name"/>-->
+<!--                                    </td>-->
+<!--                                    <td style="padding-right:10px;">-->
+<!--                                        <field name="last_name" required="1" placeholder="Last Name"/>-->
+<!--                                    </td>-->
                                 </tr>
                             </table>
                         </h2>
@@ -59,7 +59,7 @@
 
                 <group>
                     <group>
-                        <field name="name" invisible="1"/>
+<!--                        <field name="name" invisible="1"/>-->
                         <field name="gender"/>
                         <field name="mobile"/>
                         <field name="email"/>
@@ -71,7 +71,7 @@
                     <group>
                         <field name="batch_id"/>
                         <field name="course_id"/>
-                        <field name="batch_id"/>
+                        <field name="branch_id"/>
                     </group>
                 </group>
 

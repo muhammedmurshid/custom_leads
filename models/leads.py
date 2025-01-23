@@ -47,7 +47,6 @@ class LeadsForm(models.Model):
     branch_id = fields.Many2one('op.branch', string="Branch")
     course_interested = fields.Char(string="Course Interested")
     academic_year_of_course_attend = fields.Selection([('2023-2024','2023-2024'), ('2024-2025','2024-2025'), ('2025-2026','2025-2026')], string="Academic Year of Course attended")
-    batch_id = fields.Many2one('op.batch', string="Batch")
     course_type = fields.Selection(
         [('indian', 'Indian'), ('international', 'International'), ('crash', 'Crash'), ('repeaters', 'Repeaters'),
          ('nil', 'Nil')],
@@ -63,7 +62,7 @@ class LeadsForm(models.Model):
          ('through friends', 'Through Friends'), ('whatsapp', 'WhatsApp'), ('re_admission', 'Re-Admission'),('other', 'Other')],
         string='Incoming Calls / Walk In Source')
     incoming_source_checking = fields.Boolean(string='Incoming Source Checking', )
-
+    academic_year = fields.Selection([('2024-2025', '2024-2025'), ('2025-2026', '2025-2026')], string="Academic Year")
     college_name = fields.Char(string='College/School')
     lead_referral_staff_id = fields.Many2one('res.users', string='Lead Referral Staff')
     referred_by = fields.Selection([('staff', 'Staff'), ('student', 'Student'), ('other', 'Other')],
@@ -109,8 +108,7 @@ class LeadsForm(models.Model):
     closing_date = fields.Date(string="Closing Date")
     amount = fields.Float(string="Amount")
     mode_of_study = fields.Selection([('online', 'Online'), ('offline', 'Offline'), ('nil', 'Nil')],
-                                     string='Mode of Study',
-                                     required=True)
+                                     string='Mode of Study')
     assigned_date = fields.Date(string='Assigned Date', readonly=1)
     digital_lead = fields.Boolean(string="Digital Lead")
     digital_lead_source = fields.Selection([('just_dial', 'Just Dial'), ('youtube_google', 'Youtube - Google'), ('whatsapp_campaign', 'Whatsapp Campaign'), ('messenger', 'Messenger'), ('facebook', 'Facebook'), ('linkedin', 'Linkedin'), ('instagram', 'Instagram'), ('whatsapp_meta', 'Whatsapp Meta'), ('website', 'Website'), ('google', 'Google')], string="Digital Lead Source")
@@ -121,7 +119,7 @@ class LeadsForm(models.Model):
     expected_joining_date = fields.Date(string="Expected Joining Date")
     not_response_note = fields.Text(string="Not Respond Reason")
     current_status = fields.Selection([('new_lead', 'New Lead'), ('not_responding', 'Not Responding'), ('deal', 'Deal'), ('admission', 'Admission'), ('lost', 'Lost')], string="Current Status", default="new_lead")
-
+    call_response = fields.Text(string="Response")
     # @api.model_create_multi
     # def create(self, vals_list):
     #     """ Create a sequence for the student model """
@@ -152,6 +150,26 @@ class LeadsForm(models.Model):
         if self.lead_quality:
             if self.lead_quality != 'crash_lead':
                 self.crash_user_id = False
+
+    @api.onchange('branch_id')
+    def _onchange_branch(self):
+        if self.branch_id:
+            print(f"Branch ID: {self.branch_id.id}")
+            domain = [('branch', '=', self.branch_id.id)]
+            print(f"Domain applied: {domain}")
+            return {
+                'domain': {
+                    'batch_id': domain,
+                }
+            }
+        else:
+            print("No branch selected")
+            return {
+                'domain': {
+                    'batch_id': [],
+                }
+            }
+    batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id)]")
 
     @api.constrains('phone_number')
     def _check_duplicate_phone_number(self):
@@ -204,7 +222,7 @@ class LeadsForm(models.Model):
                 'target': 'new',
                 'view_mode': 'form',
                 'view_type': 'form',
-                'context': {'default_lead_id': self.id, 'default_lead_owner_id': self.lead_owner.user_id.id }, }
+                'context': {'default_lead_id': self.id, 'default_lead_owner_id': self.lead_owner.user_id.id,  }, }
 
     def act_admission(self):
         print()
@@ -218,7 +236,9 @@ class LeadsForm(models.Model):
                     'context': {'default_lead_id': self.id,
                                 'default_batch_id': self.batch_id.id,
                                 'default_course_id': self.course_id.id,
-                                'default_branch_id': self.branch_id.id,}, }
+                                'default_branch_id': self.branch_id.id,
+                                'default_mobile': self.phone_number,
+                                'default_email': self.email_address}, }
         else:
             raise UserError(_('Please ensure that Batch, Branch, and Course are selected before proceeding.'))
 
@@ -259,7 +279,9 @@ class LeadsForm(models.Model):
                 lead_user_list = lead_users.sorted(key=lambda user: user.create_date)
                 lead_user_count = len(lead_user_list)
                 lead_user_id = lead_user_list[lead.id % lead_user_count].id
-                lead.write({'lead_owner': lead_user_id})
+                print(lead_user_id, 'user_id')
+                user = self.env['res.users'].search([('id', '=', lead_user_id)])
+                lead.write({'lead_owner': user.employee_id.id})
 
     @api.model
     def create(self, values):

@@ -110,10 +110,10 @@ class QualifiedLead(models.TransientModel):
     _name = 'qualified.lead.form'
 
     lead_id = fields.Many2one('leads.logic', string="Lead")
-    title = fields.Many2one('res.partner.title')
-    first_name = fields.Char(string="First Name", required=1)
-    middle_name = fields.Char(string="Middle Name")
-    last_name = fields.Char(string="Last Name", required=1)
+    # title = fields.Many2one('res.partner.title')
+    # first_name = fields.Char(string="First Name", required=1)
+    # middle_name = fields.Char(string="Middle Name")
+    # last_name = fields.Char(string="Last Name", required=1)
     name = fields.Char(string="Name")
     batch_id = fields.Many2one('op.batch', string="Batch", )
     course_id = fields.Many2one('op.course', string="Course", )
@@ -132,15 +132,15 @@ class QualifiedLead(models.TransientModel):
         if self.email and not tools.single_email_re.match(self.email):
             raise ValidationError(_('Invalid Email! Please enter a valid email address.'))
 
-    @api.onchange('first_name', 'middle_name', 'last_name')
-    def _onchange_name(self):
-        if not self.middle_name:
-            self.name = str(self.first_name) + " " + str(
-                self.last_name
-            )
-        else:
-            self.name = str(self.first_name) + " " + str(
-                self.middle_name) + " " + str(self.last_name)
+    # @api.onchange('first_name', 'middle_name', 'last_name')
+    # def _onchange_name(self):
+    #     if not self.middle_name:
+    #         self.name = str(self.first_name) + " " + str(
+    #             self.last_name
+    #         )
+    #     else:
+    #         self.name = str(self.first_name) + " " + str(
+    #             self.middle_name) + " " + str(self.last_name)
 
     @api.constrains('birth_date')
     def _check_birthdate(self):
@@ -158,12 +158,13 @@ class QualifiedLead(models.TransientModel):
             'lead_quality': 'admission'
 
         })
+        print(self.name, 'stuuu')
         student = self.env['op.student'].create({
-            'title': self.title.id,
+            # 'title': self.title.id,
             'name': self.name,
-            'first_name': self.first_name,
-            'middle_name': self.middle_name,
-            'last_name': self.last_name,
+            # 'first_name': self.first_name,
+            # 'middle_name': self.middle_name,
+            # 'last_name': self.last_name,
             'gender': self.gender,
             'birth_date': self.birth_date,
             'email': self.email,

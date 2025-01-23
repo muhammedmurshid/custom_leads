@@ -1,0 +1,55 @@
+.hover-container {
+    position: relative;
+    display: inline-block;
+}
+
+.hover-container .hover-field-value {
+    visibility: hidden; /* Initially hide the phone number */
+    opacity: 0;
+    transition: opacity 0.3s;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.hover-container .hover-default {
+    visibility: visible; /* Show 'Phone' text by default */
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.hover-container:hover .hover-default {
+    visibility: hidden; /* Hide 'Phone' text on hover */
+    opacity: 0;
+}
+
+.hover-container:hover .hover-field-value {
+    visibility: visible; /* Show the phone number on hover */
+    opacity: 1;
+}
+
+.btn-connected {
+                    background-color: #a6f283;
+                    width: 120px;
+                    height: 40px;
+                    font-size: 14px;
+                    text-align: center;
+                    }
+                    .btn-not-connected {
+                    background-color: #f58667;
+                    color: white;
+                    width: 120px;
+                    height: 40px;
+                    font-size: 14px;
+                    text-align: center;
+                    }
+                    .btn-convert {
+                    background-color: #347512;
+                    color:white;
+
+                    }
+                    .btn-lost {
+                    background-color: #db350f;
+                    color:white;
+
+                    }
