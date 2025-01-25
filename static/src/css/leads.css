@@ -53,3 +53,30 @@
                     color:white;
 
                     }
+.o_progress_info {
+    background-color: #17a2b8 !important; /* Info blue */
+}
+.o_progress_primary {
+    background-color: #007bff !important; /* Primary blue */
+}
+.o_progress_success {
+    background-color: #28a745 !important; /* Success green */
+}
+.o_progress_danger {
+    background-color: #dc3545 !important; /* Danger red */
+}
+.o_progress_warning {
+    background-color: #ffc107 !important; /* Warning yellow */
+}
+.o_progress_light {
+    background-color: #f8f9fa !important; /* Light grey */
+}
+.o_progress_dark {
+    background-color: #343a40 !important; /* Dark grey */
+}
+.o_progress_secondary {
+    background-color: #6c757d !important; /* Secondary grey */
+}
+.o_progress_muted {
+    background-color: #e9ecef !important; /* Muted grey */
+}

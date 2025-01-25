@@ -29,7 +29,9 @@
     ],
     'assets': {
         'web.assets_backend': [
+
             '/custom_leads/static/src/css/leads.css',
+            '/custom_leads/static/src/js/progress.js'
         ],
     },
 

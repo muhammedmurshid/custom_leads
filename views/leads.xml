@@ -196,10 +196,8 @@
                     sample="1" quick_create="0">
                 <field name="lead_quality" default_order="lead_quality"
                 />
-                <progressbar field="lead_quality"
-                             colors='{"bad_lead": "danger", "cold": "warning", "warm": "info", "hot": "primary", "nil": "secondary", "admission": "success"}'/>
+                <progressbar field="lead_quality" colors='{"new": "primary", "waiting_for_admission": "info", "admission": "success", "bad_lead": "danger", "cold":"warning", "hot":"secondary", "warm":"secondary"}' />
 
-                help="This bar allows to filter the opportunities based on scheduled activities."/>
 
                 <!--                <progressbar field="state"-->
                 <!--                             colors='{"completed": "success", "in_progress": "warning", "cancelled": "secondary","hold":"info"}'/>-->

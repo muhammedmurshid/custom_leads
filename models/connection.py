@@ -126,6 +126,8 @@ class QualifiedLead(models.TransientModel):
     birth_date = fields.Date('Birth Date', required=1)
     email = fields.Char(string="Email", required=1)
     mobile = fields.Char(string="Mobile")
+    fee_type = fields.Selection([('lump_sum_fee', 'Lump Sum Fee'), ('installment', 'Installment')], string="Fee Type", required=1)
+
 
     @api.onchange('email')
     def _validate_email(self):
@@ -174,5 +176,6 @@ class QualifiedLead(models.TransientModel):
             'state':'confirm',
             'mobile': self.mobile,
             'admission_officer_id': self.lead_id.lead_owner.user_id.id,
-            'admission_date': fields.Date.today()
+            'admission_date': fields.Date.today(),
+            'fee_type':self.fee_type
         })
