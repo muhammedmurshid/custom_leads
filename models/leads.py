@@ -52,7 +52,7 @@ class LeadsForm(models.Model):
          ('nil', 'Nil')],
         string='Course Type')
     state = fields.Selection(
-        [('new', 'New'), ('in_progress', 'In Progress'), ('deal', 'Deal'), ('qualified', 'Qualified'),
+        [('new', 'New'), ('in_progress', 'In Progress'), ('not_connected', 'Not Connected'), ('deal', 'Deal'), ('qualified', 'Qualified'),
          ('lost', 'Lost')],
         string='State',
         default='new', tracking=True)
@@ -84,7 +84,7 @@ class LeadsForm(models.Model):
     referred_by_number = fields.Char(string='Referred Person Number')
     batch_preference = fields.Char(string='Batch Preference')
     tele_caller_id = fields.Many2one('res.users', String="Tele Caller")
-
+    booking_amount = fields.Float(string="Booking Amount")
     lead_qualification = fields.Selection(
         [('plus_one_science', 'Plus One Science'), ('plus_two_science', 'Plus Two Science'),
          ('plus_two_commerce', 'Plus Two Commerce'), ('plus_one_commerce', 'Plus One Commerce'),
@@ -93,7 +93,6 @@ class LeadsForm(models.Model):
         string='Lead qualification')
     adm_id = fields.Integer(string='Admission Id')
     student_id = fields.Many2one('op.student', string='Student Id')
-
     district = fields.Selection([('wayanad', 'Wayanad'), ('ernakulam', 'Ernakulam'), ('kollam', 'Kollam'),
                                  ('thiruvananthapuram', 'Thiruvananthapuram'), ('kottayam', 'Kottayam'),
                                  ('kozhikode', 'Kozhikode'), ('palakkad', 'Palakkad'), ('kannur', 'Kannur'),
@@ -118,8 +117,9 @@ class LeadsForm(models.Model):
         string='Platform')
     expected_joining_date = fields.Date(string="Expected Joining Date")
     not_response_note = fields.Text(string="Not Respond Reason")
-    current_status = fields.Selection([('new_lead', 'New Lead'), ('not_responding', 'Not Responding'), ('deal', 'Deal'), ('admission', 'Admission'), ('lost', 'Lost')], string="Current Status", default="new_lead")
+    current_status = fields.Selection([('new_lead', 'New Lead'), ('not_responding', 'Not Responding'), ('need_follow_up', 'Need Follow-Up'), ('deal', 'Deal'), ('admission', 'Admission'), ('lost', 'Lost')], string="Current Status", default="new_lead")
     call_response = fields.Text(string="Response")
+    transitions = fields.Selection([('future_lead', 'Future Lead'), ('junk_lead', 'Junk Lead'), ('not_qualified', 'Not Qualified'), ('qualified', 'Qualified')], string="Transitions", tracking=1)
     # @api.model_create_multi
     # def create(self, vals_list):
     #     """ Create a sequence for the student model """
@@ -171,6 +171,14 @@ class LeadsForm(models.Model):
             }
     batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id)]")
 
+    def act_call_back(self):
+        return {'type': 'ir.actions.act_window',
+                'name': _('Connect'),
+                'res_model': 'connect.form',
+                'target': 'new',
+                'view_mode': 'form',
+                'context': {'default_lead_id': self.id, 'default_task_owner_id': self.lead_owner.user_id.id}, }
+
     @api.constrains('phone_number')
     def _check_duplicate_phone_number(self):
         for record in self:
@@ -216,13 +224,16 @@ class LeadsForm(models.Model):
 
     def act_convert(self):
         print('hi')
-        return {'type': 'ir.actions.act_window',
-                'name': _('Deal'),
-                'res_model': 'convert.lead',
-                'target': 'new',
-                'view_mode': 'form',
-                'view_type': 'form',
-                'context': {'default_lead_id': self.id, 'default_lead_owner_id': self.lead_owner.user_id.id,  }, }
+        if self.batch_id and self.branch_id and self.course_id:
+            return {'type': 'ir.actions.act_window',
+                    'name': _('Deal'),
+                    'res_model': 'convert.lead',
+                    'target': 'new',
+                    'view_mode': 'form',
+                    'view_type': 'form',
+                    'context': {'default_lead_id': self.id, 'default_lead_owner_id': self.lead_owner.user_id.id,  }, }
+        else:
+            raise UserError(_('Please ensure that Batch, Branch, and Course are selected before proceeding.'))
 
     def act_admission(self):
         print()
@@ -238,7 +249,7 @@ class LeadsForm(models.Model):
                                 'default_course_id': self.course_id.id,
                                 'default_branch_id': self.branch_id.id,
                                 'default_mobile': self.phone_number,
-                                'default_email': self.email_address}, }
+                                'default_email': self.email_address},}
         else:
             raise UserError(_('Please ensure that Batch, Branch, and Course are selected before proceeding.'))
 

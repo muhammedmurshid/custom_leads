@@ -80,3 +80,10 @@
 .o_progress_muted {
     background-color: #e9ecef !important; /* Muted grey */
 }
+.btn-call-back {
+                    background-color: #b5c1f7;
+                    width: 120px;
+                    height: 40px;
+                    font-size: 14px;
+                    text-align: center;
+                    }

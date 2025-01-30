@@ -47,8 +47,10 @@ class ConnectionForm(models.TransientModel):
             'lead_quality': self.lead_quality,
             'expected_joining_date': self.expected_joining_date,
             'crash_user_id': self.crash_user_id.id,
-
+            'current_status': 'need_follow_up',
+            'state': 'in_progress'
         })
+
         self.lead_id.activity_schedule(
             'custom_leads.mail_activity_lead_tasks', user_id=self.task_owner_id.id, summary= self.description, activity_type_id= self.subject.id, date_deadline= self.due_date,
             note=f'Task Created.'),
@@ -64,16 +66,21 @@ class NotConnectionForm(models.TransientModel):
         self.lead_id.write({
             'not_response_note': self.notes,
             'lead_quality': 'not_responding',
-            'current_status': 'not_responding'
+            'current_status': 'not_responding',
+            'state': 'not_connected',
         })
 
 class ConvertLead(models.TransientModel):
     _name = 'convert.lead'
 
-    amount = fields.Float(string="Amount")
+    amount = fields.Float(string="Booking Amount", compute="_compute_admission_amount", store=1)
     lead_id = fields.Many2one('leads.logic', string="Deal Name")
     closing_date = fields.Date(string="Closing Date")
     lead_owner_id = fields.Many2one('res.users', string="Lead Owner")
+
+    @api.depends('lead_id')
+    def _compute_admission_amount(self):
+        self.amount = self.lead_id.batch_id.adm_exc_fee + self.lead_id.batch_id.lump_fee_excluding_tax
 
     def act_convert(self):
         self.lead_id.write({
@@ -81,7 +88,8 @@ class ConvertLead(models.TransientModel):
             'closing_date': self.closing_date,
             'state': 'deal',
             'current_status': 'deal',
-            'lead_quality': 'waiting_for_admission'
+            'lead_quality': 'waiting_for_admission',
+            'booking_amount': self.amount
         })
 
 class LostLead(models.TransientModel):
