@@ -64,6 +64,7 @@ class LeadsForm(models.Model):
     incoming_source_checking = fields.Boolean(string='Incoming Source Checking', )
     academic_year = fields.Selection([('2024-2025', '2024-2025'), ('2025-2026', '2025-2026')], string="Academic Year")
     college_name = fields.Char(string='College/School')
+    title = fields.Char(string="Title")
     lead_referral_staff_id = fields.Many2one('res.users', string='Lead Referral Staff')
     referred_by = fields.Selection([('staff', 'Staff'), ('student', 'Student'), ('other', 'Other')],
                                    string='Referred By')
@@ -128,6 +129,7 @@ class LeadsForm(models.Model):
     #             vals['reference_no'] = (self.env['ir.sequence'].
     #                               next_by_code('leads.logic'))
     #     return super().create(vals_list)
+
     @api.onchange('leads_source')
     def _onchange_leads_source(self):
         if self.leads_source:

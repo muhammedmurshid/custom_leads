@@ -29,7 +29,7 @@
                 <field name="phone_number_second" string="Phone" widget="phone"/>
                 <field name="email_address" string="Email" widget="mail"/>
                 <field name="lead_quality" widget="badge"/>
-                <field name="probability"/>
+                <field name="title"/>
                 <field name="admission_status"/>
                 <field name="state" decoration-info="state == 'new'"
                        decoration-success="state == 'qualified'"
@@ -58,7 +58,7 @@
                             class="btn-lost" invisible="state in ['lost','qualified']"/>
                     <button name="act_return_to_new_lead" type="object" string="Return to New Lead"
                             class="btn-lost" invisible="state != 'lost'"/>
-<!--                    <button name="act_not_connected" type="object" string="Not Connected"/>-->
+                    <!--                    <button name="act_not_connected" type="object" string="Not Connected"/>-->
                     <!--                                   <button string="Cancel" class="btn-default" special="cancel"/>-->
                 </header>
                 <sheet>
@@ -77,7 +77,8 @@
                                 type="object"
                                 string="Not Connected"
                                 class="btn-not-connected" invisible="state != 'in_progress'"/>
-                        <button name="act_call_back" type="object" string="Call Back" invisible="state != 'not_connected'" class="btn-call-back"/>
+                        <button name="act_call_back" type="object" string="Call Back"
+                                invisible="state != 'not_connected'" class="btn-call-back"/>
                     </group>
                 </sheet>
                 <sheet>
@@ -158,6 +159,7 @@
 
                         </group>
                         <group string="Educational Details">
+                            <field name="title"/>
                             <field name="college_name"/>
                             <field name="last_studied_course"/>
                             <field name="academic_year_of_course_attend"/>
