@@ -331,15 +331,15 @@ class LeadsForm(models.Model):
 
     updated_remarks = fields.Text(string="Updated Remarks")
 
-    @api.constrains('updated_remarks', 'lead_quality')
-    def _check_updated_remarks(self):
-        for record in self:
-            if record.lead_quality:
-                if record.lead_quality == 'bad_lead':
-                    if not record.updated_remarks:
-                        raise ValidationError("Updated Remarks is required when Lead Quality is 'Bad Lead'.")
-                    if len(record.updated_remarks) < 140:
-                        raise ValidationError("Updated Remarks must be at least 140 characters long.")
+    # @api.constrains('updated_remarks', 'lead_quality')
+    # def _check_updated_remarks(self):
+    #     for record in self:
+    #         if record.lead_quality:
+    #             if record.lead_quality == 'bad_lead':
+    #                 if not record.updated_remarks:
+    #                     raise ValidationError("Updated Remarks is required when Lead Quality is 'Bad Lead'.")
+    #                 if len(record.updated_remarks) < 140:
+    #                     raise ValidationError("Updated Remarks must be at least 140 characters long.")
 
     def action_bulk_lead_allocation_tele_callers(self):
         active_ids = self.env.context.get('active_ids', [])
