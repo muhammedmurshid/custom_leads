@@ -13,7 +13,7 @@ class LeadsForm(models.Model):
 
     leads_source = fields.Many2one('leads.sources', string='Leads Source')
     source_name = fields.Char(string="Source")
-    name = fields.Char(string='Lead Name', required=True)
+    name = fields.Char(string='Lead Name', )
     email_address = fields.Char(string='Email')
     phone_number = fields.Char(string='Mobile', required=True)
     probability = fields.Float(string='Probability')
