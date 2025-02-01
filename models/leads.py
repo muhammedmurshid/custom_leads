@@ -11,7 +11,7 @@ class LeadsForm(models.Model):
     _rec_name = 'name'
     _order = 'id desc'
 
-    leads_source = fields.Many2one('leads.sources', string='Leads Source', required=True)
+    leads_source = fields.Many2one('leads.sources', string='Leads Source')
     source_name = fields.Char(string="Source")
     name = fields.Char(string='Lead Name', required=True)
     email_address = fields.Char(string='Email')
