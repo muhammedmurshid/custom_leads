@@ -100,7 +100,7 @@ class LeadsForm(models.Model):
                                  ('alappuzha', 'Alappuzha'), ('malappuram', 'Malappuram'), ('kasaragod', 'Kasaragod'),
                                  ('thrissur', 'Thrissur'), ('idukki', 'Idukki'), ('pathanamthitta', 'Pathanamthitta'),
                                  ('abroad', 'Abroad'), ('other', 'Other'), ('nil', 'Nil')],
-                                string='District', required=True)
+                                string='District',)
     referred_teacher = fields.Many2one('res.users', string='Referred Teacher')
     over_due = fields.Boolean(string='Over Due')
     remarks = fields.Char(string='Remarks')
