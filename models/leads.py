@@ -15,7 +15,7 @@ class LeadsForm(models.Model):
     source_name = fields.Char(string="Source")
     name = fields.Char(string='Lead Name', )
     email_address = fields.Char(string='Email')
-    phone_number = fields.Char(string='Mobile', required=True)
+    phone_number = fields.Char(string='Mobile',)
     probability = fields.Float(string='Probability')
     admission_status = fields.Boolean(string='Admission', readonly=1)
     date_of_adding = fields.Date(string='Date of Adding', default=fields.Datetime.now, readonly=1)
