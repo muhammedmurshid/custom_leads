@@ -11,11 +11,11 @@ class LeadsForm(models.Model):
     _rec_name = 'name'
     _order = 'id desc'
 
-    leads_source = fields.Many2one('leads.sources', string='Leads Source')
+    leads_source = fields.Many2one('leads.sources', string='Leads Source', required=1)
     source_name = fields.Char(string="Source")
-    name = fields.Char(string='Lead Name', )
+    name = fields.Char(string='Lead Name', required=1)
     email_address = fields.Char(string='Email')
-    phone_number = fields.Char(string='Mobile',)
+    phone_number = fields.Char(string='Mobile',required=1)
     probability = fields.Float(string='Probability')
     admission_status = fields.Boolean(string='Admission', readonly=1)
     date_of_adding = fields.Date(string='Date of Adding', default=fields.Datetime.now, readonly=1)
@@ -100,7 +100,7 @@ class LeadsForm(models.Model):
                                  ('alappuzha', 'Alappuzha'), ('malappuram', 'Malappuram'), ('kasaragod', 'Kasaragod'),
                                  ('thrissur', 'Thrissur'), ('idukki', 'Idukki'), ('pathanamthitta', 'Pathanamthitta'),
                                  ('abroad', 'Abroad'), ('other', 'Other'), ('nil', 'Nil')],
-                                string='District',)
+                                string='District', required=1)
     referred_teacher = fields.Many2one('res.users', string='Referred Teacher')
     over_due = fields.Boolean(string='Over Due')
     remarks = fields.Char(string='Remarks')
