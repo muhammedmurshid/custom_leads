@@ -10,7 +10,7 @@
                 <group>
 
                     <group>
-                        <field name="assign_to"/>
+                        <field name="assign_to" string="User"/>
                     </group>
                 </group>
 

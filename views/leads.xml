@@ -29,6 +29,8 @@
                 <field name="phone_number_second" string="Phone" widget="phone"/>
                 <field name="email_address" string="Email" widget="mail"/>
                 <field name="lead_quality" widget="badge"/>
+                <field name="lead_owner"/>
+                <field name="tele_caller_id"/>
                 <field name="title"/>
                 <field name="admission_status"/>
                 <field name="state" decoration-info="state == 'new'"
