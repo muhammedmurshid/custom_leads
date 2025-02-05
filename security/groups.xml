@@ -25,4 +25,12 @@
         <field name="name">Manager</field>
         <field name="category_id" ref="custom_leads.group_lead_custom_users"/>
     </record>
+    <record id="group_crash_head" model="res.groups">
+        <field name="name">Crash Head</field>
+        <field name="category_id" ref="custom_leads.group_lead_custom_users"/>
+    </record>
+    <record id="group_crash_user" model="res.groups">
+        <field name="name">Crash User</field>
+        <field name="category_id" ref="custom_leads.group_lead_custom_users"/>
+    </record>
 </odoo>

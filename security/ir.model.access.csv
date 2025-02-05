@@ -6,6 +6,8 @@ access_leads_main_tele_caller,access_leads_main_tele_caller,model_leads_logic,cu
 access_leads_main_manager,access_leads_main_manager,model_leads_logic,custom_leads.group_lead_manager,1,1,1,1
 access_leads_allocation_tem_lead,access_leads_allocation_tem_lead,model_allocation_tele_callers_wizard,custom_leads.group_lead_team_lead,1,1,1,1
 access_leads_main_digital_team,access_leads_main_tl,model_leads_logic,custom_leads.group_lead_digital_team,1,1,1,1
+access_leads_main_crash_head,access_leads_main_crash_head,model_leads_logic,custom_leads.group_crash_head,1,1,1,1
+access_leads_main_crash_user,access_leads_main_crash_user,model_leads_logic,custom_leads.group_crash_user,1,1,1,1
 
 access_leads_source_tl,access_leads_source,model_leads_sources,,1,1,1,1
 
