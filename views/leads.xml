@@ -123,6 +123,7 @@
                         </group>
                         <group name="info" string="">
                             <field name="lead_quality" style="background-color:#fae7e3;"/>
+                            <field name="lead_type"/>
                             <field name="call_response"/>
                             <field name="crash_user_id" invisible="lead_quality != 'crash_lead'"/>
                             <field name="updated_remarks" invisible="lead_quality != 'bad_lead'"/>
@@ -242,6 +243,7 @@
                                     <br/>
                                 </span>
 
+
                                 <span>
                                     <b>Lead Owner :</b>
                                     <field name="lead_owner"/>
@@ -259,10 +261,18 @@
                                     </div>
                                     <br/>
                                 </span>
+                                <span>
+                                    <b>Updated DateTime :</b>
+                                    <field name="last_update_date" widget="badge"/>
+                                    <br/>
+                                </span>
                             </div>
-                            <div class="o_kanban_record_bottom">
-                                <div class="oe_kanban_bottom_right">
+                            <div class="o_kanban_record_bottom d-flex justify-content-between">
+                                <div >
                                     <field name="activity_ids" widget="kanban_activity"/>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="lead_owner" widget="many2one_avatar_employee"/>
                                 </div>
                             </div>
                         </div>

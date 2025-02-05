@@ -38,18 +38,30 @@ class ConnectionForm(models.TransientModel):
         if self.lead_quality:
             if self.lead_quality != 'crash_lead':
                 self.crash_user_id = False
+
             if self.lead_quality != 'warm' or self.lead_quality != 'hot':
                 self.expected_joining_date = False
 
     def act_connect(self):
         print('hi')
-        self.lead_id.write({
-            'lead_quality': self.lead_quality,
-            'expected_joining_date': self.expected_joining_date,
-            'crash_user_id': self.crash_user_id.id,
-            'current_status': 'need_follow_up',
-            'state': 'in_progress'
-        })
+        if self.lead_quality == 'crash_lead':
+            self.lead_id.write({
+                'lead_quality': self.lead_quality,
+                'expected_joining_date': self.expected_joining_date,
+                'crash_user_id': self.crash_user_id.id,
+                'current_status': 'need_follow_up',
+                'state': 'in_progress',
+                'lead_type': 'crash_lead'
+            })
+        else:
+            self.lead_id.write({
+                'lead_quality': self.lead_quality,
+                'expected_joining_date': self.expected_joining_date,
+                'crash_user_id': self.crash_user_id.id,
+                'current_status': 'need_follow_up',
+                'state': 'in_progress',
+                'lead_type': 'regular_lead'
+            })
 
         self.lead_id.activity_schedule(
             'custom_leads.mail_activity_lead_tasks', user_id=self.task_owner_id.id, summary= self.description, activity_type_id= self.subject.id, date_deadline= self.due_date,

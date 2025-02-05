@@ -19,7 +19,7 @@ class LeadsForm(models.Model):
     probability = fields.Float(string='Probability')
     admission_status = fields.Boolean(string='Admission', readonly=1)
     date_of_adding = fields.Date(string='Date of Adding', default=fields.Datetime.now, readonly=1)
-    last_update_date = fields.Datetime(string='Last Updated Date')
+    last_update_date = fields.Datetime(string='Last Updated Date',default=fields.Datetime.now)
     course_id = fields.Many2one('op.course',string='Course')
     reference_no = fields.Char("Reference", default=lambda self: _('New'),
                                copy=False, readonly=True, tracking=True)
@@ -118,6 +118,7 @@ class LeadsForm(models.Model):
         string='Platform')
     expected_joining_date = fields.Date(string="Expected Joining Date")
     not_response_note = fields.Text(string="Not Respond Reason")
+    lead_type = fields.Selection([('regular_lead', 'Regular Lead'), ('crash_lead','Crash Lead')], default='regular_lead', required=1)
     current_status = fields.Selection([('new_lead', 'New Lead'), ('not_responding', 'Not Responding'), ('need_follow_up', 'Need Follow-Up'), ('deal', 'Deal'), ('admission', 'Admission'), ('lost', 'Lost')], string="Current Status", default="new_lead")
     call_response = fields.Text(string="Response")
     transitions = fields.Selection([('future_lead', 'Future Lead'), ('junk_lead', 'Junk Lead'), ('not_qualified', 'Not Qualified'), ('qualified', 'Qualified')], string="Transitions", tracking=1)
@@ -214,6 +215,12 @@ class LeadsForm(models.Model):
                 'view_mode': 'form',
                 'view_type': 'form',
                 'context': {'default_lead_id': self.id,}, }
+
+    @api.onchange('name','phone_number','call_response','leads_source','lead_quality','admission_status','lead_owner','assign_to','course_id','batch_id','branch_id')
+    def _onchange_updated_date(self):
+        if self:
+            self.last_update_date = datetime.now()
+
 
     def act_lost_lead(self):
         return {'type': 'ir.actions.act_window',
