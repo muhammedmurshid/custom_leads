@@ -112,7 +112,7 @@
                             <!--                            <field name="phone_number"/>-->
                             <field name="phone_number_second"/>
                             <field name="parent_number"/>
-                            <field name="leads_source" style="background-color:#fae7e3;"/>
+                            <field name="leads_source" style="background-color:#fae7e3;" options="{'no_create':True}"/>
                             <field name="incoming_source_checking" invisible="1"/>
                             <field name="digital_lead" invisible="1"/>
                             <field name="incoming_source" invisible="incoming_source_checking != 1"/>

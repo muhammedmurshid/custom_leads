@@ -44,5 +44,6 @@
             name="Leads Source"
             parent="leads_configuration_menu"
             sequence="1"
+            groups="custom_leads.group_lead_team_lead"
             action="action_leads_sources_main_action"/>
 </odoo>
