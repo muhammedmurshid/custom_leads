@@ -282,6 +282,26 @@
             </kanban>
         </field>
     </record>
+    <record id="leads_search_filter" model="ir.ui.view">
+        <field name="model">leads.logic</field>
+        <field name="arch" type="xml">
+            <search string="Filters">
+                <field name="reference_no" string="Reference"/>
+                <field name="phone_number" string="Mobile Number"/>
+                <field name="leads_source" string="Lead Source"/>
+                <field name="name" string="Lead Name"/>
+                <field name="title" string="Title"/>
+                <field name="college_name" string="College"/>
+                <field name="phone_number_second" string="Alternate Mobile Number"/>
+                <field name="course_id" string="Course"/>
+<!--                <filter string="assign" name="lead_owner" context="{'group_by': 'leads_assign'}"/>-->
+                <!--                <group expand="0" string="Group By">-->
+                <!--                    <filter string="assign" name="leads_assign" context="{'group_by': 'leads_assign'}"/>-->
+                <!--                </group>-->
+
+            </search>
+        </field>
+    </record>
     <record id="ir_sequence_leads_logic" model="ir.sequence">
         <field name="name">Leads Sequence</field>
         <field name="code">leads.logic</field>
