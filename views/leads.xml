@@ -21,7 +21,7 @@
         <field name="name">leads.logic.view.tree</field>
         <field name="model">leads.logic</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree multi_edit="1">
                 <field name="reference_no"/>
                 <field name="date_of_adding" string="Added Date" widget="badge"/>
                 <field name="name"/>
@@ -123,7 +123,7 @@
                         </group>
                         <group name="info" string="">
                             <field name="lead_quality" style="background-color:#fae7e3;"/>
-                            <field name="lead_type"/>
+                            <field name="lead_type" style="background-color:#fae7e3;"/>
                             <field name="call_response"/>
                             <field name="crash_user_id" invisible="lead_quality != 'crash_lead'"/>
                             <field name="updated_remarks" invisible="lead_quality != 'bad_lead'"/>

@@ -9,7 +9,7 @@
     <record id="rules_for_admission_officer_own_documents" model="ir.rule">
         <field name="name">Admission Officer Leads</field>
         <field name="model_id" ref="custom_leads.model_leads_logic"/>
-        <field name="domain_force">[('lead_owner', '=', user.employee_id.id)]</field>
+        <field name="domain_force">['|',('lead_owner', '=', user.employee_id.id),('create_uid','=',user.id)]</field>
         <field name="groups" eval="[(4, ref('custom_leads.group_lead_users'))]"/>
     </record>
     <record id="rules_for_digital_lead_own_documents" model="ir.rule">
@@ -27,8 +27,8 @@
     <record id="rules_for_crash_user" model="ir.rule">
         <field name="name">Crash Users Leads Rule</field>
         <field name="model_id" ref="custom_leads.model_leads_logic"/>
-        <field name="domain_force">['|','|',('lead_type', '=', 'crash_lead'),('create_uid','=',user.id),('lead_owner', '=', user.employee_id.id)]</field>
-        <field name="groups" eval="[(4, ref('custom_leads.group_crash_head'))]"/>
+        <field name="domain_force">['|',('create_uid','=',user.id),('lead_owner', '=', user.employee_id.id)]</field>
+        <field name="groups" eval="[(4, ref('custom_leads.group_crash_user'))]"/>
     </record>
 
 </odoo>

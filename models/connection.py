@@ -89,10 +89,21 @@ class ConvertLead(models.TransientModel):
     lead_id = fields.Many2one('leads.logic', string="Deal Name")
     closing_date = fields.Date(string="Closing Date")
     lead_owner_id = fields.Many2one('res.users', string="Lead Owner")
+    add_on = fields.Boolean(string="Add On")
+    add_amount = fields.Selection([('7000','7000'), ('10000','10000')], string="Add Amount")
 
-    @api.depends('lead_id')
+
+    @api.depends('lead_id','add_amount','add_on')
     def _compute_admission_amount(self):
-        self.amount = self.lead_id.batch_id.adm_exc_fee + self.lead_id.batch_id.lump_fee_excluding_tax
+        if self.add_on == True:
+            if self.add_amount == '7000':
+                self.amount = self.lead_id.batch_id.adm_exc_fee + self.lead_id.batch_id.lump_fee_excluding_tax + 7000
+            elif self.add_amount == '10000':
+                self.amount = self.lead_id.batch_id.adm_exc_fee + self.lead_id.batch_id.lump_fee_excluding_tax + 10000
+            else:
+                self.amount = self.lead_id.batch_id.adm_exc_fee + self.lead_id.batch_id.lump_fee_excluding_tax
+        else:
+            self.amount = self.lead_id.batch_id.adm_exc_fee + self.lead_id.batch_id.lump_fee_excluding_tax
 
     def act_convert(self):
         self.lead_id.write({
@@ -143,7 +154,7 @@ class QualifiedLead(models.TransientModel):
         ('f', 'Female'),
         ('o', 'Other')
     ], 'Gender', required=True, default='m')
-    birth_date = fields.Date('Birth Date', required=1)
+    birth_date = fields.Date('Birth Date')
     email = fields.Char(string="Email", required=1)
     mobile = fields.Char(string="Mobile")
     fee_type = fields.Selection([('lump_sum_fee', 'Lump Sum Fee'), ('installment', 'Installment')], string="Fee Type", required=1)

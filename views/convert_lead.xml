@@ -16,6 +16,10 @@
 
 
                     </group>
+                    <group>
+                        <field name="add_on"/>
+                        <field name="add_amount"/>
+                    </group>
                 </group>
 
 
@@ -60,19 +64,19 @@
                 <group>
                     <group>
 <!--                        <field name="name" invisible="1"/>-->
-                        <field name="gender"/>
-                        <field name="mobile"/>
-                        <field name="email"/>
+                        <field name="gender" style="background-color:#fae7e3;"/>
+                        <field name="mobile" style="background-color:#fae7e3;"/>
+                        <field name="email" style="background-color:#fae7e3;"/>
                         <field name="birth_date"/>
 <!--                        <field name="course_id"/>-->
 <!--                        <field name="batch_id"/>-->
 
                     </group>
                     <group>
-                        <field name="batch_id"/>
-                        <field name="fee_type"/>
-                        <field name="course_id"/>
-                        <field name="branch_id"/>
+                        <field name="batch_id" style="background-color:#fae7e3;"/>
+                        <field name="fee_type" style="background-color:#fae7e3;"/>
+                        <field name="course_id" style="background-color:#fae7e3;"/>
+                        <field name="branch_id" style="background-color:#fae7e3;"/>
                     </group>
                 </group>
 
