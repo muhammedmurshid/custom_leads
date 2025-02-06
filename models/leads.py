@@ -265,43 +265,43 @@ class LeadsForm(models.Model):
     def act_return_to_new_lead(self):
         self.state = 'new'
 
-    @api.model
-    def allocate_leads(self, lead_ids):
-        # Fetch tele-callers who can handle leads
-        tele_caller_group = self.env.ref('custom_leads.group_lead_tele_callers')
-        if tele_caller_group:  # Update the module name
-            tele_callers = self.env['res.users'].search([('groups_id', 'in', [tele_caller_group.id])])
-        else:
-            return []
-        # Fetch lead users for inbound source
-        lead_user_group = self.env.ref('custom_leads.group_lead_users')  # Update the module name
-        if lead_user_group:
-            lead_users = self.env['res.users'].search([('groups_id', 'in', [lead_user_group.id])])
-        else:
-            return []
-        lead_objects = self.browse(lead_ids)
-        if not tele_callers and not lead_users:
-            raise ValueError("No users available to allocate leads.")
-
-        # Logic for outbound and inbound leads
-        for lead in lead_objects:
-            if lead.leads_source.source == 'outbound_source':
-                print('out')
-                # Assign to tele-callers in FIFO order
-                tele_caller_list = tele_callers.sorted(key=lambda tc: tc.create_date)
-                tele_caller_count = len(tele_caller_list)
-                tele_caller_id = tele_caller_list[lead.id % tele_caller_count].id
-                lead.write({'tele_caller_id': tele_caller_id})
-
-            elif lead.leads_source.source == 'inbound_source':
-                print('in')
-                # Assign to lead users in FIFO order
-                lead_user_list = lead_users.sorted(key=lambda user: user.create_date)
-                lead_user_count = len(lead_user_list)
-                lead_user_id = lead_user_list[lead.id % lead_user_count].id
-                print(lead_user_id, 'user_id')
-                user = self.env['res.users'].search([('id', '=', lead_user_id)])
-                lead.write({'lead_owner': user.employee_id.id})
+    # @api.model
+    # def allocate_leads(self, lead_ids):
+    #     # Fetch tele-callers who can handle leads
+    #     tele_caller_group = self.env.ref('custom_leads.group_lead_tele_callers')
+    #     if tele_caller_group:  # Update the module name
+    #         tele_callers = self.env['res.users'].search([('groups_id', 'in', [tele_caller_group.id])])
+    #     else:
+    #         return []
+    #     # Fetch lead users for inbound source
+    #     lead_user_group = self.env.ref('custom_leads.group_lead_users')  # Update the module name
+    #     if lead_user_group:
+    #         lead_users = self.env['res.users'].search([('groups_id', 'in', [lead_user_group.id])])
+    #     else:
+    #         return []
+    #     lead_objects = self.browse(lead_ids)
+    #     if not tele_callers and not lead_users:
+    #         raise ValueError("No users available to allocate leads.")
+    #
+    #     # Logic for outbound and inbound leads
+    #     for lead in lead_objects:
+    #         if lead.leads_source.source == 'outbound_source':
+    #             print('out')
+    #             # Assign to tele-callers in FIFO order
+    #             tele_caller_list = tele_callers.sorted(key=lambda tc: tc.create_date)
+    #             tele_caller_count = len(tele_caller_list)
+    #             tele_caller_id = tele_caller_list[lead.id % tele_caller_count].id
+    #             lead.write({'tele_caller_id': tele_caller_id})
+    #
+    #         elif lead.leads_source.source == 'inbound_source':
+    #             print('in')
+    #             # Assign to lead users in FIFO order
+    #             lead_user_list = lead_users.sorted(key=lambda user: user.create_date)
+    #             lead_user_count = len(lead_user_list)
+    #             lead_user_id = lead_user_list[lead.id % lead_user_count].id
+    #             print(lead_user_id, 'user_id')
+    #             user = self.env['res.users'].search([('id', '=', lead_user_id)])
+    #             lead.write({'lead_owner': user.employee_id.id})
 
     @api.model
     def create(self, values):
@@ -312,7 +312,7 @@ class LeadsForm(models.Model):
         lead = super(LeadsForm, self).create(values)
 
         # Allocate the lead to tele-callers or lead users
-        self.allocate_leads([lead.id])
+        # self.allocate_leads([lead.id])
 
         # Notify the assigned tele-caller, if any
         if lead.tele_caller_id:
