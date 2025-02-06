@@ -250,20 +250,17 @@
                                     <!--                                    <field name="lead_owner" widget="many2one_avatar_employee"/>-->
                                     <br/>
                                 </span>
-<!--                                <span>-->
-<!--                                    <b>Response :</b>-->
-<!--                                    <div class="hover-container">-->
-<!--                                        &lt;!&ndash; Display first 20 characters initially &ndash;&gt;-->
-<!--                                        <div class="hover-default">-->
-<!--                                            <t t-esc="call_response[:20] + ('...' if call_response and len(call_response) > 20 else '')"/>-->
-<!--                                        </div>-->
-<!--                                        &lt;!&ndash; Full text on hover &ndash;&gt;-->
-<!--                                        <div class="hover-field-value">-->
-<!--                                            <field name="call_response"/>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <br/>-->
-<!--                                </span>-->
+                                <span>
+                                    <b>Response :</b>
+                                    <span class="hover-text">
+                                        <field name="truncated_call_response"/>
+                                        <span class="full-response">
+                                            <field name="call_response"/>
+                                        </span>
+                                    </span>
+                                    <br/>
+                                </span>
+
 
                                 <span>
                                     <b>Updated DateTime :</b>

@@ -338,6 +338,16 @@ class LeadsForm(models.Model):
 
     updated_remarks = fields.Text(string="Updated Remarks")
 
+    truncated_call_response = fields.Char(
+        string="Truncated Response", compute="_compute_truncated_response"
+    )
+
+    def _compute_truncated_response(self):
+        for record in self:
+            record.truncated_call_response = (
+                (record.call_response[:20] + "...") if record.call_response else ""
+            )
+
     # @api.constrains('updated_remarks', 'lead_quality')
     # def _check_updated_remarks(self):
     #     for record in self:

@@ -1,22 +1,22 @@
-.hover-container {
-    position: relative;
-    display: inline-block;
-}
+.hover-text {
+        position: relative;
+        display: inline-block;
+    }
 
-.hover-container .hover-field-value {
-    visibility: hidden; /* Initially hide the phone number */
-    opacity: 0;
-    transition: opacity 0.3s;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
+    .full-response {
+        display: none;
+        position: absolute;
+        background: #fff;
+        padding: 5px;
+        border: 1px solid #ccc;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        white-space: nowrap;
+        z-index: 10;
+    }
 
-.hover-container .hover-default {
-    visibility: visible; /* Show 'Phone' text by default */
-    opacity: 1;
-    transition: opacity 0.3s;
-}
+    .hover-text:hover .full-response {
+        display: inline-block;
+    }
 
 .hover-container:hover .hover-default {
     visibility: hidden; /* Hide 'Phone' text on hover */
