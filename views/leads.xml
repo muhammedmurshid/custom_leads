@@ -63,8 +63,35 @@
                     <!--                    <button name="act_not_connected" type="object" string="Not Connected"/>-->
                     <!--                                   <button string="Cancel" class="btn-default" special="cancel"/>-->
                 </header>
+                <!--                <sheet>-->
+                <!--                    <group>-->
+                <!--                        <field name="current_status" readonly="1" widget="badge"-->
+                <!--                               decoration-info="current_status == 'not_responding'"-->
+                <!--                               decoration-primary="current_status == 'new_lead'"/>-->
+                <!--                        <field name="transitions" invisible="current_status != 'need_follow_up'"/>-->
+                <!--                        <button-->
+                <!--                                name="act_connected"-->
+                <!--                                type="object"-->
+                <!--                                string="Connected"-->
+                <!--                                class="btn-connected" invisible="state != 'in_progress'"/>-->
+                <!--                        <button-->
+                <!--                                name="act_not_connected"-->
+                <!--                                type="object"-->
+                <!--                                string="Not Connected"-->
+                <!--                                class="btn-not-connected" invisible="state != 'in_progress'"/>-->
+                <!--                        <button name="act_call_back" type="object" string="Call Back"-->
+                <!--                                invisible="state != 'not_connected'" class="btn-call-back"/>-->
+                <!--                    </group>-->
+                <!--                </sheet>-->
                 <sheet>
+                    <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>
+                    <widget name="web_ribbon" title="Qualified" bg_color="text-bg-success"
+                            invisible="state != 'qualified'"/>
+                    <!--                    <h2>-->
+                    <!--                        <field name="reference_no" invisible="state == 'new'" widget="badge"/>-->
+                    <!--                    </h2>-->
                     <group>
+
                         <field name="current_status" readonly="1" widget="badge"
                                decoration-info="current_status == 'not_responding'"
                                decoration-primary="current_status == 'new_lead'"/>
@@ -81,16 +108,8 @@
                                 class="btn-not-connected" invisible="state != 'in_progress'"/>
                         <button name="act_call_back" type="object" string="Call Back"
                                 invisible="state != 'not_connected'" class="btn-call-back"/>
-                    </group>
-                </sheet>
-                <sheet>
-                    <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>
-                    <widget name="web_ribbon" title="Qualified" bg_color="text-bg-success"
-                            invisible="state != 'qualified'"/>
-                    <h2>
-                        <field name="reference_no" invisible="state == 'new'" widget="badge"/>
-                    </h2>
-                    <group>
+                        <separator/>
+
                         <field name="name" style="background-color:#fae7e3;"/>
                         <field name="email_address"/>
                         <field name="phone_number" style="background-color:#fae7e3;"/>
@@ -289,12 +308,13 @@
                 <field name="reference_no" string="Reference"/>
                 <field name="phone_number" string="Mobile Number"/>
                 <field name="leads_source" string="Lead Source"/>
+                <field name="lead_quality" string="Lead Quality"/>
                 <field name="name" string="Lead Name"/>
-                <field name="title" string="Title"/>
+                <!--                <field name="title" string="Title"/>-->
                 <field name="college_name" string="College"/>
                 <field name="phone_number_second" string="Alternate Mobile Number"/>
                 <field name="course_id" string="Course"/>
-<!--                <filter string="assign" name="lead_owner" context="{'group_by': 'leads_assign'}"/>-->
+                <!--                <filter string="assign" name="lead_owner" context="{'group_by': 'leads_assign'}"/>-->
                 <!--                <group expand="0" string="Group By">-->
                 <!--                    <filter string="assign" name="leads_assign" context="{'group_by': 'leads_assign'}"/>-->
                 <!--                </group>-->
