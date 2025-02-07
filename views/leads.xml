@@ -83,6 +83,39 @@
                 <!--                                invisible="state != 'not_connected'" class="btn-call-back"/>-->
                 <!--                    </group>-->
                 <!--                </sheet>-->
+<!--                <sheet>-->
+<!--                    <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>-->
+<!--                    <widget name="web_ribbon" title="Qualified" bg_color="text-bg-success"-->
+<!--                            invisible="state != 'qualified'"/>-->
+<!--                    &lt;!&ndash;                    <h2>&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        <field name="reference_no" invisible="state == 'new'" widget="badge"/>&ndash;&gt;-->
+<!--                    &lt;!&ndash;                    </h2>&ndash;&gt;-->
+<!--                    <group>-->
+
+<!--                        <field name="current_status" readonly="1" widget="badge"-->
+<!--                               decoration-info="current_status == 'not_responding'"-->
+<!--                               decoration-primary="current_status == 'new_lead'"/>-->
+<!--                        <field name="transitions" invisible="current_status != 'need_follow_up'"/>-->
+<!--                        <button-->
+<!--                                name="act_connected"-->
+<!--                                type="object"-->
+<!--                                string="Connected"-->
+<!--                                class="btn-connected" invisible="state != 'in_progress'"/>-->
+<!--                        <button-->
+<!--                                name="act_not_connected"-->
+<!--                                type="object"-->
+<!--                                string="Not Connected"-->
+<!--                                class="btn-not-connected" invisible="state != 'in_progress'"/>-->
+<!--                        <button name="act_call_back" type="object" string="Call Back"-->
+<!--                                invisible="state != 'not_connected'" class="btn-call-back"/>-->
+<!--                        <separator/>-->
+
+<!--                        <field name="name" style="background-color:#fae7e3;"/>-->
+<!--                        <field name="email_address"/>-->
+<!--                        <field name="phone_number" style="background-color:#fae7e3;"/>-->
+
+<!--                    </group>-->
+<!--                </sheet>-->
                 <sheet>
                     <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>
                     <widget name="web_ribbon" title="Qualified" bg_color="text-bg-success"
@@ -115,8 +148,6 @@
                         <field name="phone_number" style="background-color:#fae7e3;"/>
 
                     </group>
-                </sheet>
-                <sheet>
                     <!--                    <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>-->
                     <!--                    <widget name="web_ribbon" title="Qualified" bg_color="text-bg-success"-->
                     <!--                            invisible="state != 'qualified'"/>-->
