@@ -160,30 +160,32 @@
                             <!--                            <field name="name"/>-->
                             <!--                            <field name="email_address"/>-->
                             <!--                            <field name="phone_number"/>-->
-                            <field name="phone_number_second"/>
-                            <field name="parent_number"/>
                             <field name="leads_source" style="background-color:#fae7e3;" options="{'no_create':True}"/>
                             <field name="incoming_source_checking" invisible="1"/>
                             <field name="digital_lead" invisible="1"/>
                             <field name="incoming_source" invisible="incoming_source_checking != 1"/>
                             <field name="digital_lead_source" invisible="digital_lead != 1"/>
-                            <field name="mode_of_study"/>
-                            <field name="lead_status"/>
+                            <field name="lead_quality" style="background-color:#fae7e3;"/>
+                            <field name="district" style="background-color:#fae7e3;"/>
+                            <field name="place"/>
+                            <field name="phone_number_second"/>
+                            <field name="parent_number"/>
 
                         </group>
                         <group name="info" string="">
-                            <field name="lead_quality" style="background-color:#fae7e3;"/>
                             <field name="lead_type" style="background-color:#fae7e3;"/>
+                            <field name="mode_of_study"/>
+                            <field name="lead_status"/>
+
                             <field name="call_response"/>
                             <field name="crash_user_id" invisible="lead_quality != 'crash_lead'"/>
                             <field name="updated_remarks" invisible="lead_quality != 'bad_lead'"/>
                             <field name="not_response_note" invisible="lead_quality != 'not_responding'"/>
                             <!--                            <field name="lead_status"/>-->
                             <field name="country"/>
-                            <field name="district" style="background-color:#fae7e3;"/>
-                            <field name="place"/>
+
                             <field name="campaign"/>
-                            <field name="amount" invisible="state in ['new','in_progress']"/>
+<!--                            <field name="amount" invisible="state in ['new','in_progress']"/>-->
                             <!--                            <field name="leads_assign"/>-->
                         </group>
                         <group name="users" string="Users">
@@ -225,6 +227,7 @@
                         </group>
                         <group string="Dates">
                             <field name="date_of_adding"/>
+                            <field name="next_follow_up_date" style="background-color:#fae7e3;"/>
                             <field name="last_update_date"/>
                             <field widget="badge" name="expected_joining_date"
                                    invisible="lead_quality not in ['warm','hot']"/>
@@ -313,8 +316,8 @@
 
 
                                 <span>
-                                    <b>Updated DateTime :</b>
-                                    <field name="last_update_date" widget="badge"/>
+                                    <b>Follow Up Date:</b>
+                                    <field name="next_follow_up_date" widget="badge"/>
                                     <br/>
                                 </span>
                             </div>

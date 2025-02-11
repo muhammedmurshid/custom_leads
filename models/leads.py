@@ -103,10 +103,11 @@ class LeadsForm(models.Model):
                                 string='District', required=1)
     referred_teacher = fields.Many2one('res.users', string='Referred Teacher')
     over_due = fields.Boolean(string='Over Due')
+    next_follow_up_date = fields.Date(string="Next Follow Up Date")
     remarks = fields.Char(string='Remarks')
     parent_number = fields.Char('Parent Number')
     closing_date = fields.Date(string="Closing Date")
-    amount = fields.Float(string="Amount")
+    # amount = fields.Float(string="Amount")
     mode_of_study = fields.Selection([('online', 'Online'), ('offline', 'Offline'), ('nil', 'Nil')],
                                      string='Mode of Study')
     assigned_date = fields.Date(string='Assigned Date', readonly=1)
