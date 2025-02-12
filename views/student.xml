@@ -12,6 +12,17 @@
             </xpath>
         </field>
     </record>
+    <record model="ir.ui.view" id="activity_leads_model_id">
+        <field name="name">activity.form.inherit</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_form_popup"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="lead_id" string="Follow Up Lead" invisible="res_model != 'leads.logic'"/>
+<!--                <field name="res_model"/>-->
+            </xpath>
+        </field>
+    </record>
 
     <record model="ir.ui.view" id="student_form_view_inheritance">
         <field name="name">student.form.inherit</field>

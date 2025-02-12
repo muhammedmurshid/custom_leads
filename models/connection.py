@@ -51,7 +51,9 @@ class ConnectionForm(models.TransientModel):
                 'crash_user_id': self.crash_user_id.id,
                 'current_status': 'need_follow_up',
                 'state': 'in_progress',
-                'lead_type': 'crash_lead'
+                'lead_type': 'crash_lead',
+                'call_response': self.description,
+                'next_follow_up_date': self.due_date
             })
         else:
             self.lead_id.write({
@@ -60,7 +62,9 @@ class ConnectionForm(models.TransientModel):
                 'crash_user_id': self.crash_user_id.id,
                 'current_status': 'need_follow_up',
                 'state': 'in_progress',
-                'lead_type': 'regular_lead'
+                'lead_type': 'regular_lead',
+                'call_response': self.description,
+                'next_follow_up_date': self.due_date
             })
 
         self.lead_id.activity_schedule(
