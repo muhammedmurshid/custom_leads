@@ -107,7 +107,7 @@ class ConvertLead(models.TransientModel):
 
     def act_convert(self):
         self.lead_id.write({
-            'amount': self.amount,
+            # 'amount': self.amount,
             'closing_date': self.closing_date,
             'state': 'deal',
             'current_status': 'deal',
