@@ -185,6 +185,8 @@
                             <field name="country"/>
 
                             <field name="campaign"/>
+                            <field name="seminar_lead_id" string="Seminar Child Id"/>
+                            <field name="seminar_id"/>
 <!--                            <field name="amount" invisible="state in ['new','in_progress']"/>-->
                             <!--                            <field name="leads_assign"/>-->
                         </group>

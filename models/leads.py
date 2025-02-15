@@ -41,11 +41,12 @@ class LeadsForm(models.Model):
     place = fields.Char('Place')
     # leads_assign = fields.Many2one('hr.employee', string='Assign to', )
     lead_owner = fields.Many2one('hr.employee', string='Lead Owner', default=lambda self: self.env.user.employee_id.id)
-    seminar_lead_id = fields.Integer()
+    seminar_lead_id = fields.Char()
     admission_date = fields.Datetime(string="Admission Date", readonly=1)
     phone_number_second = fields.Char(string='Phone Number')
     branch_id = fields.Many2one('op.branch', string="Branch")
     course_interested = fields.Char(string="Course Interested")
+    seminar_id = fields.Integer(string="Seminar")
     academic_year_of_course_attend = fields.Selection([('2023-2024','2023-2024'), ('2024-2025','2024-2025'), ('2025-2026','2025-2026')], string="Academic Year of Course attended")
     course_type = fields.Selection(
         [('indian', 'Indian'), ('international', 'International'), ('crash', 'Crash'), ('repeaters', 'Repeaters'),
@@ -62,7 +63,7 @@ class LeadsForm(models.Model):
          ('through friends', 'Through Friends'), ('whatsapp', 'WhatsApp'), ('re_admission', 'Re-Admission'),('other', 'Other')],
         string='Incoming Calls / Walk In Source')
     incoming_source_checking = fields.Boolean(string='Incoming Source Checking', )
-    academic_year = fields.Selection([('2024-2025', '2024-2025'), ('2025-2026', '2025-2026')], string="Academic Year")
+    academic_year = fields.Selection([('2024-2025', '2024-2025'), ('2025-2026', '2025-2026'), ('2026-2027', '2026-2027'), ('nil', 'Nil')], string="Academic Year")
     college_name = fields.Char(string='College/School')
     title = fields.Char(string="Title")
     lead_referral_staff_id = fields.Many2one('res.users', string='Lead Referral Staff')
