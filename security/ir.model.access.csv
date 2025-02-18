@@ -16,3 +16,4 @@ access_leads_not_connection,access_leads_not_connection,model_not_connect_form,,
 access_leads_convert_lead,access_leads_convert_lead,model_convert_lead,,1,1,1,1
 access_leads_lost_lead,access_leads_lost_lead,model_lost_lead_form,,1,1,1,1
 access_leads_qualified_lead,access_leads_qualified_lead,model_qualified_lead_form,,1,1,1,1
+access_leads_call_responses,access_leads_call_responses,model_call_responses,,1,1,1,1

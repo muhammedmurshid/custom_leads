@@ -29,16 +29,19 @@
 }
 
 .btn-connected {
-                    background-color: #a6f283;
-                    width: 120px;
-                    height: 40px;
-                    font-size: 14px;
-                    text-align: center;
-                    }
+    background-color: #a6f283;
+    width: 170px;
+    height: 40px;
+    font-size: 14px;
+    text-align: center;
+    position: absolute;
+    right: 25px;
+   }
+
                     .btn-not-connected {
                     background-color: #f58667;
                     color: white;
-                    width: 120px;
+                    width: 170px;
                     height: 40px;
                     font-size: 14px;
                     text-align: center;

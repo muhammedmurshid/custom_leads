@@ -38,6 +38,27 @@
             </form>
         </field>
     </record>
+    <record id="form_view_call_response" model="ir.ui.view">
+        <field name="name">leads.response.view.form</field>
+        <field name="model">call.responses</field>
+        <field name="arch" type="xml">
+            <form string="Leads">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+
+                        </group>
+
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
 
     <menuitem
             id="leads_source_menu"

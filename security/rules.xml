@@ -21,7 +21,7 @@
     <record id="rules_for_crash_head" model="ir.rule">
         <field name="name">Crash Leads</field>
         <field name="model_id" ref="custom_leads.model_leads_logic"/>
-        <field name="domain_force">['|',('lead_type', '=', 'crash_lead'),('create_uid','=',user.id)]</field>
+        <field name="domain_force">[('create_uid','=',user.id)]</field>
         <field name="groups" eval="[(4, ref('custom_leads.group_crash_head'))]"/>
     </record>
     <record id="rules_for_crash_user" model="ir.rule">

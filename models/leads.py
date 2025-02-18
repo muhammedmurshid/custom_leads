@@ -12,7 +12,7 @@ class LeadsForm(models.Model):
     _order = 'id desc'
 
     leads_source = fields.Many2one('leads.sources', string='Leads Source', required=1)
-    source_name = fields.Char(string="Source")
+    source_name = fields.Char(string="Source", related="leads_source.name")
     name = fields.Char(string='Lead Name', required=1)
     email_address = fields.Char(string='Email')
     phone_number = fields.Char(string='Mobile',required=1)
@@ -47,13 +47,14 @@ class LeadsForm(models.Model):
     branch_id = fields.Many2one('op.branch', string="Branch")
     course_interested = fields.Char(string="Course Interested")
     seminar_id = fields.Integer(string="Seminar")
+    preferred_course = fields.Char(string="Preferred Course")
     academic_year_of_course_attend = fields.Selection([('2023-2024','2023-2024'), ('2024-2025','2024-2025'), ('2025-2026','2025-2026')], string="Academic Year of Course attended")
     course_type = fields.Selection(
         [('indian', 'Indian'), ('international', 'International'), ('crash', 'Crash'), ('repeaters', 'Repeaters'),
          ('nil', 'Nil')],
         string='Course Type')
     state = fields.Selection(
-        [('new', 'New'), ('in_progress', 'In Progress'), ('not_connected', 'Not Connected'), ('deal', 'Deal'), ('qualified', 'Qualified'),
+        [('new', 'New'), ('in_progress', 'In Progress'), ('not_connected', 'Not Connected'), ('qualified', 'Admission'),
          ('lost', 'Lost')],
         string='State',
         default='new', tracking=True)
@@ -82,6 +83,7 @@ class LeadsForm(models.Model):
          ('russia', 'Russia'), ('oman', 'Oman'), ('nepal', 'Nepal'), ('japan', 'Japan')],
         string='Country', default='india')
     referred_by_id = fields.Many2one('hr.employee', string='Referred Person')
+    second_response = fields.Text(string="2nd Response")
     referred_by_name = fields.Char(string='Referred Person')
     referred_by_number = fields.Char(string='Referred Person Number')
     batch_preference = fields.Char(string='Batch Preference')
@@ -108,6 +110,8 @@ class LeadsForm(models.Model):
     remarks = fields.Char(string='Remarks')
     parent_number = fields.Char('Parent Number')
     closing_date = fields.Date(string="Closing Date")
+    call_responses = fields.Many2many('call.responses', string="Call Responses")
+    third_response = fields.Text(string="Last Response")
     # amount = fields.Float(string="Amount")
     mode_of_study = fields.Selection([('online', 'Online'), ('offline', 'Offline'), ('nil', 'Nil')],
                                      string='Mode of Study')
@@ -120,8 +124,8 @@ class LeadsForm(models.Model):
         string='Platform')
     expected_joining_date = fields.Date(string="Expected Joining Date")
     not_response_note = fields.Text(string="Not Respond Reason")
-    lead_type = fields.Selection([('regular_lead', 'Regular Lead'), ('crash_lead','Crash Lead')], default='regular_lead', required=1)
-    current_status = fields.Selection([('new_lead', 'New Lead'), ('not_responding', 'Not Responding'), ('need_follow_up', 'Need Follow-Up'), ('deal', 'Deal'), ('admission', 'Admission'), ('lost', 'Lost')], string="Current Status", default="new_lead")
+    # lead_type = fields.Selection([('regular_lead', 'Regular Lead'), ('crash_lead','Crash Lead')], default='regular_lead', required=1)
+    current_status = fields.Selection([('new_lead', 'New Lead'), ('not_responding', 'Not Responding'), ('need_follow_up', 'Need Follow-Up'), ('admission', 'Admission'), ('lost', 'Lost')], string="Current Status", default="new_lead")
     call_response = fields.Text(string="Response")
     transitions = fields.Selection([('future_lead', 'Future Lead'), ('junk_lead', 'Junk Lead'), ('not_qualified', 'Not Qualified'), ('qualified', 'Qualified')], string="Transitions", tracking=1)
     # @api.model_create_multi
@@ -373,3 +377,9 @@ class LeadsForm(models.Model):
             'context': {'parent_obj': active_ids}
 
         }
+
+class CallResponses(models.Model):
+    _name = "call.responses"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+
+    name = fields.Text(string="Call Responses")
