@@ -26,20 +26,25 @@
                 <field name="date_of_adding" string="Added Date" widget="badge"/>
                 <field name="name"/>
                 <field name="phone_number" string="Mobile" widget="phone"/>
-<!--                <field name="phone_number_second" string="Phone" widget="phone"/>-->
+                <!--                <field name="phone_number_second" string="Phone" widget="phone"/>-->
                 <field name="leads_source"/>
-<!--                <field name="email_address" string="Email" widget="mail"/>-->
-                <field name="lead_quality" widget="badge"/>
+                <!--                <field name="email_address" string="Email" widget="mail"/>-->
+                <field name="lead_quality" widget="badge" decoration-info="lead_quality == 'new'"
+                       decoration-danger="lead_quality == 'bad_lead'" decoration-success="lead_quality == 'admission'"
+                       decoration-warning="lead_quality == 'warm'"
+                       decoration-primary="state == 'waiting_for_admission'"/>
                 <field name="course_id" string="Course Interested"/>
                 <field name="branch_id" string="Branch Interested"/>
                 <field name="next_follow_up_date"/>
-<!--                <field name="call_responses" widget="many2many_tags"/>-->
+                <!--                <field name="call_responses" widget="many2many_tags"/>-->
                 <field name="call_response" string="Response Now" widget="badge"/>
                 <field name="second_response" string="2nd Response" widget="badge"/>
                 <field name="third_response" string="Last Response" widget="badge"/>
                 <field name="lead_owner" groups="custom_leads.group_lead_team_lead"/>
-<!--                <field name="tele_caller_id"/>-->
+                <!--                <field name="tele_caller_id"/>-->
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
+                <button name="act_admission" type="object" string="Transfer to Admission"
+                            class="btn-convert" invisible="state != 'in_progress'"/>
                 <field name="admission_status"/>
                 <field name="state" decoration-info="state == 'new'"
                        decoration-success="state == 'qualified'"
@@ -60,12 +65,12 @@
                     <field name="state" widget="statusbar"/>
                     <button name="act_attempt_to_connect" type="object" string="Attempted to Contact"
                             class="btn btn-primary me-1" invisible="state != 'new'"/>
-<!--                    <button name="act_convert" type="object" string="Convert"-->
-<!--                            class="btn-convert" invisible="state in ['qualified','new','lost','deal']"/>-->
+                    <!--                    <button name="act_convert" type="object" string="Convert"-->
+                    <!--                            class="btn-convert" invisible="state in ['qualified','new','lost','deal']"/>-->
                     <button name="act_admission" type="object" string="Transfer to Admission"
                             class="btn-convert" invisible="state != 'in_progress'"/>
-<!--                    <button name="act_lost_lead" type="object" string="Lost"-->
-<!--                            class="btn-lost" invisible="state in ['lost','qualified']"/>-->
+                    <!--                    <button name="act_lost_lead" type="object" string="Lost"-->
+                    <!--                            class="btn-lost" invisible="state in ['lost','qualified']"/>-->
                     <button name="act_return_to_new_lead" type="object" string="Return to New Lead"
                             class="btn-lost" invisible="state != 'lost'"/>
                     <!--                    <button name="act_not_connected" type="object" string="Not Connected"/>-->
@@ -91,39 +96,39 @@
                 <!--                                invisible="state != 'not_connected'" class="btn-call-back"/>-->
                 <!--                    </group>-->
                 <!--                </sheet>-->
-<!--                <sheet>-->
-<!--                    <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>-->
-<!--                    <widget name="web_ribbon" title="Qualified" bg_color="text-bg-success"-->
-<!--                            invisible="state != 'qualified'"/>-->
-<!--                    &lt;!&ndash;                    <h2>&ndash;&gt;-->
-<!--                    &lt;!&ndash;                        <field name="reference_no" invisible="state == 'new'" widget="badge"/>&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    </h2>&ndash;&gt;-->
-<!--                    <group>-->
+                <!--                <sheet>-->
+                <!--                    <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>-->
+                <!--                    <widget name="web_ribbon" title="Qualified" bg_color="text-bg-success"-->
+                <!--                            invisible="state != 'qualified'"/>-->
+                <!--                    &lt;!&ndash;                    <h2>&ndash;&gt;-->
+                <!--                    &lt;!&ndash;                        <field name="reference_no" invisible="state == 'new'" widget="badge"/>&ndash;&gt;-->
+                <!--                    &lt;!&ndash;                    </h2>&ndash;&gt;-->
+                <!--                    <group>-->
 
-<!--                        <field name="current_status" readonly="1" widget="badge"-->
-<!--                               decoration-info="current_status == 'not_responding'"-->
-<!--                               decoration-primary="current_status == 'new_lead'"/>-->
-<!--                        <field name="transitions" invisible="current_status != 'need_follow_up'"/>-->
-<!--                        <button-->
-<!--                                name="act_connected"-->
-<!--                                type="object"-->
-<!--                                string="Connected"-->
-<!--                                class="btn-connected" invisible="state != 'in_progress'"/>-->
-<!--                        <button-->
-<!--                                name="act_not_connected"-->
-<!--                                type="object"-->
-<!--                                string="Not Connected"-->
-<!--                                class="btn-not-connected" invisible="state != 'in_progress'"/>-->
-<!--                        <button name="act_call_back" type="object" string="Call Back"-->
-<!--                                invisible="state != 'not_connected'" class="btn-call-back"/>-->
-<!--                        <separator/>-->
+                <!--                        <field name="current_status" readonly="1" widget="badge"-->
+                <!--                               decoration-info="current_status == 'not_responding'"-->
+                <!--                               decoration-primary="current_status == 'new_lead'"/>-->
+                <!--                        <field name="transitions" invisible="current_status != 'need_follow_up'"/>-->
+                <!--                        <button-->
+                <!--                                name="act_connected"-->
+                <!--                                type="object"-->
+                <!--                                string="Connected"-->
+                <!--                                class="btn-connected" invisible="state != 'in_progress'"/>-->
+                <!--                        <button-->
+                <!--                                name="act_not_connected"-->
+                <!--                                type="object"-->
+                <!--                                string="Not Connected"-->
+                <!--                                class="btn-not-connected" invisible="state != 'in_progress'"/>-->
+                <!--                        <button name="act_call_back" type="object" string="Call Back"-->
+                <!--                                invisible="state != 'not_connected'" class="btn-call-back"/>-->
+                <!--                        <separator/>-->
 
-<!--                        <field name="name" style="background-color:#fae7e3;"/>-->
-<!--                        <field name="email_address"/>-->
-<!--                        <field name="phone_number" style="background-color:#fae7e3;"/>-->
+                <!--                        <field name="name" style="background-color:#fae7e3;"/>-->
+                <!--                        <field name="email_address"/>-->
+                <!--                        <field name="phone_number" style="background-color:#fae7e3;"/>-->
 
-<!--                    </group>-->
-<!--                </sheet>-->
+                <!--                    </group>-->
+                <!--                </sheet>-->
                 <sheet>
                     <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>
                     <widget name="web_ribbon" title="Qualified" bg_color="text-bg-success"
@@ -142,11 +147,11 @@
                                 type="object"
                                 string="Set Next Follow Up"
                                 class="btn-connected" invisible="state != 'in_progress'"/>
-<!--                        <button-->
-<!--                                name="act_not_connected"-->
-<!--                                type="object"-->
-<!--                                string="Not Connected"-->
-<!--                                class="btn-not-connected" invisible="state != 'in_progress'"/>-->
+                        <!--                        <button-->
+                        <!--                                name="act_not_connected"-->
+                        <!--                                type="object"-->
+                        <!--                                string="Not Connected"-->
+                        <!--                                class="btn-not-connected" invisible="state != 'in_progress'"/>-->
                         <button name="act_call_back" type="object" string="Call Back"
                                 invisible="state != 'not_connected'" class="btn-call-back"/>
                         <separator/>
@@ -183,20 +188,21 @@
                         </group>
                         <group string="Course -Branch-Batch">
                             <field name="preferred_course" invisible="source_name != 'Website'"/>
+                            <field name="academic_year"/>
                             <field name="course_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
                                    style="background-color:#fae7e3;"/>
                             <field name="branch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
                                    style="background-color:#fae7e3;"/>
                             <field name="batch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
-                                   style="background-color:#fae7e3;"/>
+                                   style="background-color:#fae7e3;" />
                         </group>
                         <group name="info" string="">
-<!--                            <field name="lead_type" style="background-color:#fae7e3;"/>-->
+                            <!--                            <field name="lead_type" style="background-color:#fae7e3;"/>-->
                             <field name="mode_of_study"/>
                             <field name="lead_status"/>
 
                             <field name="call_response"/>
-<!--                            <field name="call_responses"/>-->
+                            <!--                            <field name="call_responses"/>-->
                             <field name="crash_user_id" invisible="lead_quality != 'crash_lead'"/>
                             <field name="updated_remarks" invisible="lead_quality != 'bad_lead'"/>
                             <field name="not_response_note" invisible="lead_quality != 'not_responding'"/>
@@ -206,7 +212,7 @@
                             <field name="campaign"/>
                             <field name="seminar_lead_id" string="Seminar Child Id"/>
                             <field name="seminar_id"/>
-<!--                            <field name="amount" invisible="state in ['new','in_progress']"/>-->
+                            <!--                            <field name="amount" invisible="state in ['new','in_progress']"/>-->
                             <!--                            <field name="leads_assign"/>-->
                         </group>
                         <group name="users" string="Users">
@@ -215,13 +221,13 @@
                             <field name="tele_caller_id"/>
                         </group>
                         <group string="Course Details">
-                            <field name="academic_year"/>
+
                             <field name="course_type"/>
                             <field name="course_interested"/>
                         </group>
                         <group string="Admission Details">
                             <field name="admission_status"/>
-                            <field name="booking_amount" readonly="1"/>
+<!--                            <field name="booking_amount" readonly="1"/>-->
                         </group>
                         <group>
                             <!--                            <field name="referred_by"/>-->
@@ -398,12 +404,12 @@
             parent="leads_main_menu"
             sequence="10"
             action="lead_activity_view_action"/>
-<!--    <menuitem-->
-<!--            id="leads_deals_menu"-->
-<!--            name="Deals"-->
-<!--            parent="leads_main_menu"-->
-<!--            sequence="2"-->
-<!--            action="action_leads_deals_action"/>-->
+    <!--    <menuitem-->
+    <!--            id="leads_deals_menu"-->
+    <!--            name="Deals"-->
+    <!--            parent="leads_main_menu"-->
+    <!--            sequence="2"-->
+    <!--            action="action_leads_deals_action"/>-->
     <menuitem
             id="leads_configuration_menu"
             name="Configuration"

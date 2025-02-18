@@ -48,7 +48,7 @@ class LeadsForm(models.Model):
     course_interested = fields.Char(string="Course Interested")
     seminar_id = fields.Integer(string="Seminar")
     preferred_course = fields.Char(string="Preferred Course")
-    academic_year_of_course_attend = fields.Selection([('2023-2024','2023-2024'), ('2024-2025','2024-2025'), ('2025-2026','2025-2026')], string="Academic Year of Course attended")
+    academic_year_of_course_attend = fields.Selection([('2023-2024','2023-2024'), ('2024-2025','2024-2025'), ('2025-2026','2025-2026'), ('2026-2027','2026-2027')], string="Academic Year of Course attended")
     course_type = fields.Selection(
         [('indian', 'Indian'), ('international', 'International'), ('crash', 'Crash'), ('repeaters', 'Repeaters'),
          ('nil', 'Nil')],
@@ -88,7 +88,7 @@ class LeadsForm(models.Model):
     referred_by_number = fields.Char(string='Referred Person Number')
     batch_preference = fields.Char(string='Batch Preference')
     tele_caller_id = fields.Many2one('res.users', String="Tele Caller")
-    booking_amount = fields.Float(string="Booking Amount")
+    # booking_amount = fields.Float(string="Booking Amount")
     lead_qualification = fields.Selection(
         [('plus_one_science', 'Plus One Science'), ('plus_two_science', 'Plus Two Science'),
          ('plus_two_commerce', 'Plus Two Commerce'), ('plus_one_commerce', 'Plus One Commerce'),
@@ -160,24 +160,27 @@ class LeadsForm(models.Model):
             if self.lead_quality != 'crash_lead':
                 self.crash_user_id = False
 
-    @api.onchange('branch_id')
+    @api.onchange('branch_id','academic_year')
     def _onchange_branch(self):
-        if self.branch_id:
-            print(f"Branch ID: {self.branch_id.id}")
-            domain = [('branch', '=', self.branch_id.id)]
-            print(f"Domain applied: {domain}")
-            return {
-                'domain': {
-                    'batch_id': domain,
-                }
-            }
+        batch = self.env['op.batch'].search([])
+
+        if self.branch_id and self.academic_year:
+            print(self.academic_year, 'academic')
+            domain = [
+
+                ('academic_year', '=', self.academic_year)
+            ]
+        # elif self.branch_id:
+        #     domain = [('branch_id', '=', self.branch_id.id)]
         else:
-            print("No branch selected")
-            return {
-                'domain': {
-                    'batch_id': [],
-                }
+            domain = []
+
+        return {
+            'domain': {
+                'batch_id': domain,  # AND condition applied when both values exist
             }
+        }
+
     batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id)]")
 
     def act_call_back(self):
