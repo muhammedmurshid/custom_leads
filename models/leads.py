@@ -27,8 +27,7 @@ class LeadsForm(models.Model):
     lead_quality = fields.Selection(
         [('new', 'New'), ('waiting_for_admission', 'Waiting for Admission'), ('admission', 'Admission'), ('hot', 'Hot'),
          ('warm', 'Warm'), ('cold', 'Cold'),
-         ('bad_lead', 'Bad Lead'), ('not_responding', 'Not Responding'), ('crash_lead', 'Crash Lead'),
-         ('nil', 'Nil')],
+         ('bad_lead', 'Bad Lead'), ('not_responding', 'Not Responding')],
         string='Lead Quality', default='new')
     lost_reason = fields.Text(string="Lost Reason")
     crash_user_id = fields.Many2one('res.users', string="Crash User")
@@ -110,8 +109,8 @@ class LeadsForm(models.Model):
     remarks = fields.Char(string='Remarks')
     parent_number = fields.Char('Parent Number')
     closing_date = fields.Date(string="Closing Date")
-    call_responses = fields.Many2many('call.responses', string="Call Responses")
-    third_response = fields.Text(string="Last Response")
+    call_responses = fields.Many2many('call.responses', string="Call Responses", compute='_compute_total_responses', store=1)
+    third_response = fields.Text(string="Last Response",)
     # amount = fields.Float(string="Amount")
     mode_of_study = fields.Selection([('online', 'Online'), ('offline', 'Offline'), ('nil', 'Nil')],
                                      string='Mode of Study')
@@ -137,6 +136,22 @@ class LeadsForm(models.Model):
     #                               next_by_code('leads.logic'))
     #     return super().create(vals_list)
 
+    @api.depends('call_response')
+    def _compute_total_responses(self):
+        for record in self:
+            responses = record.call_responses.ids  # Get existing Many2many values
+
+            # Check and add second_response if it's not empty
+            if record.call_response:
+                response_obj = self.env['call.responses'].search([('name', '=', record.call_response)], limit=1)
+                if not response_obj:
+                    response_obj = self.env['call.responses'].create({'name': record.call_response})
+                responses.append(response_obj.id)
+
+            # Update Many2many field, ensuring unique values
+            record.call_responses = [(6, 0, list(set(responses)))]
+
+
     @api.onchange('leads_source')
     def _onchange_leads_source(self):
         if self.leads_source:
@@ -160,28 +175,7 @@ class LeadsForm(models.Model):
             if self.lead_quality != 'crash_lead':
                 self.crash_user_id = False
 
-    @api.onchange('branch_id','academic_year')
-    def _onchange_branch(self):
-        batch = self.env['op.batch'].search([])
-
-        if self.branch_id and self.academic_year:
-            print(self.academic_year, 'academic')
-            domain = [
-
-                ('academic_year', '=', self.academic_year)
-            ]
-        # elif self.branch_id:
-        #     domain = [('branch_id', '=', self.branch_id.id)]
-        else:
-            domain = []
-
-        return {
-            'domain': {
-                'batch_id': domain,  # AND condition applied when both values exist
-            }
-        }
-
-    batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id)]")
+    batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id), ('academic_year', '=', academic_year)]")
 
     def act_call_back(self):
         return {'type': 'ir.actions.act_window',
