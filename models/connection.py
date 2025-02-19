@@ -11,8 +11,8 @@ class ConnectionForm(models.TransientModel):
     lead_quality = fields.Selection(
         [('hot', 'Hot'),
          ('warm', 'Warm'), ('cold', 'Cold'),
-         ('bad_lead', 'Bad Lead'), ('not_responding', 'Not Responding'), ('crash_lead', 'Crash Lead'),
-         ('nil', 'Nil')],
+         ('bad_lead', 'Bad Lead'), ('not_responding', 'Not Responding'),
+         ],
         string='Lead Quality')
     expected_joining_date = fields.Date(string="Expected Joining Date")
     lead_id = fields.Many2one('leads.logic', string="Lead")
@@ -36,36 +36,36 @@ class ConnectionForm(models.TransientModel):
     @api.onchange('lead_quality')
     def _onchange_lead_quality(self):
         if self.lead_quality:
-            if self.lead_quality != 'crash_lead':
-                self.crash_user_id = False
+            # if self.lead_quality != 'crash_lead':
+            #     self.crash_user_id = False
 
             if self.lead_quality != 'warm' or self.lead_quality != 'hot':
                 self.expected_joining_date = False
 
     def act_connect(self):
         print('hi')
-        if self.lead_quality == 'crash_lead':
-            self.lead_id.write({
-                'lead_quality': self.lead_quality,
-                'expected_joining_date': self.expected_joining_date,
-                'crash_user_id': self.crash_user_id.id,
-                'current_status': 'need_follow_up',
-                'state': 'in_progress',
-                # 'lead_type': 'crash_lead',
-                'call_response': self.description,
-                'next_follow_up_date': self.due_date
-            })
-        else:
-            self.lead_id.write({
-                'lead_quality': self.lead_quality,
-                'expected_joining_date': self.expected_joining_date,
-                'crash_user_id': self.crash_user_id.id,
-                'current_status': 'need_follow_up',
-                'state': 'in_progress',
-                # 'lead_type': 'regular_lead',
-                'call_response': self.description,
-                'next_follow_up_date': self.due_date
-            })
+        # if self.lead_quality == 'crash_lead':
+        #     self.lead_id.write({
+        #         'lead_quality': self.lead_quality,
+        #         'expected_joining_date': self.expected_joining_date,
+        #         'crash_user_id': self.crash_user_id.id,
+        #         'current_status': 'need_follow_up',
+        #         'state': 'in_progress',
+        #         # 'lead_type': 'crash_lead',
+        #         'call_response': self.description,
+        #         'next_follow_up_date': self.due_date
+        #     })
+        # else:
+        self.lead_id.write({
+            'lead_quality': self.lead_quality,
+            'expected_joining_date': self.expected_joining_date,
+            'crash_user_id': self.crash_user_id.id,
+            'current_status': 'need_follow_up',
+            'state': 'in_progress',
+            # 'lead_type': 'regular_lead',
+            'call_response': self.description,
+            'next_follow_up_date': self.due_date
+        })
 
         self.lead_id.activity_schedule(
             'custom_leads.mail_activity_lead_tasks', user_id=self.task_owner_id.id, summary= self.description, activity_type_id= self.subject.id, date_deadline= self.due_date,
