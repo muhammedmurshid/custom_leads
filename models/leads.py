@@ -186,11 +186,67 @@ class LeadsForm(models.Model):
                 'view_mode': 'form',
                 'context': {'default_lead_id': self.id, 'default_task_owner_id': self.lead_owner.user_id.id}, }
 
+    @api.onchange('phone_number')
+    def _onchange_duplicate_phone_number(self):
+        print('hiii')
+        active_id = self.env.context.get('active_id')
+        for record in self:
+            if record.phone_number:
+                # Extract last 10 digits
+                last_10_digits = record.phone_number[-10:]
+                print(last_10_digits, 'last', self._origin.id)
+
+                # Search for any existing records with the same last 10 digits
+                duplicate = self.search([
+                    ('phone_number', 'like', '%' + last_10_digits),
+                    ('id', '!=', self._origin.id)
+                ])
+
+                if duplicate:
+                    # return {
+                    #     'type': 'ir.actions.client',
+                    #     'tag': 'display_notification',
+                    #     'params': {
+                    #         'title': _("Duplicate Phone Number"),
+                    #         'type': 'warning',
+                    #         'message': _("The phone number %s already exists in the system.") % record.phone_number,
+                    #         'sticky': True,
+                    #     },
+                    # }
+                    return {
+                        'warning': {
+                            'title': _("Duplicate Phone Number"),
+                            'message': _("The phone number %s already exists in the system.") % record.phone_number,
+                        }
+                    }
+            # if record.phone_number:
+            #     # Extract last 10 digits
+            #     last_10_digits = record.phone_number[-10:]
+            #     print(last_10_digits, 'last')
+            #
+            #     # Search for any existing records with the same last 10 digits
+            #     duplicate = self.search([
+            #         ('phone_number', 'like', '%' + last_10_digits),
+            #         ('id', '!=', record.id)
+            #     ])
+            #
+            #     if duplicate:
+            #         return {
+            #             'warning': {
+            #                 'title': _("Duplicate Phone Number"),
+            #                 'message': _("The phone number %s already exists in the system.") % record.phone_number,
+            #             }
+            #         }
+
     @api.constrains('phone_number')
     def _check_duplicate_phone_number(self):
         for record in self:
             if record.phone_number:
-                duplicate = self.search([('phone_number', '=', record.phone_number), ('id', '!=', record.id)])
+                last_10_digits = record.phone_number[-10:]
+                duplicate = self.search([
+                    ('phone_number', 'like', '%' + last_10_digits),
+                    ('id', '!=', record.id)
+                ])
                 if duplicate:
                     raise ValidationError(
                         _('The phone number %s already exists. Please use a different number.') % record.phone_number)
@@ -222,6 +278,7 @@ class LeadsForm(models.Model):
 
     @api.onchange('name','phone_number','call_response','leads_source','lead_quality','admission_status','lead_owner','assign_to','course_id','batch_id','branch_id')
     def _onchange_updated_date(self):
+        print('hiii')
         if self:
             self.last_update_date = datetime.now()
 
