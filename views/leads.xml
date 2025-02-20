@@ -138,10 +138,10 @@
                     <!--                    </h2>-->
                     <group>
 
-                        <field name="current_status" readonly="1" widget="badge"
-                               decoration-info="current_status == 'not_responding'"
-                               decoration-primary="current_status == 'new_lead'"/>
-                        <field name="transitions" invisible="current_status != 'need_follow_up'"/>
+<!--                        <field name="current_status" readonly="1" widget="badge"-->
+<!--                               decoration-info="current_status == 'not_responding'"-->
+<!--                               decoration-primary="current_status == 'new_lead'"/>-->
+<!--                        <field name="transitions" invisible="current_status != 'need_follow_up'"/>-->
                         <button
                                 name="act_connected"
                                 type="object"

@@ -54,7 +54,7 @@ class LeadsForm(models.Model):
          ('nil', 'Nil')],
         string='Course Type')
     state = fields.Selection(
-        [('new', 'New'), ('in_progress', 'In Progress'), ('not_connected', 'Not Connected'), ('qualified', 'Admission'),
+        [('new', 'New'), ('in_progress', 'In Progress'), ('qualified', 'Admission'),
          ('lost', 'Lost')],
         string='State',
         default='new', tracking=True)
@@ -252,7 +252,7 @@ class LeadsForm(models.Model):
                         _('The phone number %s already exists. Please use a different number.') % record.phone_number)
 
     def act_attempt_to_connect(self):
-        self.current_status = 'not_responding'
+        # self.current_status = 'not_responding'
         self.state = 'in_progress'
 
     def act_connected(self):
