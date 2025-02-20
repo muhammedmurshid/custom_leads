@@ -41,7 +41,8 @@ class LeadsForm(models.Model):
     # leads_assign = fields.Many2one('hr.employee', string='Assign to', )
     lead_owner = fields.Many2one('hr.employee', string='Lead Owner', default=lambda self: self.env.user.employee_id.id)
     seminar_lead_id = fields.Char()
-    admission_date = fields.Datetime(string="Admission Date", readonly=1)
+
+    admission_date = fields.Datetime(string="Admission Date")
     phone_number_second = fields.Char(string='Phone Number')
     branch_id = fields.Many2one('op.branch', string="Branch")
     course_interested = fields.Char(string="Course Interested")
@@ -175,7 +176,7 @@ class LeadsForm(models.Model):
             if self.lead_quality != 'crash_lead':
                 self.crash_user_id = False
 
-    batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id), ('academic_year', '=', academic_year)]")
+    batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id)]")
 
     def act_call_back(self):
         return {'type': 'ir.actions.act_window',
@@ -351,15 +352,24 @@ class LeadsForm(models.Model):
                 (record.call_response[:20] + "...") if record.call_response else ""
             )
 
-    # @api.constrains('updated_remarks', 'lead_quality')
-    # def _check_updated_remarks(self):
-    #     for record in self:
-    #         if record.lead_quality:
-    #             if record.lead_quality == 'bad_lead':
-    #                 if not record.updated_remarks:
-    #                     raise ValidationError("Updated Remarks is required when Lead Quality is 'Bad Lead'.")
-    #                 if len(record.updated_remarks) < 140:
-    #                     raise ValidationError("Updated Remarks must be at least 140 characters long.")
+    is_team_leader = fields.Boolean(compute="_compute_team_leader")
+
+    @api.depends()
+    def _compute_team_leader(self):
+        for record in self:
+            record.is_team_leader = self.env.user.has_group('custom_leads.group_lead_team_lead')
+
+            # record.admission_date = False
+
+    @api.constrains('updated_remarks', 'lead_quality')
+    def _check_updated_remarks(self):
+        for record in self:
+            if record.lead_quality:
+                if record.lead_quality == 'bad_lead':
+                    if not record.updated_remarks:
+                        raise ValidationError("Updated Remarks is required when Lead Quality is 'Bad Lead'.")
+                    if len(record.updated_remarks) < 140:
+                        raise ValidationError("Updated Remarks must be at least 140 characters long.")
 
     def action_bulk_lead_allocation_tele_callers(self):
         active_ids = self.env.context.get('active_ids', [])

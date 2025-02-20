@@ -184,6 +184,7 @@
                             <field name="place"/>
                             <field name="phone_number_second"/>
                             <field name="parent_number"/>
+                            <field name="is_team_leader" invisible="1"/>
 
                         </group>
                         <group string="Course -Branch-Batch">
@@ -254,7 +255,7 @@
                             <field widget="badge" name="expected_joining_date"
                                    invisible="lead_quality not in ['warm','hot']"/>
                             <field name="closing_date" invisible="state != 'deal'"/>
-                            <field name="admission_date" invisible="state != 'qualified'"/>
+                            <field name="admission_date" invisible="state != 'qualified'" readonly="is_team_leader == 0"/>
                         </group>
 
                         <group name="lost_reason" string="Lost Reason" invisible="state != 'lost'">
