@@ -38,8 +38,8 @@
                 <field name="next_follow_up_date"/>
                 <field name="call_responses" widget="many2many_tags"/>
                 <field name="call_response" string="Response Now"/>
-<!--                <field name="second_response" string="2nd Response" widget="badge"/>-->
-<!--                <field name="third_response" string="Last Response" widget="badge"/>-->
+                <!--                <field name="second_response" string="2nd Response" widget="badge"/>-->
+                <!--                <field name="third_response" string="Last Response" widget="badge"/>-->
                 <field name="lead_owner" groups="custom_leads.group_lead_team_lead"/>
                 <!--                <field name="tele_caller_id"/>-->
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
@@ -138,10 +138,10 @@
                     <!--                    </h2>-->
                     <group>
 
-<!--                        <field name="current_status" readonly="1" widget="badge"-->
-<!--                               decoration-info="current_status == 'not_responding'"-->
-<!--                               decoration-primary="current_status == 'new_lead'"/>-->
-<!--                        <field name="transitions" invisible="current_status != 'need_follow_up'"/>-->
+                        <!--                        <field name="current_status" readonly="1" widget="badge"-->
+                        <!--                               decoration-info="current_status == 'not_responding'"-->
+                        <!--                               decoration-primary="current_status == 'new_lead'"/>-->
+                        <!--                        <field name="transitions" invisible="current_status != 'need_follow_up'"/>-->
                         <button
                                 name="act_connected"
                                 type="object"
@@ -180,6 +180,7 @@
                             <field name="incoming_source" invisible="incoming_source_checking != 1"/>
                             <field name="digital_lead_source" invisible="digital_lead != 1"/>
                             <field name="lead_quality" style="background-color:#fae7e3;"/>
+                            <field name="updated_remarks" invisible="lead_quality != 'bad_lead'"/>
                             <field name="district" style="background-color:#fae7e3;"/>
                             <field name="place"/>
                             <field name="phone_number_second"/>
@@ -203,11 +204,10 @@
                             <field name="lead_status"/>
 
                             <field name="call_response"/>
-                            <field name="call_responses"  widget="many2many_tags"/>
-<!--                            <field name="second_response" string="2nd Response"/>-->
-<!--                            <field name="third_response" string="Last Response"/>-->
+                            <field name="call_responses" widget="many2many_tags"/>
+                            <!--                            <field name="second_response" string="2nd Response"/>-->
+                            <!--                            <field name="third_response" string="Last Response"/>-->
                             <field name="crash_user_id" invisible="lead_quality != 'crash_lead'"/>
-                            <field name="updated_remarks" invisible="lead_quality != 'bad_lead'"/>
                             <field name="not_response_note" invisible="lead_quality != 'not_responding'"/>
                             <!--                            <field name="lead_status"/>-->
                             <field name="country"/>
@@ -255,7 +255,8 @@
                             <field widget="badge" name="expected_joining_date"
                                    invisible="lead_quality not in ['warm','hot']"/>
                             <field name="closing_date" invisible="state != 'deal'"/>
-                            <field name="admission_date" invisible="state != 'qualified'" readonly="is_team_leader == 0"/>
+                            <field name="admission_date" invisible="state != 'qualified'"
+                                   readonly="is_team_leader == 0"/>
                         </group>
 
                         <group name="lost_reason" string="Lost Reason" invisible="state != 'lost'">

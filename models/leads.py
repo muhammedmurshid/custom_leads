@@ -27,7 +27,7 @@ class LeadsForm(models.Model):
     lead_quality = fields.Selection(
         [('new', 'New'), ('waiting_for_admission', 'Waiting for Admission'), ('admission', 'Admission'), ('hot', 'Hot'),
          ('warm', 'Warm'), ('cold', 'Cold'),
-         ('bad_lead', 'Bad Lead'), ('not_responding', 'Not Responding')],
+         ('bad_lead', 'Bad Lead'), ('crash_lead', 'Crash Lead'), ('not_responding', 'Not Responding')],
         string='Lead Quality', default='new', required=1)
     lost_reason = fields.Text(string="Lost Reason")
     crash_user_id = fields.Many2one('res.users', string="Crash User")
