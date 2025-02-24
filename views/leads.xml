@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <record model="ir.actions.act_window" id="action_leads_main_action">
-        <field name="name">Leads</field>
-        <field name="res_model">leads.logic</field>
-        <field name="view_mode">kanban,tree,form</field>
-        <field name="domain">[('state', '!=', 'qualified')]</field>
-        <field name="view_id" ref="custom_leads.tree_view_leads_logic"/>
-    </record>
 
-    <record id="action_list_view_of_admission" model="ir.actions.act_window">
-        <field name="name">Admissions</field>
-        <field name="res_model">leads.logic</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('state', '=', 'qualified')]</field>
-        <field name="view_id" ref="custom_leads.list_view_of_admission"/>
-    </record>
 
 
     <record id="list_view_of_admission" model="ir.ui.view">
@@ -424,6 +410,22 @@
 
             </search>
         </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_leads_main_action">
+        <field name="name">Leads</field>
+        <field name="res_model">leads.logic</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('state', '!=', 'qualified')]</field>
+        <field name="view_id" ref="custom_leads.tree_view_leads_logic"/>
+    </record>
+
+    <record id="action_list_view_of_admission" model="ir.actions.act_window">
+        <field name="name">Admissions</field>
+        <field name="res_model">leads.logic</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', '=', 'qualified')]</field>
+        <field name="view_id" ref="custom_leads.list_view_of_admission"/>
     </record>
     <record id="ir_sequence_leads_logic" model="ir.sequence">
         <field name="name">Leads Sequence</field>
