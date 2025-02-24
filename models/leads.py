@@ -151,7 +151,7 @@ class LeadsForm(models.Model):
 
             # Update Many2many field, ensuring unique values
             record.call_responses = [(6, 0, list(set(responses)))]
-
+            record.call_response = False
 
     @api.onchange('leads_source')
     def _onchange_leads_source(self):
@@ -281,7 +281,32 @@ class LeadsForm(models.Model):
         print('hiii')
         if self:
             self.last_update_date = datetime.now()
-
+        if self.lead_quality == 'admission':
+            print("is it admission")
+            if self.admission_status == 0:
+                print('admission')
+                # notification = {
+                #     'type': 'ir.actions.client',
+                #     'tag': 'display_notification',
+                #     'params': {
+                #         'title': _('Warning'),
+                #         'type': 'warning',
+                #         'message': 'You cannot do this action now',
+                #         'sticky': True,
+                #     }
+                # }
+                # return  notification
+                raise ValidationError("⚠️ You need to complete the admission procedure before proceeding.")
+                # return {
+                #     'type': 'ir.actions.client',
+                #     'tag': 'display_notification',
+                #     'params': {
+                #         'title': _("Warning head"),
+                #         'type': 'warning',
+                #         'message': "⚠️ You need to complete the admission procedure before proceeding.",
+                #         'sticky': True,
+                #     },
+                # }
 
     def act_lost_lead(self):
         return {'type': 'ir.actions.act_window',

@@ -4,18 +4,54 @@
         <field name="name">Leads</field>
         <field name="res_model">leads.logic</field>
         <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('state', '!=', 'qualified')]</field>
+        <field name="view_id" ref="tree_view_leads_logic"/>
     </record>
-    <record model="ir.actions.act_window" id="action_leads_deals_action">
-        <field name="name">Deals</field>
-        <field name="res_model">leads.logic</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('state', '=', 'deal')]</field>
-    </record>
-    <record model="ir.actions.act_window" id="action_leads_admission_action">
-        <field name="name">Admission</field>
+
+    <record id="action_list_view_of_admission" model="ir.actions.act_window">
+        <field name="name">Admissions</field>
         <field name="res_model">leads.logic</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('state', '=', 'qualified')]</field>
+        <field name="view_id" ref="list_view_of_admission"/>
+    </record>
+
+
+    <record id="list_view_of_admission" model="ir.ui.view">
+        <field name="name">admission.view.tree</field>
+        <field name="model">leads.logic</field>
+        <field name="arch" type="xml">
+            <tree multi_edit="1">
+                <field name="reference_no"/>
+                <field name="admission_date" string="Admission Date" widget="badge"/>
+                <field name="name"/>
+                <field name="phone_number" string="Mobile" widget="phone"/>
+                <!--                <field name="phone_number_second" string="Phone" widget="phone"/>-->
+                <field name="leads_source"/>
+                <!--                <field name="email_address" string="Email" widget="mail"/>-->
+                <!--                <field name="lead_quality" widget="badge" decoration-info="lead_quality == 'new'"-->
+                <!--                       decoration-danger="lead_quality == 'bad_lead'" decoration-success="lead_quality == 'admission'"-->
+                <!--                       decoration-warning="lead_quality == 'warm'"-->
+                <!--                       decoration-primary="lead_quality == 'waiting_for_admission'"/>-->
+                <field name="course_id" string="Course Interested"/>
+                <field name="branch_id" string="Branch Interested"/>
+                <field name="batch_id" string="Batch Interested"/>
+                <!--                <field name="next_follow_up_date"/>-->
+                <!--                <field name="call_responses" widget="many2many_tags" string="Last Call Responses"/>-->
+                <!--                <field name="call_response" string="Response Now"/>-->
+                <!--                <field name="second_response" string="2nd Response" widget="badge"/>-->
+                <!--                <field name="third_response" string="Last Response" widget="badge"/>-->
+                <field name="lead_owner" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
+                <!--                <field name="tele_caller_id"/>-->
+                <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
+                <!--                <button name="act_admission" type="object" string="Transfer to Admission"-->
+                <!--                        class="btn-convert" invisible="state != 'in_progress'"/>-->
+                <!--                <field name="admission_status" optional="hide"/>-->
+                <field name="state" decoration-info="state == 'new'"
+                       decoration-success="state == 'qualified'"
+                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>
+            </tree>
+        </field>
     </record>
     <record id="tree_view_leads_logic" model="ir.ui.view">
         <field name="name">leads.logic.view.tree</field>
@@ -36,16 +72,16 @@
                 <field name="course_id" string="Course Interested"/>
                 <field name="branch_id" string="Branch Interested"/>
                 <field name="next_follow_up_date"/>
-                <field name="call_responses" widget="many2many_tags"/>
+                <field name="call_responses" widget="many2many_tags" string="Last Call Responses"/>
                 <field name="call_response" string="Response Now"/>
                 <!--                <field name="second_response" string="2nd Response" widget="badge"/>-->
                 <!--                <field name="third_response" string="Last Response" widget="badge"/>-->
-                <field name="lead_owner" groups="custom_leads.group_lead_team_lead"/>
+                <field name="lead_owner" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
                 <!--                <field name="tele_caller_id"/>-->
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
                 <button name="act_admission" type="object" string="Transfer to Admission"
                         class="btn-convert" invisible="state != 'in_progress'"/>
-                <field name="admission_status"/>
+                <!--                <field name="admission_status"/>-->
                 <field name="state" decoration-info="state == 'new'"
                        decoration-success="state == 'qualified'"
                        decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>
@@ -425,5 +461,5 @@
             name="Admission"
             parent="leads_main_menu"
             sequence="4"
-            action="action_leads_admission_action"/>
+            action="action_list_view_of_admission"/>
 </odoo>

@@ -11,7 +11,7 @@ class ConnectionForm(models.TransientModel):
     lead_quality = fields.Selection(
         [('hot', 'Hot'),
          ('warm', 'Warm'), ('cold', 'Cold'),
-         ('bad_lead', 'Bad Lead'), ('not_responding', 'Not Responding'),
+         ('bad_lead', 'Bad Lead'), ('crash_lead', 'Crash Lead'), ('not_responding', 'Not Responding'),
          ],
         string='Lead Quality')
     expected_joining_date = fields.Date(string="Expected Joining Date")
