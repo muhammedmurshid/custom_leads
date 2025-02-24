@@ -5,7 +5,7 @@
         <field name="res_model">leads.logic</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[('state', '!=', 'qualified')]</field>
-        <field name="view_id" ref="tree_view_leads_logic"/>
+        <field name="view_id" ref="custom_leads.tree_view_leads_logic"/>
     </record>
 
     <record id="action_list_view_of_admission" model="ir.actions.act_window">
@@ -13,7 +13,7 @@
         <field name="res_model">leads.logic</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('state', '=', 'qualified')]</field>
-        <field name="view_id" ref="list_view_of_admission"/>
+        <field name="view_id" ref="custom_leads.list_view_of_admission"/>
     </record>
 
 
