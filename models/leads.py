@@ -3,6 +3,8 @@ from tokenize import String
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
 from datetime import date, datetime, timedelta
+import logging
+_logger = logging.getLogger(__name__)
 
 class LeadsForm(models.Model):
     _name = 'leads.logic'
@@ -28,7 +30,23 @@ class LeadsForm(models.Model):
         [('new', 'New'), ('waiting_for_admission', 'Waiting for Admission'), ('admission', 'Admission'), ('hot', 'Hot'),
          ('warm', 'Warm'), ('cold', 'Cold'),
          ('bad_lead', 'Bad Lead'), ('crash_lead', 'Crash Lead'), ('not_responding', 'Not Responding')],
-        string='Lead Quality', default='new', required=1)
+        string='Lead Quality', default='new', required=1, readonly=0)
+
+    # def _get_lead_quality_color(self):
+    #     _logger.info("Calling _get_lead_quality_color for lead_quality: %s", self.lead_quality)
+    #     colors = {
+    #         'new': 'grey',
+    #         'waiting_for_admission': 'blue',
+    #         'admission': 'green',
+    #         'hot': 'red',
+    #         'warm': 'yellow',
+    #         'cold': 'lightblue',
+    #         'bad_lead': 'darkred',
+    #         'crash_lead': 'orange',
+    #         'not_responding': 'grey',
+    #     }
+    #     return dict((key, colors[key]) for key in self.lead_quality)
+
     lost_reason = fields.Text(string="Lost Reason")
     crash_user_id = fields.Many2one('res.users', string="Crash User")
     lead_status = fields.Selection(
@@ -128,6 +146,8 @@ class LeadsForm(models.Model):
     current_status = fields.Selection([('new_lead', 'New Lead'), ('not_responding', 'Not Responding'), ('need_follow_up', 'Need Follow-Up'), ('admission', 'Admission'), ('lost', 'Lost')], string="Current Status", default="new_lead")
     call_response = fields.Text(string="Response")
     transitions = fields.Selection([('future_lead', 'Future Lead'), ('junk_lead', 'Junk Lead'), ('not_qualified', 'Not Qualified'), ('qualified', 'Qualified')], string="Transitions", tracking=1)
+    sample = fields.Char(string='Sample', compute='get_phone_number_for_whatsapp')
+
     # @api.model_create_multi
     # def create(self, vals_list):
     #     """ Create a sequence for the student model """
@@ -169,6 +189,31 @@ class LeadsForm(models.Model):
             else:
                 self.digital_lead = 0
                 self.digital_lead_source = False
+
+    @api.depends('sample')
+    def _compute_display_value(self):
+        for record in self:
+            if record.sample:
+                # Modify the display value as needed based on the original field's value
+                modified_value = "Modified: "
+                record.sample = modified_value
+
+    def get_phone_number_for_whatsapp(self):
+        for rec in self:
+            # modified_value = "Modified: "
+            # rec.sample = 'modified_value'
+            if rec.phone_number:
+                rec.sample = "https://web.whatsapp.com/send?phone=" + rec.phone_number or "https://api.whatsapp.com/send?phone=" + rec.phone_number
+            else:
+                rec.sample = ''
+
+    def whatsapp_click_button(self):
+        return {
+            'type': 'ir.actions.act_url',
+            'name': "Leads Whatsapp",
+            'target': 'new',
+            'url': self.sample,
+        }
 
     @api.onchange('lead_quality')
     def _onchange_leads_quality(self):

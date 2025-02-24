@@ -90,3 +90,53 @@
                     font-size: 14px;
                     text-align: center;
                     }
+.o_badge.o_badge_bf {
+        background-color: #ff0000;
+        color: white;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        padding: 0;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .o_badge.o_badge_warning {
+        background-color: #ffff00;
+        color: black;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        padding: 0;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .o_badge.o_badge_success {
+        background-color: #00ff00;
+        color: black;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        padding: 0;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .o_badge.o_badge_info {
+        background-color: #00ffff;
+        color: black;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        padding: 0;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .o_badge.o_badge_danger {
+        background-color: #ff4040;
+        color: white;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        padding: 0;
+        display: inline-block;
+        vertical-align: middle;
+    }

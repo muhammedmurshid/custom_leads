@@ -62,6 +62,7 @@
                 <field name="date_of_adding" string="Added Date" widget="badge"/>
                 <field name="name"/>
                 <field name="phone_number" string="Mobile" widget="phone"/>
+                <button name="whatsapp_click_button" class="fa fa-whatsapp btn-success" type="object"/>
                 <!--                <field name="phone_number_second" string="Phone" widget="phone"/>-->
                 <field name="leads_source"/>
                 <!--                <field name="email_address" string="Email" widget="mail"/>-->
@@ -88,6 +89,7 @@
             </tree>
         </field>
     </record>
+
     <record id="form_view_leads_logic" model="ir.ui.view">
         <field name="name">leads.logic.view.form</field>
         <field name="model">leads.logic</field>
@@ -216,6 +218,13 @@
                             <field name="incoming_source" invisible="incoming_source_checking != 1"/>
                             <field name="digital_lead_source" invisible="digital_lead != 1"/>
                             <field name="lead_quality" style="background-color:#fae7e3;"/>
+                            <!--                            <field name="lead_quality"-->
+
+                            <!--                                   decoration-bf="lead_quality == 'hot'"-->
+                            <!--                                   decoration-danger="lead_quality == 'bad_lead'"-->
+                            <!--                                   decoration-success="lead_quality == 'admission'"-->
+                            <!--                                   decoration-warning="lead_quality == 'warm'"-->
+                            <!--                                   decoration-info="lead_quality == 'cold'"/>-->
                             <field name="updated_remarks" invisible="lead_quality != 'bad_lead'"/>
                             <field name="district" style="background-color:#fae7e3;"/>
                             <field name="place"/>
