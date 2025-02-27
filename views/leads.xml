@@ -8,31 +8,16 @@
         <field name="model">leads.logic</field>
         <field name="arch" type="xml">
             <tree multi_edit="1">
-                <field name="reference_no"/>
-                <field name="admission_date" string="Admission Date" widget="badge"/>
+<!--                <field name="reference_no"/>-->
+                <field name="admission_date" string="Admission Date"/>
                 <field name="name"/>
                 <field name="phone_number" string="Mobile" widget="phone"/>
-                <!--                <field name="phone_number_second" string="Phone" widget="phone"/>-->
                 <field name="leads_source"/>
-                <!--                <field name="email_address" string="Email" widget="mail"/>-->
-                <!--                <field name="lead_quality" widget="badge" decoration-info="lead_quality == 'new'"-->
-                <!--                       decoration-danger="lead_quality == 'bad_lead'" decoration-success="lead_quality == 'admission'"-->
-                <!--                       decoration-warning="lead_quality == 'warm'"-->
-                <!--                       decoration-primary="lead_quality == 'waiting_for_admission'"/>-->
                 <field name="course_id" string="Course Interested"/>
                 <field name="branch_id" string="Branch Interested"/>
                 <field name="batch_id" string="Batch Interested"/>
-                <!--                <field name="next_follow_up_date"/>-->
-                <!--                <field name="call_responses" widget="many2many_tags" string="Last Call Responses"/>-->
-                <!--                <field name="call_response" string="Response Now"/>-->
-                <!--                <field name="second_response" string="2nd Response" widget="badge"/>-->
-                <!--                <field name="third_response" string="Last Response" widget="badge"/>-->
                 <field name="lead_owner" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
-                <!--                <field name="tele_caller_id"/>-->
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
-                <!--                <button name="act_admission" type="object" string="Transfer to Admission"-->
-                <!--                        class="btn-convert" invisible="state != 'in_progress'"/>-->
-                <!--                <field name="admission_status" optional="hide"/>-->
                 <field name="state" decoration-info="state == 'new'"
                        decoration-success="state == 'qualified'"
                        decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>
@@ -49,9 +34,7 @@
                 <field name="name"/>
                 <field name="phone_number" string="Mobile" widget="phone"/>
                 <button name="whatsapp_click_button" class="fa fa-whatsapp btn-success" type="object"/>
-                <!--                <field name="phone_number_second" string="Phone" widget="phone"/>-->
                 <field name="leads_source"/>
-                <!--                <field name="email_address" string="Email" widget="mail"/>-->
                 <field name="lead_quality" widget="badge" decoration-info="lead_quality == 'new'"
                        decoration-danger="lead_quality == 'bad_lead'" decoration-success="lead_quality == 'admission'"
                        decoration-warning="lead_quality == 'warm'"
