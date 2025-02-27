@@ -24,7 +24,8 @@
         'views/convert_lead.xml',
         'views/student.xml',
         'views/allocation.xml',
-        'data/actions.xml'
+        'data/actions.xml',
+        'views/welcome_mail.xml'
 
     ],
     'assets': {

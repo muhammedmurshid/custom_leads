@@ -298,6 +298,16 @@ class LeadsForm(models.Model):
             #             }
             #         }
 
+    def act_sent_to_welcome_mail(self):
+        print('sent')
+        return {'type': 'ir.actions.act_window',
+                'name': _('Welcome Mail'),
+                'res_model': 'welcome.mail',
+                'target': 'new',
+                'view_mode': 'form',
+                'view_type': 'form',
+                'context': {'default_lead_id': self.id}, }
+
     @api.constrains('phone_number')
     def _check_duplicate_phone_number(self):
         for record in self:

@@ -80,6 +80,8 @@
                     <!--                            class="btn-lost" invisible="state in ['lost','qualified']"/>-->
                     <button name="act_return_to_new_lead" type="object" string="Return to New Lead"
                             class="btn-lost" invisible="state != 'lost'"/>
+                    <button name="act_sent_to_welcome_mail" type="object" string="Sent to Welcome Mail"
+                             invisible="state != 'qualified'"/>
                     <!--                    <button name="act_not_connected" type="object" string="Not Connected"/>-->
                     <!--                                   <button string="Cancel" class="btn-default" special="cancel"/>-->
                 </header>
