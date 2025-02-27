@@ -17,7 +17,7 @@ class WelcomeMail(models.TransientModel):
                raise UserError("No email address found for this lead.")
 
            mail_values = {
-               'subject': "Lead Follow-up",
+               'subject': "Welcome to Logic Education!",
                'body_html': f"<p>{record.message}</p>",
                'email_to': record.mail_id,
                'email_from': 'info@logiceducation.org',

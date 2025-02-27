@@ -8,9 +8,9 @@
        <field name="arch" type="xml">
            <form string="Welcome Mail">
                <group>
-                   <field name="lead_id"/>
+                   <field name="lead_id" invisible="1"/>
                    <field name="mail_id"/>
-                   <field name="message"/>
+                   <field name="message" style="background-color:#ebfaf9"/>
                </group>
 
                <footer>
