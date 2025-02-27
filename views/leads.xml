@@ -231,6 +231,7 @@
                             <field name="campaign"/>
                             <field name="seminar_lead_id" string="Seminar Child Id" invisible="1"/>
                             <field name="seminar_id" invisible="1"/>
+                            <field name="sended_welcome_mail" groups="base.group_no_one"/>
                             <!--                            <field name="amount" invisible="state in ['new','in_progress']"/>-->
                             <!--                            <field name="leads_assign"/>-->
                         </group>

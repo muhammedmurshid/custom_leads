@@ -20,9 +20,10 @@ class WelcomeMail(models.TransientModel):
                'subject': "Lead Follow-up",
                'body_html': f"<p>{record.message}</p>",
                'email_to': record.mail_id,
-               'email_from': self.env.user.email or 'noreply@example.com',
+               'email_from': 'info@logiceducation.org',
                'auto_delete': True,
            }
+           self.lead_id.sended_welcome_mail = True
 
            mail = self.env['mail.mail'].create(mail_values)
            mail.send()
