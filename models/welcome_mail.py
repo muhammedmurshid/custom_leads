@@ -23,6 +23,7 @@ class WelcomeMail(models.TransientModel):
                'email_from': 'info@logiceducation.org',
                'auto_delete': True,
            }
+
            self.lead_id.sended_welcome_mail = True
 
            mail = self.env['mail.mail'].create(mail_values)

@@ -30,5 +30,12 @@
         <field name="domain_force">['|',('create_uid','=',user.id),('lead_owner', '=', user.employee_id.id)]</field>
         <field name="groups" eval="[(4, ref('custom_leads.group_crash_user'))]"/>
     </record>
+    <record model="ir.rule" id="view_students_rule_admission_team">
+        <field name="name">View Students Admission Team Members</field>
+        <field name="model_id" ref="model_op_student"/>
+        <field name="domain_force">['|',('create_uid.id', '=', user.id),('admission_officer_id.id', '=', user.id)]
+        </field>
+        <field name="groups" eval="[(4, ref('openeducat_core.group_op_admission_team'))]"/>
+    </record>
 
 </odoo>
