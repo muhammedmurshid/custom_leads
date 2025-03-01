@@ -158,7 +158,7 @@ class QualifiedLead(models.TransientModel):
         ('f', 'Female'),
         ('o', 'Other')
     ], 'Gender', required=True, default='m')
-    birth_date = fields.Date('Birth Date')
+    birth_date = fields.Date('Birth Date', required=1)
     email = fields.Char(string="Email", required=1)
     mobile = fields.Char(string="Mobile")
     fee_type = fields.Selection([('lump_sum_fee', 'Lump Sum Fee'), ('installment', 'Installment')], string="Fee Type", required=1)
