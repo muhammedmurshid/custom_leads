@@ -81,7 +81,7 @@
                     <button name="act_return_to_new_lead" type="object" string="Return to New Lead"
                             class="btn-lost" invisible="state != 'lost'"/>
                     <button name="act_sent_to_welcome_mail" type="object" string="Sent to Welcome Mail"
-                             invisible="state != 'qualified'"/>
+                             invisible="state != 'qualified' or sended_welcome_mail == True"/>
                     <!--                    <button name="act_not_connected" type="object" string="Not Connected"/>-->
                     <!--                                   <button string="Cancel" class="btn-default" special="cancel"/>-->
                 </header>
@@ -231,7 +231,7 @@
                             <field name="campaign"/>
                             <field name="seminar_lead_id" string="Seminar Child Id" invisible="1"/>
                             <field name="seminar_id" invisible="1"/>
-                            <field name="sended_welcome_mail" groups="base.group_no_one"/>
+                            <field name="sended_welcome_mail" invisible="1"/>
                             <!--                            <field name="amount" invisible="state in ['new','in_progress']"/>-->
                             <!--                            <field name="leads_assign"/>-->
                         </group>
