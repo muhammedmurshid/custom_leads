@@ -21,6 +21,9 @@
                 <field name="state" decoration-info="state == 'new'"
                        decoration-success="state == 'qualified'"
                        decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>
+                <field name="receipt_no" widget="badge"/>
+                <field name="admission_amount"/>
+                <field name="date_of_receipt" widget="badge"/>
             </tree>
         </field>
     </record>
