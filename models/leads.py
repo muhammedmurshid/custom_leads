@@ -149,7 +149,7 @@ class LeadsForm(models.Model):
     sample = fields.Char(string='Sample', compute='get_phone_number_for_whatsapp')
     sended_welcome_mail = fields.Boolean(string="Sended Welcome Mail")
     receipt_no = fields.Char(string="Receipt No.")
-    admission_amount = fields.Float(string="Admission Amount")
+    admission_amount = fields.Float(string="Admission Fee")
     date_of_receipt = fields.Date(string="Date of Receipt")
 
     # @api.model_create_multi
