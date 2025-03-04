@@ -208,9 +208,10 @@ class QualifiedLead(models.TransientModel):
             'batch_id': self.batch_id.id,
             'course_id': self.course_id.id,
             'branch_id': self.branch_id.id,
-            'state':'confirm',
+            'state':'batch_allocated',
             'mobile': self.mobile,
             'admission_officer_id': self.lead_id.lead_owner.user_id.id,
             'admission_date': fields.Date.today(),
-            'fee_type':self.fee_type
+            'fee_type':self.fee_type,
+            'lead_id': self.id,
         })

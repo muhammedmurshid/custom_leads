@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="student_form_view_inheritance">
-        <field name="name">student.form.inherit</field>
-        <field name="model">op.student</field>
-        <field name="inherit_id" ref="openeducat_core.view_op_student_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="branch_id"/>
-                <field name="admission_officer_id"/>
-                <field name="admission_date"/>
-            </xpath>
-        </field>
-    </record>
+<!--    <record model="ir.ui.view" id="student_form_view_inheritance">-->
+<!--        <field name="name">student.form.inherit</field>-->
+<!--        <field name="model">op.student</field>-->
+<!--        <field name="inherit_id" ref="openeducat_core.view_op_student_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='partner_id']" position="after">-->
+<!--                <field name="branch_id"/>-->
+<!--                <field name="lead_id"/>-->
+<!--                <field name="admission_officer_id"/>-->
+<!--                <field name="admission_date"/>-->
+
+<!--            </xpath>-->
+<!--            <xpath expr="//field[@name='partner_id']" position="before">-->
+
+<!--                <field name="lead_id"/>-->
+
+
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
     <record model="ir.ui.view" id="activity_leads_model_id">
         <field name="name">activity.form.inherit</field>
         <field name="model">mail.activity</field>
@@ -32,6 +40,7 @@
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="admission_officer_id"/>
                 <field name="admission_date"/>
+                <field name="lead_id" groups="base.group_no_one"/>
             </xpath>
             <xpath expr="//field[@name='batch_id']" position="after">
                 <field name="branch_id"/>
