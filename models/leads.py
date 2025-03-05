@@ -27,9 +27,9 @@ class LeadsForm(models.Model):
                                copy=False, readonly=True, tracking=True)
     # touch_ids = fields.One2many('leads.own.touch.points', 'touch_id', string='Touch Points')
     lead_quality = fields.Selection(
-        [('new', 'New'), ('waiting_for_admission', 'Waiting for Admission'), ('admission', 'Admission'), ('hot', 'Hot'),
-         ('warm', 'Warm'), ('cold', 'Cold'),
-         ('bad_lead', 'Bad Lead'), ('crash_lead', 'Crash Lead'), ('not_responding', 'Not Responding')],
+        [('new', '🆕  New'), ('waiting_for_admission', '⏳  Waiting for Admission'), ('admission', '🎓  Admission'), ('hot', '🔥  Hot'),
+         ('warm', '🌞  Warm'), ('cold', '❄️  Cold'),
+         ('bad_lead', '⚠️  Bad Lead'), ('crash_lead', '💥  Crash Lead'), ('not_responding', '🚫  Not Responding')],
         string='Lead Quality', default='new', required=1, readonly=0)
 
     # def _get_lead_quality_color(self):
