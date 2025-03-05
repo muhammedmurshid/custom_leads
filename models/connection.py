@@ -213,5 +213,5 @@ class QualifiedLead(models.TransientModel):
             'admission_officer_id': self.lead_id.lead_owner.user_id.id,
             'admission_date': fields.Date.today(),
             'fee_type':self.fee_type,
-            'lead_id': self.id,
+            'lead_id': self.lead_id.id,
         })

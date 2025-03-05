@@ -1,0 +1,14 @@
+<templates id="template" xml:space="preserve">
+    <t t-name="custom_leads.LeadQualityDropdown">
+        <select class="form-control o_input"
+                t-att-value="state.value"
+                t-on-change="onChange">
+            <option value="">- None -</option>
+            <t t-foreach="Object.keys(colorMap)" t-as="option">
+                <option t-att-value="option" t-att-style="'color:' + colorMap[option]">
+                    <t t-esc="option"/>
+                </option>
+            </t>
+        </select>
+    </t>
+</templates>
