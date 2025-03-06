@@ -178,7 +178,7 @@ class LeadsForm(models.Model):
         # print(vals['call_responses'], 'res')
         if 'phone_number' in vals:
             vals['phone_number'] = vals['phone_number'].replace(" ", "")
-            
+
         if 'call_response' in vals and vals['call_response']:
             print(vals['call_response'], 'res')
             response_obj = self.env['call.responses'].search([('name', '=', vals['call_response'])], limit=1)
@@ -507,6 +507,9 @@ class LeadsForm(models.Model):
     truncated_call_response = fields.Char(
         string="Truncated Response", compute="_compute_truncated_response"
     )
+
+    def act_print_invoice(self):
+        return self.env.ref('custom_leads.action_report_lead_payment_history_receipt').report_action(self)
 
     def _compute_truncated_response(self):
         for record in self:

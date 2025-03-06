@@ -26,6 +26,7 @@
                 <field name="receipt_no" widget="badge" readonly="1"/>
                 <field name="admission_amount" readonly="1" sum="admission_amount" class="admission-amount"/>
                 <field name="date_of_receipt" widget="badge" readonly="1"/>
+                <button name="act_print_invoice" type="object" class="fa fa-download"/>
             </tree>
         </field>
     </record>
