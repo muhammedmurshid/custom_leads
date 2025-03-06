@@ -33,8 +33,6 @@
 
             '/custom_leads/static/src/css/leads.css',
             '/custom_leads/static/src/js/progress.js',
-            '/custom_leads/static/src/js/lead_quality_color.js',
-            # 'custom_leads/static/src/xml/lead_quality_widget.xml'
         ],
     },
 

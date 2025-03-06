@@ -19,9 +19,10 @@
                 <field name="batch_id" string="Batch Interested"/>
                 <field name="lead_owner" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
-                <field name="state" decoration-info="state == 'new'"
-                       decoration-success="state == 'qualified'"
-                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>
+                <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'" string="Status"/>
+<!--                <field name="state" decoration-info="state == 'new'"-->
+<!--                       decoration-success="state == 'qualified'"-->
+<!--                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>-->
                 <field name="receipt_no" widget="badge" readonly="1"/>
                 <field name="admission_amount" readonly="1" sum="admission_amount" class="admission-amount"/>
                 <field name="date_of_receipt" widget="badge" readonly="1"/>
