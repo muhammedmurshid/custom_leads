@@ -176,6 +176,9 @@ class LeadsForm(models.Model):
 
     def write(self, vals):
         # print(vals['call_responses'], 'res')
+        if 'phone_number' in vals:
+            vals['phone_number'] = vals['phone_number'].replace(" ", "")
+            
         if 'call_response' in vals and vals['call_response']:
             print(vals['call_response'], 'res')
             response_obj = self.env['call.responses'].search([('name', '=', vals['call_response'])], limit=1)
@@ -469,6 +472,9 @@ class LeadsForm(models.Model):
             values['reference_no'] = self.env['ir.sequence'].next_by_code(
                 'leads.logic') or _('New')
         # Create the lead
+        if 'phone_number' in values:
+            values['phone_number'] = values['phone_number'].replace(" ", "")
+
         lead = super(LeadsForm, self).create(values)
 
         # Allocate the lead to tele-callers or lead users
