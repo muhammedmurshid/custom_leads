@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <odoo>
-
-
-
     <record id="list_view_of_admission" model="ir.ui.view">
         <field name="name">admission.view.tree</field>
         <field name="model">leads.logic</field>
         <field name="arch" type="xml">
             <tree multi_edit="1">
 <!--                <field name="reference_no"/>-->
-                <field name="admission_date" string="Admission Date"/>
-                <field name="name"/>
-                <field name="phone_number" string="Mobile" widget="phone"/>
-                <field name="leads_source"/>
-                <field name="course_id" string="Course Interested"/>
-                <field name="branch_id" string="Branch Interested"/>
-                <field name="batch_id" string="Batch Interested"/>
+                <field name="admission_date" string="Admission Date" readonly="state == 'qualified'"/>
+                <field name="name" readonly="state == 'qualified'"/>
+                <field name="phone_number" string="Mobile" widget="phone" readonly="state == 'qualified'"/>
+                <field name="leads_source" readonly="state == 'qualified'"/>
+                <field name="course_id" string="Course Interested" readonly="state == 'qualified'"/>
+                <field name="branch_id" string="Branch Interested" readonly="state == 'qualified'"/>
+                <field name="batch_id" string="Batch Interested" readonly="state == 'qualified'"/>
                 <field name="lead_owner" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
-                <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'" string="Status"/>
+                <field name="state" optional="hide"/>
+                <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'" string="Status" readonly="state == 'qualified'"/>
 <!--                <field name="state" decoration-info="state == 'new'"-->
 <!--                       decoration-success="state == 'qualified'"-->
 <!--                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>-->
                 <field name="receipt_no" widget="badge" readonly="1"/>
                 <field name="admission_amount" readonly="1" sum="admission_amount" class="admission-amount"/>
                 <field name="date_of_receipt" widget="badge" readonly="1"/>
-                <button name="act_print_invoice" type="object" class="fa fa-download"/>
+                <button name="act_print_invoice" type="object" class="fa fa-download" string=" Receipt" invisible="admission_amount == 0"/>
             </tree>
         </field>
     </record>
@@ -171,9 +169,9 @@
                                 invisible="state != 'not_connected'" class="btn-call-back"/>
                         <separator/>
 
-                        <field name="name" style="background-color:#fae7e3;"/>
-                        <field name="email_address"/>
-                        <field name="phone_number" style="background-color:#fae7e3;"/>
+                        <field name="name" style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
+                        <field name="email_address" readonly="state == 'qualified'"/>
+                        <field name="phone_number" style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
 
                     </group>
                     <!--                    <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>-->
@@ -188,13 +186,13 @@
                             <!--                            <field name="name"/>-->
                             <!--                            <field name="email_address"/>-->
                             <!--                            <field name="phone_number"/>-->
-                            <field name="leads_source" style="background-color:#fae7e3;" options="{'no_create':True}"/>
+                            <field name="leads_source" style="background-color:#fae7e3;" options="{'no_create':True}" readonly="state == 'qualified'"/>
                             <field name="source_name" invisible="1"/>
                             <field name="incoming_source_checking" invisible="1"/>
                             <field name="digital_lead" invisible="1"/>
                             <field name="incoming_source" invisible="incoming_source_checking != 1"/>
                             <field name="digital_lead_source" invisible="digital_lead != 1"/>
-                            <field name="lead_quality"/>
+                            <field name="lead_quality" readonly="state == 'qualified'"/>
                             <!--                            <field name="lead_quality"-->
 
                             <!--                                   decoration-bf="lead_quality == 'hot'"-->
@@ -211,14 +209,14 @@
 
                         </group>
                         <group string="Course -Branch-Batch">
-                            <field name="preferred_course" invisible="source_name != 'Website'"/>
+                            <field name="preferred_course" invisible="source_name != 'Website'" />
                             <field name="academic_year"/>
                             <field name="course_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
-                                   style="background-color:#fae7e3;"/>
+                                   style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
                             <field name="branch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
-                                   style="background-color:#fae7e3;"/>
+                                   style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
                             <field name="batch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
-                                   style="background-color:#fae7e3;"/>
+                                   style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
                         </group>
                         <group name="info" string="">
                             <!--                            <field name="lead_type" style="background-color:#fae7e3;"/>-->
@@ -243,7 +241,7 @@
                         </group>
                         <group name="users" string="Users">
                             <field name="create_uid"/>
-                            <field name="lead_owner"/>
+                            <field name="lead_owner" readonly="state == 'qualified'"/>
                             <field name="tele_caller_id"/>
                         </group>
                         <group string="Course Details">
@@ -252,7 +250,7 @@
                             <field name="course_interested"/>
                         </group>
                         <group string="Admission Details">
-                            <field name="admission_status"/>
+                            <field name="admission_status" readonly="state == 'qualified'"/>
                             <!--                            <field name="booking_amount" readonly="1"/>-->
                         </group>
                         <group>

@@ -133,6 +133,7 @@ class LeadsForm(models.Model):
     # amount = fields.Float(string="Amount")
     mode_of_study = fields.Selection([('online', 'Online'), ('offline', 'Offline'), ('nil', 'Nil')],
                                      string='Mode of Study')
+    company_id = fields.Many2one(string='Company', comodel_name='res.company', required=True, default=lambda self: self.env.company)
     assigned_date = fields.Date(string='Assigned Date', readonly=1)
     digital_lead = fields.Boolean(string="Digital Lead")
     digital_lead_source = fields.Selection([('just_dial', 'Just Dial'), ('youtube_google', 'Youtube - Google'), ('whatsapp_campaign', 'Whatsapp Campaign'), ('messenger', 'Messenger'), ('facebook', 'Facebook'), ('linkedin', 'Linkedin'), ('instagram', 'Instagram'), ('whatsapp_meta', 'Whatsapp Meta'), ('website', 'Website'), ('google', 'Google')], string="Digital Lead Source")
