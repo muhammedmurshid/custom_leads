@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <odoo>
-    <record id="list_view_of_admission" model="ir.ui.view">
+      <record id="list_view_of_admission" model="ir.ui.view">
         <field name="name">admission.view.tree</field>
         <field name="model">leads.logic</field>
         <field name="arch" type="xml">
-            <tree multi_edit="1">
-<!--                <field name="reference_no"/>-->
-                <field name="admission_date" string="Admission Date" readonly="state == 'qualified'"/>
-                <field name="name" readonly="state == 'qualified'"/>
+            <tree multi_edit="1" js_class="custom_list_renderer">
+                <!--                <field name="reference_no"/>-->
+                <field name="admission_date" string="Admission Date" readonly="state == 'qualified'" widget="search"/>
+                <field name="name" readonly="state == 'qualified'" widget="search"/>
                 <field name="phone_number" string="Mobile" widget="phone" readonly="state == 'qualified'"/>
                 <field name="leads_source" readonly="state == 'qualified'"/>
                 <field name="course_id" string="Course Interested" readonly="state == 'qualified'"/>
@@ -17,17 +17,34 @@
                 <field name="lead_owner" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
                 <field name="state" optional="hide"/>
-                <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'" string="Status" readonly="state == 'qualified'"/>
-<!--                <field name="state" decoration-info="state == 'new'"-->
-<!--                       decoration-success="state == 'qualified'"-->
-<!--                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>-->
+                <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'"
+                       string="Status" readonly="state == 'qualified'"/>
+                <!--                <field name="state" decoration-info="state == 'new'"-->
+                <!--                       decoration-success="state == 'qualified'"-->
+                <!--                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>-->
                 <field name="receipt_no" widget="badge" readonly="1"/>
                 <field name="admission_amount" readonly="1" sum="admission_amount" class="admission-amount"/>
                 <field name="date_of_receipt" widget="badge" readonly="1"/>
-                <button name="act_print_invoice" type="object" class="fa fa-download" string=" Receipt" invisible="admission_amount == 0"/>
+                <button name="act_print_invoice" type="object" class="fa fa-download" string=" Receipt"
+                        invisible="admission_amount == 0"/>
             </tree>
         </field>
     </record>
+<!--    <record id="your_model_search_view" model="ir.ui.view">-->
+<!--        <field name="name">leads.logic.search</field>-->
+<!--        <field name="model">leads.logic</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <search>-->
+<!--                <searchpanel field="admission_date" string="Admission Date"/>-->
+<!--                <searchpanel field="name" string="Name"/>-->
+<!--&lt;!&ndash;                <searchpanel field="sales_ac" string="Sales A/C"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                <searchpanel field="purchase_ac" string="Purchase A/C"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                <filter name="filter_type" string="Type" domain="[('type', '!=', '')]"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                <field name="item_name"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                <field name="taxability"/>&ndash;&gt;-->
+<!--            </search>-->
+<!--        </field>-->
+<!--    </record>-->
     <record id="tree_view_leads_logic" model="ir.ui.view">
         <field name="name">leads.logic.view.tree</field>
         <field name="model">leads.logic</field>
@@ -85,7 +102,7 @@
                     <button name="act_return_to_new_lead" type="object" string="Return to New Lead"
                             class="btn-lost" invisible="state != 'lost'"/>
                     <button name="act_sent_to_welcome_mail" type="object" string="Sent to Welcome Mail"
-                             invisible="state != 'qualified' or sended_welcome_mail == True"/>
+                            invisible="state != 'qualified' or sended_welcome_mail == True"/>
                     <!--                    <button name="act_not_connected" type="object" string="Not Connected"/>-->
                     <!--                                   <button string="Cancel" class="btn-default" special="cancel"/>-->
                 </header>
@@ -186,7 +203,8 @@
                             <!--                            <field name="name"/>-->
                             <!--                            <field name="email_address"/>-->
                             <!--                            <field name="phone_number"/>-->
-                            <field name="leads_source" style="background-color:#fae7e3;" options="{'no_create':True}" readonly="state == 'qualified'"/>
+                            <field name="leads_source" style="background-color:#fae7e3;" options="{'no_create':True}"
+                                   readonly="state == 'qualified'"/>
                             <field name="source_name" invisible="1"/>
                             <field name="incoming_source_checking" invisible="1"/>
                             <field name="digital_lead" invisible="1"/>
@@ -209,7 +227,7 @@
 
                         </group>
                         <group string="Course -Branch-Batch">
-                            <field name="preferred_course" invisible="source_name != 'Website'" />
+                            <field name="preferred_course" invisible="source_name != 'Website'"/>
                             <field name="academic_year"/>
                             <field name="course_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
                                    style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
@@ -380,10 +398,27 @@
             </kanban>
         </field>
     </record>
-    <record id="leads_search_filter" model="ir.ui.view">
+
+    <record id="leads_logic_search_view" model="ir.ui.view">
+        <field name="name">leads.logic.search.view</field>
         <field name="model">leads.logic</field>
+        <!--        <field name="inherit_id" ref="custom_leads.tree_view_leads_logic"/>-->
         <field name="arch" type="xml">
-            <search string="Filters">
+            <search>
+
+                <!-- Default filter for Today -->
+                <filter string="Today's Leads" name="today" domain="[('date_of_adding', '=', context_today())]"/>
+
+
+                <filter string="Prev Month" name="prev_month"
+                        domain="[('date_of_adding','&gt;=',(context_today()-relativedelta(years=1)).strftime('%%Y-%%m-01')),('date_of_adding','&lt;',time.strftime('%%Y-%%m-01'))]"
+                />
+                <filter string="Current Month" name="current_month"
+                        domain="[('date_of_adding','>=',time.strftime('%%Y-%%m-01')),('date_of_adding','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01'))]"
+                />
+                <filter string="Current Week" name="current_week"
+                        domain="[('date_of_adding', '&lt;=', ((context_today()+relativedelta(weeks=0, weekday=-1)).strftime('%Y-%m-%d'))),('date_of_adding', '&gt;=', ((context_today()-relativedelta(weeks=1, weekday=0)).strftime('%Y-%m-%d')))]"/>
+
                 <field name="reference_no" string="Reference"/>
                 <field name="phone_number" string="Mobile Number"/>
                 <field name="leads_source" string="Lead Source"/>
@@ -393,14 +428,64 @@
                 <field name="college_name" string="College"/>
                 <field name="phone_number_second" string="Alternate Mobile Number"/>
                 <field name="course_id" string="Course"/>
-                <!--                <filter string="assign" name="lead_owner" context="{'group_by': 'leads_assign'}"/>-->
-                <!--                <group expand="0" string="Group By">-->
-                <!--                    <filter string="assign" name="leads_assign" context="{'group_by': 'leads_assign'}"/>-->
-                <!--                </group>-->
+            </search>
+        </field>
+    </record>
+    <record id="leads_logic_search_view_admission" model="ir.ui.view">
+        <field name="name">leads.logic.search.admission.view</field>
+        <field name="model">leads.logic</field>
+        <!--        <field name="inherit_id" ref="custom_leads.tree_view_leads_logic"/>-->
+        <field name="arch" type="xml">
+            <search>
+                <!-- Default filter for Today -->
+                <filter string="Today's Admission" name="today" domain="[('admission_date', '=', context_today())]"/>
+
+
+                <filter string="Prev Month" name="prev_month"
+                        domain="[('admission_date','&gt;=',(context_today()-relativedelta(years=1)).strftime('%%Y-%%m-01')),('admission_date','&lt;',time.strftime('%%Y-%%m-01'))]"
+                />
+                <filter string="Current Month" name="current_month"
+                        domain="[('admission_date','>=',time.strftime('%%Y-%%m-01')),('admission_date','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01'))]"
+                />
+                <filter string="Current Week" name="current_week"
+                        domain="[('admission_date', '&lt;=', ((context_today()+relativedelta(weeks=0, weekday=-1)).strftime('%Y-%m-%d'))),('admission_date', '&gt;=', ((context_today()-relativedelta(weeks=1, weekday=0)).strftime('%Y-%m-%d')))]"
+                        />
+
+                <field name="reference_no" string="Reference"/>
+                <field name="phone_number" string="Mobile Number"/>
+                <field name="leads_source" string="Lead Source"/>
+                <field name="lead_quality" string="Lead Quality"/>
+                <field name="name" string="Lead Name"/>
+                <!--                <field name="title" string="Title"/>-->
+                <field name="college_name" string="College"/>
+                <field name="phone_number_second" string="Alternate Mobile Number"/>
+                <field name="course_id" string="Course"/>
 
             </search>
         </field>
     </record>
+
+    <!--    <record id="leads_search_filter" model="ir.ui.view">-->
+    <!--        <field name="model">leads.logic</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <search string="Filters">-->
+    <!--                <field name="reference_no" string="Reference"/>-->
+    <!--                <field name="phone_number" string="Mobile Number"/>-->
+    <!--                <field name="leads_source" string="Lead Source"/>-->
+    <!--                <field name="lead_quality" string="Lead Quality"/>-->
+    <!--                <field name="name" string="Lead Name"/>-->
+    <!--                &lt;!&ndash;                <field name="title" string="Title"/>&ndash;&gt;-->
+    <!--                <field name="college_name" string="College"/>-->
+    <!--                <field name="phone_number_second" string="Alternate Mobile Number"/>-->
+    <!--                <field name="course_id" string="Course"/>-->
+    <!--                &lt;!&ndash;                <filter string="assign" name="lead_owner" context="{'group_by': 'leads_assign'}"/>&ndash;&gt;-->
+    <!--                &lt;!&ndash;                <group expand="0" string="Group By">&ndash;&gt;-->
+    <!--                &lt;!&ndash;                    <filter string="assign" name="leads_assign" context="{'group_by': 'leads_assign'}"/>&ndash;&gt;-->
+    <!--                &lt;!&ndash;                </group>&ndash;&gt;-->
+
+    <!--            </search>-->
+    <!--        </field>-->
+    <!--    </record>-->
 
     <record model="ir.actions.act_window" id="action_leads_main_action">
         <field name="name">Leads</field>
@@ -408,6 +493,8 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[('state', '!=', 'qualified')]</field>
         <field name="view_id" ref="custom_leads.tree_view_leads_logic"/>
+        <field name="search_view_id" ref="custom_leads.leads_logic_search_view"/>
+        <field name="context">{'search_default_current_week': 1}</field>
     </record>
 
     <record id="action_list_view_of_admission" model="ir.actions.act_window">
@@ -416,6 +503,8 @@
         <field name="view_mode">tree,form</field>
         <field name="domain">[('state', '=', 'qualified')]</field>
         <field name="view_id" ref="custom_leads.list_view_of_admission"/>
+        <field name="search_view_id" ref="custom_leads.leads_logic_search_view_admission"/>
+        <field name="context">{'search_default_current_week': 1}</field>
     </record>
     <record id="ir_sequence_leads_logic" model="ir.sequence">
         <field name="name">Leads Sequence</field>

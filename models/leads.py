@@ -153,6 +153,8 @@ class LeadsForm(models.Model):
     admission_amount = fields.Float(string="Admission Fee")
     date_of_receipt = fields.Date(string="Date of Receipt")
 
+
+
     # @api.model_create_multi
     # def create(self, vals_list):
     #     """ Create a sequence for the student model """
