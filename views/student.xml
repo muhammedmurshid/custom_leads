@@ -59,6 +59,10 @@
                 <field name="branch_id"/>
 
             </xpath>
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="admission_date"/>
+
+            </xpath>
         </field>
     </record>
 
