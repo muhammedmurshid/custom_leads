@@ -108,18 +108,18 @@
 
                     <table width="100%">
                         <tr>
-                            <td>
-                                <strong>Billed To</strong>
-                            </td>
-                            <td>:&amp;nbsp;</td>
-                            <td align="right">
-                                <span>
-                                    <strong>Payment Mode</strong>
-                                </span>
-                            </td>
-                            <td align="left">:&amp;nbsp;
-                                <span t-field="doc.report.payment_mode"/>
-                            </td>
+<!--                            <td>-->
+<!--                                <strong>Billed To</strong>-->
+<!--                            </td>-->
+<!--                            <td>:&amp;nbsp;</td>-->
+<!--                            <td align="right">-->
+<!--                                <span>-->
+<!--                                    <strong>Payment Mode</strong>-->
+<!--                                </span>-->
+<!--                            </td>-->
+<!--                            <td align="left">:&amp;nbsp;-->
+<!--                                <span t-field="doc.report.payment_mode"/>-->
+<!--                            </td>-->
                         </tr>
                         <tr>
                             <td style="padding-top:10px;">
@@ -130,12 +130,21 @@
                             </td>
                             <td align="right">
                                 <span>
-                                    <strong>Cheque No/Reference No</strong>
+                                    <strong>Branch</strong>
                                 </span>
                             </td>
+
                             <td>:&amp;nbsp;
-                                <span t-field="doc.report.cheque_no"/>
+                                <span t-field="doc.branch_id.name"/>
                             </td>
+<!--                            <td align="right">-->
+<!--                                <span>-->
+<!--                                    <strong>Cheque No/Reference No</strong>-->
+<!--                                </span>-->
+<!--                            </td>-->
+<!--                            <td>:&amp;nbsp;-->
+<!--                                <span t-field="doc.report.cheque_no"/>-->
+<!--                            </td>-->
 
                         </tr>
                         <tr>
@@ -158,17 +167,9 @@
                                 <span t-field="doc.course_id.name"/>
                             </td>
                         </tr>
-                        <tr>
-                            <td style="padding-top:10px;">
-                                <span>
-                                    <strong>Branch</strong>
-                                </span>
-                            </td>
-
-                            <td>:&amp;nbsp;
-                                <span t-field="doc.branch_id.name"/>
-                            </td>
-                        </tr>
+<!--                        <tr>-->
+<!--                            -->
+<!--                        </tr>-->
                         <tr>
                             <td style="padding-top:10px;">
                                 <span>
