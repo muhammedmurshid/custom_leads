@@ -154,7 +154,6 @@ class LeadsForm(models.Model):
     date_of_receipt = fields.Date(string="Date of Receipt")
 
 
-
     # @api.model_create_multi
     # def create(self, vals_list):
     #     """ Create a sequence for the student model """
@@ -247,6 +246,9 @@ class LeadsForm(models.Model):
                 self.crash_user_id = False
 
     batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id)]")
+
+    batch_fee = fields.Float(string="Batch Fee", related="batch_id.total_lump_sum_fee")
+
 
     def act_call_back(self):
         return {'type': 'ir.actions.act_window',

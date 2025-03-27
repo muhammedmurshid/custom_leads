@@ -14,7 +14,7 @@
                 <field name="course_id" string="Course Interested" readonly="state == 'qualified'"/>
                 <field name="branch_id" string="Branch Interested" readonly="state == 'qualified'"/>
                 <field name="batch_id" string="Batch Interested" readonly="state == 'qualified'"/>
-                <field name="lead_owner" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
+                <field name="lead_owner" widget="many2one_avatar_user" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
                 <field name="state" optional="hide"/>
                 <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'"
@@ -22,36 +22,22 @@
                 <!--                <field name="state" decoration-info="state == 'new'"-->
                 <!--                       decoration-success="state == 'qualified'"-->
                 <!--                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>-->
-                <field name="receipt_no" widget="badge" readonly="1"/>
+                <field name="receipt_no" widget="badge" readonly="1" string="Invoice No."/>
                 <field name="admission_amount" readonly="1" sum="admission_amount" class="admission-amount"/>
-                <field name="date_of_receipt" widget="badge" readonly="1"/>
-                <button name="act_print_invoice" type="object" class="fa fa-download" string=" Receipt"
+                <field string="Batch Fee" name="batch_fee" sum="Total Fee"/>
+                <field name="date_of_receipt" widget="badge" readonly="1" string="Date of Invoice"/>
+                <button name="act_print_invoice" type="object" class="fa fa-download" string=" Invoice"
                         invisible="admission_amount == 0"/>
             </tree>
         </field>
     </record>
-<!--    <record id="your_model_search_view" model="ir.ui.view">-->
-<!--        <field name="name">leads.logic.search</field>-->
-<!--        <field name="model">leads.logic</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <search>-->
-<!--                <searchpanel field="admission_date" string="Admission Date"/>-->
-<!--                <searchpanel field="name" string="Name"/>-->
-<!--&lt;!&ndash;                <searchpanel field="sales_ac" string="Sales A/C"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                <searchpanel field="purchase_ac" string="Purchase A/C"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                <filter name="filter_type" string="Type" domain="[('type', '!=', '')]"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                <field name="item_name"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                <field name="taxability"/>&ndash;&gt;-->
-<!--            </search>-->
-<!--        </field>-->
-<!--    </record>-->
     <record id="tree_view_leads_logic" model="ir.ui.view">
         <field name="name">leads.logic.view.tree</field>
         <field name="model">leads.logic</field>
         <field name="arch" type="xml">
-            <tree multi_edit="1">
+            <tree multi_edit="1" js_class="o_list_renderer">
                 <field name="reference_no"/>
-                <field name="date_of_adding" string="Added Date" widget="badge"/>
+                <field name="date_of_adding" string="Added Date" />
                 <field name="name"/>
                 <field name="phone_number" string="Mobile" widget="phone"/>
                 <button name="whatsapp_click_button" class="fa fa-whatsapp btn-success" type="object"/>
@@ -67,12 +53,13 @@
                 <field name="call_response" string="Response Now"/>
                 <!--                <field name="second_response" string="2nd Response" widget="badge"/>-->
                 <!--                <field name="third_response" string="Last Response" widget="badge"/>-->
-                <field name="lead_owner" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
+                <field name="lead_owner" widget="many2one_avatar_user" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
                 <!--                <field name="tele_caller_id"/>-->
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
                 <button name="act_admission" type="object" string="Transfer to Admission"
                         class="btn-convert" invisible="state != 'in_progress'"/>
                 <!--                <field name="admission_status"/>-->
+<!--                <field name="state"/>-->
                 <field name="state" decoration-info="state == 'new'"
                        decoration-success="state == 'qualified'"
                        decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>
@@ -85,9 +72,6 @@
         <field name="model">leads.logic</field>
         <field name="arch" type="xml">
             <form string="Leads">
-                <style>
-
-                </style>
 
                 <header>
                     <field name="state" widget="statusbar"/>

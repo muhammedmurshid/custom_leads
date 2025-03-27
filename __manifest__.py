@@ -34,7 +34,7 @@
 
             '/custom_leads/static/src/css/leads.css',
             '/custom_leads/static/src/js/progress.js',
-            # 'custom_leads/static/src/js/list_search.js',
+            # 'custom_leads/static/src/js/custom_search.js',
         ],
     },
 
