@@ -42,6 +42,7 @@
                 <field name="phone_number" string="Mobile" widget="phone"/>
                 <button name="whatsapp_click_button" class="fa fa-whatsapp btn-success" type="object"/>
                 <field name="leads_source"/>
+                <field name="college_name" string="Seminar@College"/>
                 <field name="lead_quality" widget="badge" decoration-info="lead_quality == 'new'"
                        decoration-danger="lead_quality == 'bad_lead'" decoration-success="lead_quality == 'admission'"
                        decoration-warning="lead_quality == 'warm'"
