@@ -24,6 +24,37 @@
                 <!--                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>-->
                 <field name="receipt_no" widget="badge" readonly="1" string="Invoice No."/>
                 <field name="admission_amount" readonly="1" sum="admission_amount" class="admission-amount"/>
+                <field string="Expected Revenue" name="batch_fee" sum="Total Fee"/>
+                <field name="date_of_receipt" widget="badge" readonly="1" string="Date of Invoice"/>
+                <button name="act_print_invoice" type="object" class="fa fa-download" string=" Invoice"
+                        invisible="admission_amount == 0"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="list_view_of_waiting_for_admission" model="ir.ui.view">
+        <field name="name">waiting.for.admission.view.tree</field>
+        <field name="model">leads.logic</field>
+        <field name="arch" type="xml">
+            <tree multi_edit="1" js_class="custom_list_renderer">
+                <!--                <field name="reference_no"/>-->
+                <field name="admission_date" string="Admission Date" readonly="state == 'qualified'" widget="search"/>
+                <field name="name" readonly="state == 'qualified'" widget="search"/>
+                <field name="phone_number" string="Mobile" widget="phone" readonly="state == 'qualified'"/>
+                <field name="leads_source" readonly="state == 'qualified'"/>
+                <field name="course_id" string="Course Interested" readonly="state == 'qualified'"/>
+                <field name="branch_id" string="Branch Interested" readonly="state == 'qualified'"/>
+                <field name="batch_id" string="Batch Interested" readonly="state == 'qualified'"/>
+                <field name="lead_owner" widget="many2one_avatar_user" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
+                <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
+                <field name="state" optional="hide"/>
+                <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'"
+                       string="Status" readonly="state == 'qualified'"/>
+                <!--                <field name="state" decoration-info="state == 'new'"-->
+                <!--                       decoration-success="state == 'qualified'"-->
+                <!--                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>-->
+                <field name="receipt_no" widget="badge" readonly="1" string="Invoice No."/>
+                <field name="admission_amount" readonly="1" sum="admission_amount" class="admission-amount"/>
                 <field string="Batch Fee" name="batch_fee" sum="Total Fee"/>
                 <field name="date_of_receipt" widget="badge" readonly="1" string="Date of Invoice"/>
                 <button name="act_print_invoice" type="object" class="fa fa-download" string=" Invoice"
@@ -31,6 +62,7 @@
             </tree>
         </field>
     </record>
+
     <record id="tree_view_leads_logic" model="ir.ui.view">
         <field name="name">leads.logic.view.tree</field>
         <field name="model">leads.logic</field>
@@ -80,8 +112,10 @@
                             class="btn btn-primary me-1" invisible="state != 'new'"/>
                     <!--                    <button name="act_convert" type="object" string="Convert"-->
                     <!--                            class="btn-convert" invisible="state in ['qualified','new','lost','deal']"/>-->
-                    <button name="act_admission" type="object" string="Transfer to Admission"
-                            class="btn-convert" invisible="state != 'in_progress'"/>
+                    <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"
+                            type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'" class="btn-waiting-for-admission"/>
+                    <button name="act_admission" type="object" string="Waiting for Admission Payment"
+                            class="btn-convert" invisible="lead_quality != 'waiting_for_admission'"/>
                     <!--                    <button name="act_lost_lead" type="object" string="Lost"-->
                     <!--                            class="btn-lost" invisible="state in ['lost','qualified']"/>-->
                     <button name="act_return_to_new_lead" type="object" string="Return to New Lead"
@@ -491,6 +525,17 @@
         <field name="search_view_id" ref="custom_leads.leads_logic_search_view_admission"/>
         <field name="context">{'search_default_current_week': 1}</field>
     </record>
+
+    <record id="action_list_view_of_waiting_for_admission" model="ir.actions.act_window">
+        <field name="name">Waiting for Admissions</field>
+        <field name="res_model">leads.logic</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('lead_quality', '=', 'waiting_for_admission')]</field>
+        <field name="view_id" ref="custom_leads.tree_view_leads_logic"/>
+        <field name="search_view_id" ref="custom_leads.leads_logic_search_view"/>
+        <field name="context">{'search_default_current_week': 1}</field>
+    </record>
+
     <record id="ir_sequence_leads_logic" model="ir.sequence">
         <field name="name">Leads Sequence</field>
         <field name="code">leads.logic</field>
@@ -535,6 +580,12 @@
             id="leads_admission_menu"
             name="Admission"
             parent="leads_main_menu"
-            sequence="4"
+            sequence="5"
             action="action_list_view_of_admission"/>
+    <menuitem
+            id="leads_waiting_for_admission_menu"
+            name="Waiting for Admission"
+            parent="leads_main_menu"
+            sequence="4"
+            action="action_list_view_of_waiting_for_admission"/>
 </odoo>

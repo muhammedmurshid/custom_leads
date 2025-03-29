@@ -247,7 +247,7 @@ class LeadsForm(models.Model):
 
     batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id)]")
 
-    batch_fee = fields.Float(string="Batch Fee", related="batch_id.total_lump_sum_fee")
+    batch_fee = fields.Float(string="Expected Revenue", related="batch_id.lump_fee_excluding_tax")
 
 
     def act_call_back(self):
@@ -378,16 +378,18 @@ class LeadsForm(models.Model):
                 #     }
                 # }
                 # return  notification
-                raise ValidationError("⚠️ You need to complete the admission procedure before proceeding.")
+                raise ValidationError("⚠️ First, you need to transfer to 'Waiting for Admission Payment.' After the admission fee is paid, you can transfer to 'Admission'.")
                 # return {
                 #     'type': 'ir.actions.client',
                 #     'tag': 'display_notification',
                 #     'params': {
-                #         'title': _("Warning head"),
+                #         'title': _("Warning"),
                 #         'type': 'warning',
                 #         'message': "⚠️ You need to complete the admission procedure before proceeding.",
                 #         'sticky': True,
+                #         'next': {'type': 'ir.actions.act_window_close'}
                 #     },
+                #     'context': dict(self.env.context),
                 # }
 
     def act_lost_lead(self):
@@ -429,6 +431,9 @@ class LeadsForm(models.Model):
                                 'default_email': self.email_address},}
         else:
             raise UserError(_('Please ensure that Batch, Branch, and Course are selected before proceeding.'))
+
+    def act_transfer_to_waiting_for_admission(self):
+        self.lead_quality = 'waiting_for_admission'
 
     def act_return_to_new_lead(self):
         self.state = 'new'
