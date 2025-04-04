@@ -4,7 +4,9 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
 from datetime import date, datetime, timedelta
 import logging
+
 _logger = logging.getLogger(__name__)
+
 
 class LeadsForm(models.Model):
     _name = 'leads.logic'
@@ -17,17 +19,18 @@ class LeadsForm(models.Model):
     source_name = fields.Char(string="Source", related="leads_source.name")
     name = fields.Char(string='Lead Name', required=1)
     email_address = fields.Char(string='Email')
-    phone_number = fields.Char(string='Mobile',required=1)
+    phone_number = fields.Char(string='Mobile', required=1)
     probability = fields.Float(string='Probability')
     admission_status = fields.Boolean(string='Admission', readonly=1)
     date_of_adding = fields.Date(string='Date of Adding', default=fields.Datetime.now, readonly=1)
-    last_update_date = fields.Datetime(string='Last Updated Date',default=fields.Datetime.now)
-    course_id = fields.Many2one('op.course',string='Course')
+    last_update_date = fields.Datetime(string='Last Updated Date', default=fields.Datetime.now)
+    course_id = fields.Many2one('op.course', string='Course')
     reference_no = fields.Char("Reference", default=lambda self: _('New'),
                                copy=False, readonly=True, tracking=True)
     # touch_ids = fields.One2many('leads.own.touch.points', 'touch_id', string='Touch Points')
     lead_quality = fields.Selection(
-        [('new', '🆕  New'), ('waiting_for_admission', '⏳  Waiting for Admission'), ('admission', '🎓  Admission'), ('hot', '🔥  Hot'),
+        [('new', '🆕  New'), ('waiting_for_admission', '⏳  Waiting for Admission'), ('admission', '🎓  Admission'),
+         ('hot', '🔥  Hot'),
          ('warm', '🌞  Warm'), ('cold', '❄️  Cold'),
          ('bad_lead', '⚠️  Bad Lead'), ('crash_lead', '💥  Crash Lead'), ('not_responding', '🚫  Not Responding')],
         string='Lead Quality', default='new', required=1, readonly=0)
@@ -66,7 +69,9 @@ class LeadsForm(models.Model):
     course_interested = fields.Char(string="Course Interested")
     seminar_id = fields.Integer(string="Seminar")
     preferred_course = fields.Char(string="Preferred Course")
-    academic_year_of_course_attend = fields.Selection([('2023-2024','2023-2024'), ('2024-2025','2024-2025'), ('2025-2026','2025-2026'), ('2026-2027','2026-2027')], string="Academic Year of Course attended")
+    academic_year_of_course_attend = fields.Selection(
+        [('2023-2024', '2023-2024'), ('2024-2025', '2024-2025'), ('2025-2026', '2025-2026'),
+         ('2026-2027', '2026-2027')], string="Academic Year of Course attended")
     course_type = fields.Selection(
         [('indian', 'Indian'), ('international', 'International'), ('crash', 'Crash'), ('repeaters', 'Repeaters'),
          ('nil', 'Nil')],
@@ -79,10 +84,13 @@ class LeadsForm(models.Model):
     last_studied_course = fields.Char(string='Last Studied Course')
     incoming_source = fields.Selection(
         [('social_media', 'Social Media'), ('google', 'Google'), ('hoardings', 'Hoardings'), ('tv_ads', 'TV Ads'),
-         ('through friends', 'Through Friends'), ('whatsapp', 'WhatsApp'), ('re_admission', 'Re-Admission'),('other', 'Other')],
+         ('through friends', 'Through Friends'), ('whatsapp', 'WhatsApp'), ('re_admission', 'Re-Admission'),
+         ('other', 'Other')],
         string='Incoming Calls / Walk In Source')
     incoming_source_checking = fields.Boolean(string='Incoming Source Checking', )
-    academic_year = fields.Selection([('2024-2025', '2024-2025'), ('2025-2026', '2025-2026'), ('2026-2027', '2026-2027'), ('nil', 'Nil')], string="Academic Year")
+    academic_year = fields.Selection(
+        [('2024-2025', '2024-2025'), ('2025-2026', '2025-2026'), ('2026-2027', '2026-2027'), ('nil', 'Nil')],
+        string="Academic Year")
     college_name = fields.Char(string='College/School')
     title = fields.Char(string="Title")
     lead_referral_staff_id = fields.Many2one('res.users', string='Lead Referral Staff')
@@ -128,15 +136,21 @@ class LeadsForm(models.Model):
     remarks = fields.Char(string='Remarks')
     parent_number = fields.Char('Parent Number')
     closing_date = fields.Date(string="Closing Date")
-    call_responses = fields.Many2many('call.responses', string="Call Responses", compute='_compute_total_responses', store=1)
+    call_responses = fields.Many2many('call.responses', string="Call Responses", compute='_compute_total_responses',
+                                      store=1)
     third_response = fields.Text(string="Last Response")
     # amount = fields.Float(string="Amount")
     mode_of_study = fields.Selection([('online', 'Online'), ('offline', 'Offline'), ('nil', 'Nil')],
                                      string='Mode of Study')
-    company_id = fields.Many2one(string='Company', comodel_name='res.company', required=True, default=lambda self: self.env.company)
+    company_id = fields.Many2one(string='Company', comodel_name='res.company', required=True,
+                                 default=lambda self: self.env.company)
     assigned_date = fields.Date(string='Assigned Date', readonly=1)
     digital_lead = fields.Boolean(string="Digital Lead")
-    digital_lead_source = fields.Selection([('just_dial', 'Just Dial'), ('youtube_google', 'Youtube - Google'), ('whatsapp_campaign', 'Whatsapp Campaign'), ('messenger', 'Messenger'), ('facebook', 'Facebook'), ('linkedin', 'Linkedin'), ('instagram', 'Instagram'), ('whatsapp_meta', 'Whatsapp Meta'), ('website', 'Website'), ('google', 'Google')], string="Digital Lead Source")
+    digital_lead_source = fields.Selection(
+        [('just_dial', 'Just Dial'), ('youtube_google', 'Youtube - Google'), ('whatsapp_campaign', 'Whatsapp Campaign'),
+         ('messenger', 'Messenger'), ('facebook', 'Facebook'), ('linkedin', 'Linkedin'), ('instagram', 'Instagram'),
+         ('whatsapp_meta', 'Whatsapp Meta'), ('website', 'Website'), ('google', 'Google')],
+        string="Digital Lead Source")
     platform = fields.Selection(
         [('facebook', 'Facebook'), ('instagram', 'Instagram'), ('website', 'Website'), ('just_dial', 'Just Dial'),
          ('other', 'Other')],
@@ -144,15 +158,18 @@ class LeadsForm(models.Model):
     expected_joining_date = fields.Date(string="Expected Joining Date")
     not_response_note = fields.Text(string="Not Respond Reason")
     # lead_type = fields.Selection([('regular_lead', 'Regular Lead'), ('crash_lead','Crash Lead')], default='regular_lead', required=1)
-    current_status = fields.Selection([('new_lead', 'New Lead'), ('not_responding', 'Not Responding'), ('need_follow_up', 'Need Follow-Up'), ('admission', 'Admission'), ('lost', 'Lost')], string="Current Status", default="new_lead")
+    current_status = fields.Selection(
+        [('new_lead', 'New Lead'), ('not_responding', 'Not Responding'), ('need_follow_up', 'Need Follow-Up'),
+         ('admission', 'Admission'), ('lost', 'Lost')], string="Current Status", default="new_lead")
     call_response = fields.Text(string="Response")
-    transitions = fields.Selection([('future_lead', 'Future Lead'), ('junk_lead', 'Junk Lead'), ('not_qualified', 'Not Qualified'), ('qualified', 'Qualified')], string="Transitions", tracking=1)
+    transitions = fields.Selection(
+        [('future_lead', 'Future Lead'), ('junk_lead', 'Junk Lead'), ('not_qualified', 'Not Qualified'),
+         ('qualified', 'Qualified')], string="Transitions", tracking=1)
     sample = fields.Char(string='Sample', compute='get_phone_number_for_whatsapp')
     sended_welcome_mail = fields.Boolean(string="Sended Welcome Mail")
     receipt_no = fields.Char(string="Receipt No.")
     admission_amount = fields.Float(string="Admission Fee")
     date_of_receipt = fields.Date(string="Date of Receipt")
-
 
     # @api.model_create_multi
     # def create(self, vals_list):
@@ -248,7 +265,6 @@ class LeadsForm(models.Model):
     batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id)]")
 
     batch_fee = fields.Float(string="Expected Revenue", related="batch_id.lump_fee_excluding_tax")
-
 
     def act_call_back(self):
         return {'type': 'ir.actions.act_window',
@@ -356,9 +372,10 @@ class LeadsForm(models.Model):
                 'target': 'new',
                 'view_mode': 'form',
                 'view_type': 'form',
-                'context': {'default_lead_id': self.id,}, }
+                'context': {'default_lead_id': self.id, }, }
 
-    @api.onchange('name','phone_number','call_response','leads_source','lead_quality','admission_status','lead_owner','assign_to','course_id','batch_id','branch_id')
+    @api.onchange('name', 'phone_number', 'call_response', 'leads_source', 'lead_quality', 'admission_status',
+                  'lead_owner', 'assign_to', 'course_id', 'batch_id', 'branch_id')
     def _onchange_updated_date(self):
         print('hiii')
         if self:
@@ -378,7 +395,8 @@ class LeadsForm(models.Model):
                 #     }
                 # }
                 # return  notification
-                raise ValidationError("⚠️ First, you need to transfer to 'Waiting for Admission Payment.' After the admission fee is paid, you can transfer to 'Admission'.")
+                raise ValidationError(
+                    "⚠️ First, you need to transfer to 'Waiting for Admission Payment.' After the admission fee is paid, you can transfer to 'Admission'.")
                 # return {
                 #     'type': 'ir.actions.client',
                 #     'tag': 'display_notification',
@@ -399,7 +417,7 @@ class LeadsForm(models.Model):
                 'target': 'new',
                 'view_mode': 'form',
                 'view_type': 'form',
-                'context': {'default_lead_id': self.id,}, }
+                'context': {'default_lead_id': self.id, }, }
 
     def act_convert(self):
         print('hi')
@@ -410,7 +428,7 @@ class LeadsForm(models.Model):
                     'target': 'new',
                     'view_mode': 'form',
                     'view_type': 'form',
-                    'context': {'default_lead_id': self.id, 'default_lead_owner_id': self.lead_owner.user_id.id,  }, }
+                    'context': {'default_lead_id': self.id, 'default_lead_owner_id': self.lead_owner.user_id.id, }, }
         else:
             raise UserError(_('Please ensure that Batch, Branch, and Course are selected before proceeding.'))
 
@@ -428,7 +446,7 @@ class LeadsForm(models.Model):
                                 'default_course_id': self.course_id.id,
                                 'default_branch_id': self.branch_id.id,
                                 'default_mobile': self.phone_number,
-                                'default_email': self.email_address},}
+                                'default_email': self.email_address}, }
         else:
             raise UserError(_('Please ensure that Batch, Branch, and Course are selected before proceeding.'))
 
@@ -475,6 +493,20 @@ class LeadsForm(models.Model):
     #             print(lead_user_id, 'user_id')
     #             user = self.env['res.users'].search([('id', '=', lead_user_id)])
     #             lead.write({'lead_owner': user.employee_id.id})
+
+    def act_re_allocation_leads(self):
+
+        selected_ids = self.env.context.get('active_ids', [])
+        print('re assignment', selected_ids)
+        return {'type': 'ir.actions.act_window',
+                'name': _('Re Allocation'),
+                'res_model': 're.allocation.leads',
+                'target': 'new',
+                'view_mode': 'form',
+                'view_type': 'form',
+                'context': {
+                    'default_leads_ids': [(6, 0, selected_ids)]
+                }, }
 
     @api.model
     def create(self, values):
@@ -559,6 +591,7 @@ class LeadsForm(models.Model):
             'context': {'parent_obj': active_ids}
 
         }
+
 
 class CallResponses(models.Model):
     _name = "call.responses"

@@ -37,3 +37,15 @@ class AllocationTeleCallersWizard(models.TransientModel):
             })
             rec.activity_schedule('custom_leads.mail_activity_lead_tasks', user_id=rec.lead_owner.user_id.id,
                                   note=f' You have been assigned new lead.')
+
+class ReAllocationLeads(models.TransientModel):
+   _name = 're.allocation.leads'
+   _description = "Re Allocation Leads Wizard"
+
+   lead_owner_id = fields.Many2one('res.users', string="Lead Owner")
+   leads_ids = fields.Many2many('leads.logic', string="Leads")
+
+   def act_re_allocation(self):
+       for i in self.leads_ids:
+           i.lead_owner = self.lead_owner_id.employee_id.id
+           i.message_post(body=f"Lead re-allocated to {self.lead_owner_id.employee_id.name}")
