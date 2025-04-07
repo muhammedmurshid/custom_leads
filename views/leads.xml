@@ -14,7 +14,7 @@
                 <field name="course_id" string="Course Interested" readonly="state == 'qualified'"/>
                 <field name="branch_id" string="Branch Interested" readonly="state == 'qualified'"/>
                 <field name="batch_id" string="Batch Interested" readonly="state == 'qualified'"/>
-                <field name="lead_owner" widget="many2one_avatar_user" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
+                <field name="lead_owner" widget="many2one_avatar_user" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
                 <field name="state" optional="hide"/>
                 <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'"
@@ -45,7 +45,7 @@
                 <field name="course_id" string="Course Interested" readonly="state == 'qualified'"/>
                 <field name="branch_id" string="Branch Interested" readonly="state == 'qualified'"/>
                 <field name="batch_id" string="Batch Interested" readonly="state == 'qualified'"/>
-                <field name="lead_owner" widget="many2one_avatar_user" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
+                <field name="lead_owner" widget="many2one_avatar_user" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
                 <field name="state" optional="hide"/>
                 <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'"
@@ -86,11 +86,13 @@
                 <field name="call_response" string="Response Now"/>
                 <!--                <field name="second_response" string="2nd Response" widget="badge"/>-->
                 <!--                <field name="third_response" string="Last Response" widget="badge"/>-->
-                <field name="lead_owner" widget="many2one_avatar_user" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager"/>
+                <field name="lead_owner" widget="many2one_avatar_user" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
                 <!--                <field name="tele_caller_id"/>-->
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
-                <button name="act_admission" type="object" string="Transfer to Admission"
-                        class="btn-convert" invisible="state != 'in_progress'"/>
+                 <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"
+                            type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'" class="btn-waiting-for-admission"/>
+                <button name="act_admission" type="object" string="Waiting for Admission Payment"
+                        class="btn-convert" invisible="lead_quality != 'waiting_for_admission'"/>
                 <!--                <field name="admission_status"/>-->
 <!--                <field name="state"/>-->
                 <field name="state" decoration-info="state == 'new'"
@@ -228,7 +230,7 @@
                             <field name="incoming_source_checking" invisible="1"/>
                             <field name="digital_lead" invisible="1"/>
                             <field name="incoming_source" invisible="incoming_source_checking != 1"/>
-                            <field name="digital_lead_source" invisible="digital_lead != 1"/>
+                            <field name="digital_lead_source" invisible="digital_lead != 1" required="digital_lead == 1"/>
                             <field name="lead_quality" readonly="state == 'qualified'"/>
                             <!--                            <field name="lead_quality"-->
 
@@ -288,6 +290,7 @@
                         </group>
                         <group string="Admission Details">
                             <field name="admission_status" readonly="state == 'qualified'"/>
+                            <field name="student_profile_created"/>
                             <!--                            <field name="booking_amount" readonly="1"/>-->
                         </group>
                         <group>

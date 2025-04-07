@@ -170,6 +170,7 @@ class LeadsForm(models.Model):
     receipt_no = fields.Char(string="Receipt No.")
     admission_amount = fields.Float(string="Admission Fee")
     date_of_receipt = fields.Date(string="Date of Receipt")
+    student_profile_created = fields.Boolean(string="Student Profile Created")
 
     # @api.model_create_multi
     # def create(self, vals_list):
@@ -335,6 +336,15 @@ class LeadsForm(models.Model):
                 'view_mode': 'form',
                 'view_type': 'form',
                 'context': {'default_lead_id': self.id}, }
+
+    # def create_invoice(self):
+    #     return {'type': 'ir.actions.act_window',
+    #             'name': _('Create Invoice'),
+    #             'res_model': 'welcome.mail',
+    #             'target': 'new',
+    #             'view_mode': 'form',
+    #             'view_type': 'form',
+    #             'context': {'default_lead_id': self.id}, }
 
     @api.constrains('phone_number')
     def _check_duplicate_phone_number(self):

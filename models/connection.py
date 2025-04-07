@@ -187,14 +187,7 @@ class QualifiedLead(models.TransientModel):
                     "Birth Date can't be greater than current date!"))
 
     def act_admission(self):
-        self.lead_id.write({
-            'state': 'qualified',
-            'admission_status': True,
-            'admission_date': fields.Datetime.now(),
-            'current_status': 'admission',
-            'lead_quality': 'admission'
 
-        })
         print(self.name, 'stuuu')
         student = self.env['op.student'].create({
             # 'title': self.title.id,
@@ -214,4 +207,15 @@ class QualifiedLead(models.TransientModel):
             'admission_date': fields.Date.today(),
             'fee_type':self.fee_type,
             'lead_id': self.lead_id.id,
+        })
+        student = self.env['op.student'].sudo().search([], order="id DESC", limit=1).id
+        self.lead_id.write({
+            'state': 'qualified',
+            'admission_status': True,
+            'admission_date': fields.Datetime.now(),
+            'current_status': 'admission',
+            'lead_quality': 'admission',
+            'student_id': student,
+            'student_profile_created': True,
+
         })
