@@ -214,8 +214,10 @@ class QualifiedLead(models.TransientModel):
             'admission_status': True,
             'admission_date': fields.Datetime.now(),
             'current_status': 'admission',
-            'lead_quality': 'admission',
+            # 'lead_quality': 'admission',
+
             'student_id': student,
             'student_profile_created': True,
 
         })
+

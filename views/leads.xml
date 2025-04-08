@@ -57,6 +57,8 @@
                 <field name="admission_amount" readonly="1" sum="admission_amount" class="admission-amount"/>
                 <field string="Batch Fee" name="batch_fee" sum="Total Fee"/>
                 <field name="date_of_receipt" widget="badge" readonly="1" string="Date of Invoice"/>
+                <field name="student_profile_created"/>
+                <button name="create_invoice" string="Create Invoice" class="oe_highlight" type="object" invisible="student_profile_created != 0"/>
                 <button name="act_print_invoice" type="object" class="fa fa-download" string=" Invoice"
                         invisible="admission_amount == 0"/>
             </tree>
@@ -92,7 +94,9 @@
                  <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"
                             type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'" class="btn-waiting-for-admission"/>
                 <button name="act_admission" type="object" string="Waiting for Admission Payment"
-                        class="btn-convert" invisible="lead_quality != 'waiting_for_admission'"/>
+                        class="btn-convert" invisible="lead_quality != 'waiting_for_admission' or student_profile_created == 1"/>
+                <field name="student_profile_created" optional="hide"/>
+                <button name="create_invoice" string="Create Invoice" class="oe_highlight" type="object" invisible="student_profile_created != 1"/>
                 <!--                <field name="admission_status"/>-->
 <!--                <field name="state"/>-->
                 <field name="state" decoration-info="state == 'new'"
@@ -117,13 +121,13 @@
                     <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"
                             type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'" class="btn-waiting-for-admission"/>
                     <button name="act_admission" type="object" string="Waiting for Admission Payment"
-                            class="btn-convert" invisible="lead_quality != 'waiting_for_admission'"/>
+                            class="btn-convert" invisible="lead_quality != 'waiting_for_admission'  or student_profile_created == 1"/>
                     <!--                    <button name="act_lost_lead" type="object" string="Lost"-->
                     <!--                            class="btn-lost" invisible="state in ['lost','qualified']"/>-->
                     <button name="act_return_to_new_lead" type="object" string="Return to New Lead"
                             class="btn-lost" invisible="state != 'lost'"/>
                     <button name="act_sent_to_welcome_mail" type="object" string="Sent to Welcome Mail"
-                            invisible="state != 'qualified' or sended_welcome_mail == True"/>
+                            invisible="lead_quality != 'admission' or sended_welcome_mail == True"/>
                     <!--                    <button name="act_not_connected" type="object" string="Not Connected"/>-->
                     <!--                                   <button string="Cancel" class="btn-default" special="cancel"/>-->
                 </header>
@@ -290,7 +294,8 @@
                         </group>
                         <group string="Admission Details">
                             <field name="admission_status" readonly="state == 'qualified'"/>
-                            <field name="student_profile_created"/>
+                            <field name="student_profile_created" invisible="1"/>
+                            <field name="admission_fee_paid"/>
                             <!--                            <field name="booking_amount" readonly="1"/>-->
                         </group>
                         <group>
@@ -318,6 +323,7 @@
                             <field name="closing_date" invisible="state != 'deal'"/>
                             <field name="admission_date" invisible="state != 'qualified'"
                                    readonly="is_team_leader == 0"/>
+                            <field name="re_allocation_date"/>
                         </group>
 
                         <group name="lost_reason" string="Lost Reason" invisible="state != 'lost'">

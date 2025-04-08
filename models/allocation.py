@@ -48,4 +48,5 @@ class ReAllocationLeads(models.TransientModel):
    def act_re_allocation(self):
        for i in self.leads_ids:
            i.lead_owner = self.lead_owner_id.employee_id.id
+           i.re_allocation_date = fields.Datetime.now()
            i.message_post(body=f"Lead re-allocated to {self.lead_owner_id.employee_id.name}")

@@ -337,14 +337,18 @@ class LeadsForm(models.Model):
                 'view_type': 'form',
                 'context': {'default_lead_id': self.id}, }
 
-    # def create_invoice(self):
-    #     return {'type': 'ir.actions.act_window',
-    #             'name': _('Create Invoice'),
-    #             'res_model': 'welcome.mail',
-    #             'target': 'new',
-    #             'view_mode': 'form',
-    #             'view_type': 'form',
-    #             'context': {'default_lead_id': self.id}, }
+    admission_fee_paid = fields.Boolean(string="Admission Fee Paid")
+    re_allocation_date = fields.Date(string="Re Allocation Date")
+
+    def create_invoice(self):
+        return {'type': 'ir.actions.act_window',
+                'name': _('Create Invoice'),
+                'res_model': 'fee.collection.wizard',
+                'target': 'new',
+                'view_mode': 'form',
+                'view_type': 'form',
+                'context': {'default_collection_id': self.student_id.id, 'default_fee_type': 'Other Fee', 'default_other_fee': 'Admission Fee',
+                            'default_wallet_amount': self.student_id.wallet_balance, 'default_fee_plan': self.student_id.fee_type}, }
 
     @api.constrains('phone_number')
     def _check_duplicate_phone_number(self):
