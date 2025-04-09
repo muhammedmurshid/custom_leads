@@ -544,7 +544,7 @@
         <field name="name">Admissions</field>
         <field name="res_model">leads.logic</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('state', '=', 'qualified')]</field>
+        <field name="domain">[('lead_quality', '=', 'admission')]</field>
         <field name="view_id" ref="custom_leads.list_view_of_admission"/>
         <field name="search_view_id" ref="custom_leads.leads_logic_search_view_admission"/>
         <field name="context">{'search_default_current_week': 1}</field>
