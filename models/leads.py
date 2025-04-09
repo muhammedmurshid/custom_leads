@@ -348,7 +348,7 @@ class LeadsForm(models.Model):
                 'view_mode': 'form',
                 'view_type': 'form',
                 'context': {'default_collection_id': self.student_id.id, 'default_fee_type': 'Other Fee', 'default_other_fee': 'Admission Fee',
-                            'default_wallet_amount': self.student_id.wallet_balance, 'default_fee_plan': self.student_id.fee_type}, }
+                            'default_wallet_amount': self.student_id.wallet_balance, 'default_fee_plan': self.student_id.fee_type, 'default_amount_inc_tax': self.batch_id.admission_fee}, }
 
     @api.constrains('phone_number')
     def _check_duplicate_phone_number(self):

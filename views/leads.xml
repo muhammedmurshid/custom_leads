@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <odoo>
-      <record id="list_view_of_admission" model="ir.ui.view">
+    <record id="list_view_of_admission" model="ir.ui.view">
         <field name="name">admission.view.tree</field>
         <field name="model">leads.logic</field>
         <field name="arch" type="xml">
@@ -14,7 +14,8 @@
                 <field name="course_id" string="Course Interested" readonly="state == 'qualified'"/>
                 <field name="branch_id" string="Branch Interested" readonly="state == 'qualified'"/>
                 <field name="batch_id" string="Batch Interested" readonly="state == 'qualified'"/>
-                <field name="lead_owner" widget="many2one_avatar_user" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
+                <field name="lead_owner" widget="many2one_avatar_user"
+                       groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
                 <field name="state" optional="hide"/>
                 <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'"
@@ -45,7 +46,8 @@
                 <field name="course_id" string="Course Interested" readonly="state == 'qualified'"/>
                 <field name="branch_id" string="Branch Interested" readonly="state == 'qualified'"/>
                 <field name="batch_id" string="Batch Interested" readonly="state == 'qualified'"/>
-                <field name="lead_owner" widget="many2one_avatar_user" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
+                <field name="lead_owner" widget="many2one_avatar_user"
+                       groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
                 <field name="state" optional="hide"/>
                 <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'"
@@ -58,7 +60,9 @@
                 <field string="Batch Fee" name="batch_fee" sum="Total Fee"/>
                 <field name="date_of_receipt" widget="badge" readonly="1" string="Date of Invoice"/>
                 <field name="student_profile_created"/>
-                <button name="create_invoice" string="Create Invoice" class="oe_highlight" type="object" invisible="student_profile_created != 0"/>
+                <field name="admission_fee_paid" optional="hide"/>
+                <button name="create_invoice" string="Create Invoice" class="oe_highlight" type="object"
+                        invisible="student_profile_created != 0 or admission_fee_paid != 0"/>
                 <button name="act_print_invoice" type="object" class="fa fa-download" string=" Invoice"
                         invisible="admission_amount == 0"/>
             </tree>
@@ -71,7 +75,7 @@
         <field name="arch" type="xml">
             <tree multi_edit="1" js_class="o_list_renderer">
                 <field name="reference_no"/>
-                <field name="date_of_adding" string="Added Date" />
+                <field name="date_of_adding" string="Added Date"/>
                 <field name="name"/>
                 <field name="phone_number" string="Mobile" widget="phone"/>
                 <button name="whatsapp_click_button" class="fa fa-whatsapp btn-success" type="object"/>
@@ -88,17 +92,22 @@
                 <field name="call_response" string="Response Now"/>
                 <!--                <field name="second_response" string="2nd Response" widget="badge"/>-->
                 <!--                <field name="third_response" string="Last Response" widget="badge"/>-->
-                <field name="lead_owner" widget="many2one_avatar_user" groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
+                <field name="lead_owner" widget="many2one_avatar_user"
+                       groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
                 <!--                <field name="tele_caller_id"/>-->
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
-                 <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"
-                            type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'" class="btn-waiting-for-admission"/>
+                <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"
+                        type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'"
+                        class="btn-waiting-for-admission"/>
                 <button name="act_admission" type="object" string="Waiting for Admission Payment"
-                        class="btn-convert" invisible="lead_quality != 'waiting_for_admission' or student_profile_created == 1"/>
+                        class="btn-convert"
+                        invisible="lead_quality != 'waiting_for_admission' or student_profile_created == 1"/>
                 <field name="student_profile_created" optional="hide"/>
-                <button name="create_invoice" string="Create Invoice" class="oe_highlight" type="object" invisible="student_profile_created != 1"/>
+                <field name="admission_fee_paid" optional="hide"/>
+                <button name="create_invoice" string="Create Invoice" class="oe_highlight" type="object"
+                        invisible="student_profile_created != 1 or admission_fee_paid != 0"/>
                 <!--                <field name="admission_status"/>-->
-<!--                <field name="state"/>-->
+                <!--                <field name="state"/>-->
                 <field name="state" decoration-info="state == 'new'"
                        decoration-success="state == 'qualified'"
                        decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>
@@ -119,9 +128,11 @@
                     <!--                    <button name="act_convert" type="object" string="Convert"-->
                     <!--                            class="btn-convert" invisible="state in ['qualified','new','lost','deal']"/>-->
                     <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"
-                            type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'" class="btn-waiting-for-admission"/>
+                            type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'"
+                            class="btn-waiting-for-admission"/>
                     <button name="act_admission" type="object" string="Waiting for Admission Payment"
-                            class="btn-convert" invisible="lead_quality != 'waiting_for_admission'  or student_profile_created == 1"/>
+                            class="btn-convert"
+                            invisible="lead_quality != 'waiting_for_admission'  or student_profile_created == 1"/>
                     <!--                    <button name="act_lost_lead" type="object" string="Lost"-->
                     <!--                            class="btn-lost" invisible="state in ['lost','qualified']"/>-->
                     <button name="act_return_to_new_lead" type="object" string="Return to New Lead"
@@ -234,7 +245,8 @@
                             <field name="incoming_source_checking" invisible="1"/>
                             <field name="digital_lead" invisible="1"/>
                             <field name="incoming_source" invisible="incoming_source_checking != 1"/>
-                            <field name="digital_lead_source" invisible="digital_lead != 1" required="digital_lead == 1"/>
+                            <field name="digital_lead_source" invisible="digital_lead != 1"
+                                   required="digital_lead == 1"/>
                             <field name="lead_quality" readonly="state == 'qualified'"/>
                             <!--                            <field name="lead_quality"-->
 
@@ -316,6 +328,8 @@
 
                         <group string="Dates">
                             <field name="date_of_adding"/>
+                            <field name="assigned_date"/>
+                            <field name="re_allocation_date"/>
                             <field name="next_follow_up_date" style="background-color:#fae7e3;"/>
                             <field name="last_update_date"/>
                             <field widget="badge" name="expected_joining_date"
@@ -323,7 +337,8 @@
                             <field name="closing_date" invisible="state != 'deal'"/>
                             <field name="admission_date" invisible="state != 'qualified'"
                                    readonly="is_team_leader == 0"/>
-                            <field name="re_allocation_date"/>
+
+
                         </group>
 
                         <group name="lost_reason" string="Lost Reason" invisible="state != 'lost'">
@@ -477,7 +492,7 @@
                 />
                 <filter string="Current Week" name="current_week"
                         domain="[('admission_date', '&lt;=', ((context_today()+relativedelta(weeks=0, weekday=-1)).strftime('%Y-%m-%d'))),('admission_date', '&gt;=', ((context_today()-relativedelta(weeks=1, weekday=0)).strftime('%Y-%m-%d')))]"
-                        />
+                />
 
                 <field name="reference_no" string="Reference"/>
                 <field name="phone_number" string="Mobile Number"/>
