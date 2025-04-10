@@ -23,10 +23,10 @@
                 <!--                <field name="state" decoration-info="state == 'new'"-->
                 <!--                       decoration-success="state == 'qualified'"-->
                 <!--                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>-->
-                <field name="receipt_no" widget="badge" readonly="1" string="Invoice No."/>
+                <field name="receipt_no" widget="badge" readonly="0" string="Invoice No." />
                 <field name="admission_amount" readonly="1" sum="admission_amount" class="admission-amount"/>
                 <field string="Expected Revenue" name="batch_fee" sum="Total Fee"/>
-                <field name="date_of_receipt" widget="badge" readonly="1" string="Date of Invoice"/>
+                <field name="date_of_receipt" widget="badge" readonly="0" string="Date of Invoice"/>
                 <button name="act_print_invoice" type="object" class="fa fa-download" string=" Invoice"
                         invisible="admission_amount == 0"/>
             </tree>
@@ -55,10 +55,10 @@
                 <!--                <field name="state" decoration-info="state == 'new'"-->
                 <!--                       decoration-success="state == 'qualified'"-->
                 <!--                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>-->
-                <field name="receipt_no" widget="badge" readonly="1" string="Invoice No."/>
+                <field name="receipt_no" widget="badge" readonly="0" string="Invoice No."/>
                 <field name="admission_amount" readonly="1" sum="admission_amount" class="admission-amount"/>
                 <field string="Batch Fee" name="batch_fee" sum="Total Fee"/>
-                <field name="date_of_receipt" widget="badge" readonly="1" string="Date of Invoice"/>
+                <field name="date_of_receipt" widget="badge" readonly="0" string="Date of Invoice"/>
                 <field name="student_profile_created"/>
                 <field name="admission_fee_paid" optional="hide"/>
                 <button name="create_invoice" string="Create Invoice" class="oe_highlight" type="object"
