@@ -18,12 +18,14 @@
         <field name="domain_force">['|',('lead_owner', '=', user.employee_id.id),('create_uid','=',user.id)]</field>
         <field name="groups" eval="[(4, ref('custom_leads.group_lead_digital_team'))]"/>
     </record>
+
     <record id="rules_for_admission_team_student_rules" model="ir.rule">
         <field name="name">Student Profile Rules</field>
         <field name="model_id" ref="openeducat_core.model_op_student"/>
         <field name="domain_force">['|',('create_uid','=',user.id),('admission_officer_id','=',user.id)]</field>
         <field name="groups" eval="[(4, ref('custom_leads.group_lead_users'))]"/>
     </record>
+
     <record id="rules_for_crash_head" model="ir.rule">
         <field name="name">Crash Leads</field>
         <field name="model_id" ref="custom_leads.model_leads_logic"/>
