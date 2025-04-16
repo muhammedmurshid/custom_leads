@@ -215,6 +215,9 @@ class LeadsForm(models.Model):
 
         return super(LeadsForm, self).write(vals)
 
+    # def act_return_to_in_progress(self):
+    #     self.state = 'in_progress'
+
     @api.onchange('leads_source')
     def _onchange_leads_source(self):
         if self.leads_source:

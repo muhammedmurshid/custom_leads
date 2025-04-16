@@ -18,15 +18,17 @@
                        groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
                 <field name="state" optional="hide"/>
+                <field name="student_profile_created" optional="hide"/>
                 <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'"
                        string="Status" readonly="state == 'qualified'"/>
                 <!--                <field name="state" decoration-info="state == 'new'"-->
                 <!--                       decoration-success="state == 'qualified'"-->
                 <!--                       decoration-danger="state == 'lost'" decoration-primary="state == 'in_progress'" widget="badge"/>-->
-                <field name="receipt_no" widget="badge" readonly="0" string="Invoice No." />
+                <field name="receipt_no" widget="badge" readonly="0" string="Invoice No."/>
                 <field name="admission_amount" readonly="1" sum="admission_amount" class="admission-amount"/>
                 <field string="Expected Revenue" name="batch_fee" sum="Total Fee"/>
                 <field name="date_of_receipt" widget="badge" readonly="0" string="Date of Invoice"/>
+                <field name="student_id" string="Student" invisible="student_profile_created == 0"/>
                 <button name="act_print_invoice" type="object" class="fa fa-download" string=" Invoice"
                         invisible="admission_amount == 0"/>
             </tree>
@@ -49,6 +51,8 @@
                 <field name="lead_owner" widget="many2one_avatar_user"
                        groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
+                <field name="student_profile_created" optional="hide"/>
+
                 <field name="state" optional="hide"/>
                 <field name="lead_quality" widget="badge" decoration-success="lead_quality == 'admission'"
                        string="Status" readonly="state == 'qualified'"/>
@@ -61,8 +65,10 @@
                 <field name="date_of_receipt" widget="badge" readonly="0" string="Date of Invoice"/>
                 <field name="student_profile_created"/>
                 <field name="admission_fee_paid" optional="hide"/>
-                <button name="create_invoice" string="Create Invoice" class="oe_highlight" type="object"
-                        invisible="student_profile_created != 0 or admission_fee_paid != 0"/>
+                <field name="student_id" string="Student" invisible="student_profile_created == 0"/>
+
+                <!--                <button name="create_invoice" string="Create Invoice" class="oe_highlight" type="object"-->
+                <!--                        invisible="student_profile_created != 0 or admission_fee_paid != 0"/>-->
                 <button name="act_print_invoice" type="object" class="fa fa-download" string=" Invoice"
                         invisible="admission_amount == 0"/>
             </tree>
@@ -104,8 +110,8 @@
                         invisible="lead_quality != 'waiting_for_admission' or student_profile_created == 1"/>
                 <field name="student_profile_created" optional="hide"/>
                 <field name="admission_fee_paid" optional="hide"/>
-                <button name="create_invoice" string="Create Invoice" class="oe_highlight" type="object"
-                        invisible="student_profile_created != 1 or admission_fee_paid != 0"/>
+                <!--                <button name="create_invoice" string="Create Invoice" class="oe_highlight" type="object"-->
+                <!--                        invisible="student_profile_created != 1 or admission_fee_paid != 0"/>-->
                 <!--                <field name="admission_status"/>-->
                 <!--                <field name="state"/>-->
                 <field name="state" decoration-info="state == 'new'"
@@ -308,6 +314,7 @@
                             <field name="admission_status" readonly="state == 'qualified'"/>
                             <field name="student_profile_created" invisible="1"/>
                             <field name="admission_fee_paid"/>
+                            <field name="student_id" invisible="student_profile_created == 0"/>
                             <!--                            <field name="booking_amount" readonly="1"/>-->
                         </group>
                         <group>
