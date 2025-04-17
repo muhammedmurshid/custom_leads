@@ -189,7 +189,7 @@ class QualifiedLead(models.TransientModel):
     def act_admission(self):
 
         print(self.name, 'stuuu')
-        student = self.env['op.student'].create({
+        student = self.env['op.student'].sudo().create({
             # 'title': self.title.id,
             'name': self.name,
             # 'first_name': self.first_name,

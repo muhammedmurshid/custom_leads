@@ -31,6 +31,9 @@
     background-color: #f7fafa !important; /* Change to your preferred color */
     font-weight: bold;
 }
+.o_form_view .o_form_label[for="name"] {
+    color: red !important;
+}
 
 .btn-connected {
     background-color: #a6f283;

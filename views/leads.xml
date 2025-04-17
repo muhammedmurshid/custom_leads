@@ -228,7 +228,7 @@
                                 invisible="state != 'not_connected'" class="btn-call-back"/>
                         <separator/>
 
-                        <field name="name" style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
+                        <field name="name" class="lead-name-label" string="Lead Name" readonly="state == 'qualified'"/>
                         <field name="email_address" readonly="state == 'qualified'"/>
                         <field name="phone_number" style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
 
