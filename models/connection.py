@@ -187,14 +187,19 @@ class QualifiedLead(models.TransientModel):
                     "Birth Date can't be greater than current date!"))
 
     def act_admission(self):
+        admission_id = self.env['op.student'].sudo().search([],order="id DESC", limit=1)
 
-        print(self.name, 'stuuu')
+        last_number = int(admission_id.gr_no.split('/')[-1])
+        new_number = last_number + 1
+        new_gr_no = f"L2025/{new_number}"
+        print(new_gr_no, 'stuuu')
         student = self.env['op.student'].sudo().create({
             # 'title': self.title.id,
             'name': self.name,
             # 'first_name': self.first_name,
             # 'middle_name': self.middle_name,
             # 'last_name': self.last_name,
+            'gr_no': new_gr_no,
             'gender': self.gender,
             'birth_date': self.birth_date,
             'email': self.email,
@@ -207,6 +212,7 @@ class QualifiedLead(models.TransientModel):
             'admission_date': fields.Date.today(),
             'fee_type':self.fee_type,
             'lead_id': self.lead_id.id,
+
         })
         student = self.env['op.student'].sudo().search([], order="id DESC", limit=1).id
         self.lead_id.write({
