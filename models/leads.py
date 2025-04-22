@@ -266,7 +266,7 @@ class LeadsForm(models.Model):
             if self.lead_quality != 'crash_lead':
                 self.crash_user_id = False
 
-    batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id)]")
+    batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id),('total_lump_sum_fee', '!=', 0)]")
 
     batch_fee = fields.Float(string="Expected Revenue", related="batch_id.lump_fee_excluding_tax")
 
