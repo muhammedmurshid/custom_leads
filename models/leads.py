@@ -129,7 +129,7 @@ class LeadsForm(models.Model):
                                  ('alappuzha', 'Alappuzha'), ('malappuram', 'Malappuram'), ('kasaragod', 'Kasaragod'),
                                  ('thrissur', 'Thrissur'), ('idukki', 'Idukki'), ('pathanamthitta', 'Pathanamthitta'),
                                  ('abroad', 'Abroad'), ('other', 'Other'), ('nil', 'Nil')],
-                                string='District', required=1)
+                                string='District')
     referred_teacher = fields.Many2one('res.users', string='Referred Teacher')
     over_due = fields.Boolean(string='Over Due')
     next_follow_up_date = fields.Date(string="Next Follow Up Date")
@@ -287,7 +287,6 @@ class LeadsForm(models.Model):
                 # Extract last 10 digits
                 last_10_digits = record.phone_number[-10:]
                 print(last_10_digits, 'last', self._origin.id)
-
                 # Search for any existing records with the same last 10 digits
                 duplicate = self.search([
                     ('phone_number', 'like', '%' + last_10_digits),
@@ -451,21 +450,24 @@ class LeadsForm(models.Model):
 
     def act_admission(self):
         print()
-        if self.batch_id and self.branch_id and self.course_id:
-            return {'type': 'ir.actions.act_window',
-                    'name': _('Admission'),
-                    'res_model': 'qualified.lead.form',
-                    'target': 'new',
-                    'view_mode': 'form',
-                    'view_type': 'form',
-                    'context': {'default_lead_id': self.id,
-                                'default_batch_id': self.batch_id.id,
-                                'default_course_id': self.course_id.id,
-                                'default_branch_id': self.branch_id.id,
-                                'default_mobile': self.phone_number,
-                                'default_email': self.email_address}, }
+        if self.batch_id.name != 'Nil':
+            if self.batch_id and self.branch_id and self.course_id:
+                return {'type': 'ir.actions.act_window',
+                        'name': _('Admission'),
+                        'res_model': 'qualified.lead.form',
+                        'target': 'new',
+                        'view_mode': 'form',
+                        'view_type': 'form',
+                        'context': {'default_lead_id': self.id,
+                                    'default_batch_id': self.batch_id.id,
+                                    'default_course_id': self.course_id.id,
+                                    'default_branch_id': self.branch_id.id,
+                                    'default_mobile': self.phone_number,
+                                    'default_email': self.email_address}, }
+            else:
+                raise UserError(_('Please ensure that Batch, Branch, and Course are selected before proceeding.'))
         else:
-            raise UserError(_('Please ensure that Batch, Branch, and Course are selected before proceeding.'))
+            raise UserError(_('Nil batch is not allowed. Please select a valid batch.'))
 
     def act_transfer_to_waiting_for_admission(self):
         self.lead_quality = 'waiting_for_admission'

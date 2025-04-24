@@ -126,7 +126,11 @@
         <field name="model">leads.logic</field>
         <field name="arch" type="xml">
             <form string="Leads">
-
+                <style>
+                    label.o_required_modifier {
+                    color: red !important;
+                    }
+                </style>
                 <header>
                     <field name="state" widget="statusbar"/>
                     <button name="act_attempt_to_connect" type="object" string="Attempted to Contact"
@@ -228,8 +232,8 @@
                                 invisible="state != 'not_connected'" class="btn-call-back"/>
                         <separator/>
 
-                        <field name="name" class="lead-name-label" string="Lead Name" readonly="state == 'qualified'"/>
-                        <field name="email_address" readonly="state == 'qualified'"/>
+                        <field name="name" string="Lead Name" readonly="state == 'qualified'" required="1" style="background-color:#fae7e3;"/>
+                        <field name="email_address" readonly="state == 'qualified'" class="text-red-500"/>
                         <field name="phone_number" style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
 
                     </group>
@@ -262,7 +266,7 @@
                             <!--                                   decoration-warning="lead_quality == 'warm'"-->
                             <!--                                   decoration-info="lead_quality == 'cold'"/>-->
                             <field name="updated_remarks" invisible="lead_quality != 'bad_lead'"/>
-                            <field name="district" style="background-color:#fae7e3;"/>
+                            <field name="district"/>
                             <field name="place"/>
                             <field name="phone_number_second"/>
                             <field name="parent_number"/>
@@ -273,11 +277,11 @@
                             <field name="preferred_course" invisible="source_name != 'Website'"/>
                             <field name="academic_year"/>
                             <field name="course_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
-                                   style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
+                                   readonly="state == 'qualified'"/>
                             <field name="branch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
-                                   style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
+                                   readonly="state == 'qualified'"/>
                             <field name="batch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
-                                   style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
+                                   readonly="state == 'qualified'"/>
                         </group>
                         <group name="info" string="">
                             <!--                            <field name="lead_type" style="background-color:#fae7e3;"/>-->
@@ -337,7 +341,7 @@
                             <field name="date_of_adding"/>
                             <field name="assigned_date"/>
                             <field name="re_allocation_date"/>
-                            <field name="next_follow_up_date" style="background-color:#fae7e3;"/>
+                            <field name="next_follow_up_date"/>
                             <field name="last_update_date"/>
                             <field widget="badge" name="expected_joining_date"
                                    invisible="lead_quality not in ['warm','hot']"/>

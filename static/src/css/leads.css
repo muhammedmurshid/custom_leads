@@ -22,6 +22,13 @@
     visibility: hidden; /* Hide 'Phone' text on hover */
     opacity: 0;
 }
+.odoo-red-text {
+    color: #d9534f !important;
+}
+.o_form_label.label-red {
+    color: red !important;
+}
+
 
 .hover-container:hover .hover-field-value {
     visibility: visible; /* Show the phone number on hover */
