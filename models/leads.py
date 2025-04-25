@@ -396,6 +396,9 @@ class LeadsForm(models.Model):
         print('hiii')
         if self:
             self.last_update_date = datetime.now()
+        if self.lead_quality == 'waiting_for_admission':
+            raise ValidationError(
+                "⚠️ Please complete the 'Waiting for Admission Payment' form before setting status to 'Waiting for Admission'.")
         if self.lead_quality == 'admission':
             print("is it admission")
             if self.admission_status == 0:
