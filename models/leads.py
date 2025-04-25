@@ -514,7 +514,6 @@ class LeadsForm(models.Model):
     #             lead.write({'lead_owner': user.employee_id.id})
 
     def act_re_allocation_leads(self):
-
         selected_ids = self.env.context.get('active_ids', [])
         print('re assignment', selected_ids)
         return {'type': 'ir.actions.act_window',

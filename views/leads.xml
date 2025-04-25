@@ -137,12 +137,12 @@
                             class="btn btn-primary me-1" invisible="state != 'new'"/>
                     <!--                    <button name="act_convert" type="object" string="Convert"-->
                     <!--                            class="btn-convert" invisible="state in ['qualified','new','lost','deal']"/>-->
-                    <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"
-                            type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'"
-                            class="btn-waiting-for-admission"/>
+<!--                    <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"-->
+<!--                            type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'"-->
+<!--                            class="btn-waiting-for-admission"/>-->
                     <button name="act_admission" type="object" string="Waiting for Admission Payment"
                             class="btn-convert"
-                            invisible="lead_quality != 'waiting_for_admission'  or student_profile_created == 1"/>
+                            invisible="state != 'in_progress'  or student_profile_created == 1"/>
                     <!--                    <button name="act_lost_lead" type="object" string="Lost"-->
                     <!--                            class="btn-lost" invisible="state in ['lost','qualified']"/>-->
                     <button name="act_return_to_new_lead" type="object" string="Return to New Lead"
@@ -545,7 +545,7 @@
         <field name="name">Leads</field>
         <field name="res_model">leads.logic</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="domain">[('state', '!=', 'qualified')]</field>
+        <field name="domain">[('state', '!=', 'qualified'),('lead_quality', '!=', 'waiting_for_admission')]</field>
         <field name="view_id" ref="custom_leads.tree_view_leads_logic"/>
         <field name="search_view_id" ref="custom_leads.leads_logic_search_view"/>
         <field name="context">{'search_default_current_week': 1}</field>
