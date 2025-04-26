@@ -402,32 +402,9 @@ class LeadsForm(models.Model):
         if self.lead_quality == 'admission':
             print("is it admission")
             if self.admission_status == 0:
-                print('admission')
-                # notification = {
-                #     'type': 'ir.actions.client',
-                #     'tag': 'display_notification',
-                #     'params': {
-                #         'title': _('Warning'),
-                #         'type': 'warning',
-                #         'message': 'You cannot do this action now',
-                #         'sticky': True,
-                #     }
-                # }
-                # return  notification
                 raise ValidationError(
                     "⚠️ First, you need to transfer to 'Waiting for Admission Payment.' After the admission fee is paid, you can transfer to 'Admission'.")
-                # return {
-                #     'type': 'ir.actions.client',
-                #     'tag': 'display_notification',
-                #     'params': {
-                #         'title': _("Warning"),
-                #         'type': 'warning',
-                #         'message': "⚠️ You need to complete the admission procedure before proceeding.",
-                #         'sticky': True,
-                #         'next': {'type': 'ir.actions.act_window_close'}
-                #     },
-                #     'context': dict(self.env.context),
-                # }
+
 
     def act_lost_lead(self):
         return {'type': 'ir.actions.act_window',

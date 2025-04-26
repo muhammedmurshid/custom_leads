@@ -102,9 +102,9 @@
                        groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
                 <!--                <field name="tele_caller_id"/>-->
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
-                <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"
-                        type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'"
-                        class="btn-waiting-for-admission"/>
+<!--                <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"-->
+<!--                        type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'"-->
+<!--                        class="btn-waiting-for-admission"/>-->
                 <button name="act_admission" type="object" string="Waiting for Admission Payment"
                         class="btn-convert"
                         invisible="lead_quality != 'waiting_for_admission' or student_profile_created == 1"/>
