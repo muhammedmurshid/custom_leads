@@ -150,9 +150,9 @@ class QualifiedLead(models.TransientModel):
     # middle_name = fields.Char(string="Middle Name")
     # last_name = fields.Char(string="Last Name", required=1)
     name = fields.Char(string="Name")
-    batch_id = fields.Many2one('op.batch', string="Batch", )
-    course_id = fields.Many2one('op.course', string="Course", )
-    branch_id = fields.Many2one('op.branch', string="Branch", )
+    batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id),('total_lump_sum_fee', '!=', 0)]")
+    course_id = fields.Many2one('op.course', string="Course", related='batch_id.course_id')
+    branch_id = fields.Many2one('op.branch', string="Branch", related='batch_id.branch')
     gender = fields.Selection([
         ('m', 'Male'),
         ('f', 'Female'),
@@ -223,6 +223,7 @@ class QualifiedLead(models.TransientModel):
             'lead_quality': 'waiting_for_admission',
             'student_id': student,
             'student_profile_created': True,
+            'batch_id': self.batch_id.id,
 
         })
 
