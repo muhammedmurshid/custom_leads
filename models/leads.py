@@ -171,6 +171,7 @@ class LeadsForm(models.Model):
     admission_amount = fields.Float(string="Admission Fee")
     date_of_receipt = fields.Date(string="Date of Receipt")
     student_profile_created = fields.Boolean(string="Student Profile Created")
+    crash_lead = fields.Boolean(string="Crash Lead")
 
     # @api.model_create_multi
     # def create(self, vals_list):
@@ -265,6 +266,8 @@ class LeadsForm(models.Model):
         if self.lead_quality:
             if self.lead_quality != 'crash_lead':
                 self.crash_user_id = False
+            else:
+                self.crash_lead = 1
 
     batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id),('total_lump_sum_fee', '!=', 0)]")
 
@@ -294,40 +297,13 @@ class LeadsForm(models.Model):
                 ])
 
                 if duplicate:
-                    # return {
-                    #     'type': 'ir.actions.client',
-                    #     'tag': 'display_notification',
-                    #     'params': {
-                    #         'title': _("Duplicate Phone Number"),
-                    #         'type': 'warning',
-                    #         'message': _("The phone number %s already exists in the system.") % record.phone_number,
-                    #         'sticky': True,
-                    #     },
-                    # }
                     return {
                         'warning': {
                             'title': _("Duplicate Phone Number"),
                             'message': _("The phone number %s already exists in the system.") % record.phone_number,
                         }
                     }
-            # if record.phone_number:
-            #     # Extract last 10 digits
-            #     last_10_digits = record.phone_number[-10:]
-            #     print(last_10_digits, 'last')
-            #
-            #     # Search for any existing records with the same last 10 digits
-            #     duplicate = self.search([
-            #         ('phone_number', 'like', '%' + last_10_digits),
-            #         ('id', '!=', record.id)
-            #     ])
-            #
-            #     if duplicate:
-            #         return {
-            #             'warning': {
-            #                 'title': _("Duplicate Phone Number"),
-            #                 'message': _("The phone number %s already exists in the system.") % record.phone_number,
-            #             }
-            #         }
+
 
     def act_sent_to_welcome_mail(self):
         print('sent')

@@ -317,6 +317,7 @@
                         <group string="Admission Details">
                             <field name="admission_status" readonly="state == 'qualified'"/>
                             <field name="student_profile_created" invisible="1"/>
+                            <field name="crash_lead" invisible="1"/>
                             <field name="admission_fee_paid"/>
                             <field name="student_id" invisible="student_profile_created == 0"/>
                             <!--                            <field name="booking_amount" readonly="1"/>-->
@@ -545,9 +546,8 @@
         <field name="name">Leads</field>
         <field name="res_model">leads.logic</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="domain">[('state', '!=', 'qualified'),('lead_quality', '!=', 'waiting_for_admission')]</field>
         <field name="view_id" ref="custom_leads.tree_view_leads_logic"/>
-        <field name="search_view_id" ref="custom_leads.leads_logic_search_view"/>
+<!--        <field name="search_view_id" ref="custom_leads.leads_logic_search_view"/>-->
         <field name="context">{'search_default_current_week': 1}</field>
     </record>
 

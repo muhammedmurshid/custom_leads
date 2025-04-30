@@ -188,7 +188,6 @@ class QualifiedLead(models.TransientModel):
 
     def act_admission(self):
         admission_id = self.env['op.student'].sudo().search([],order="id DESC", limit=1)
-
         last_number = int(admission_id.gr_no.split('/')[-1])
         new_number = last_number + 1
         new_gr_no = f"L2025/{new_number}"
@@ -215,15 +214,28 @@ class QualifiedLead(models.TransientModel):
 
         })
         student = self.env['op.student'].sudo().search([], order="id DESC", limit=1).id
-        self.lead_id.write({
-            'state': 'qualified',
-            'admission_status': True,
-            'admission_date': fields.Datetime.now(),
-            'current_status': 'admission',
-            'lead_quality': 'waiting_for_admission',
-            'student_id': student,
-            'student_profile_created': True,
-            'batch_id': self.batch_id.id,
+        if self.lead_id.lead_quality == 'crash_lead':
+            self.lead_id.write({
+                'state': 'qualified',
+                'admission_status': True,
+                'admission_date': fields.Datetime.now(),
+                'current_status': 'admission',
+                'lead_quality': 'admission',
+                'student_id': student,
+                'student_profile_created': True,
+                'batch_id': self.batch_id.id,
 
-        })
+            })
+        else:
+            self.lead_id.write({
+                'state': 'qualified',
+                'admission_status': True,
+                'admission_date': fields.Datetime.now(),
+                'current_status': 'admission',
+                'lead_quality': 'waiting_for_admission',
+                'student_id': student,
+                'student_profile_created': True,
+                'batch_id': self.batch_id.id,
+
+            })
 
