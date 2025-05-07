@@ -17,6 +17,5 @@ access_leads_convert_lead,access_leads_convert_lead,model_convert_lead,,1,1,1,1
 access_leads_lost_lead,access_leads_lost_lead,model_lost_lead_form,,1,1,1,1
 access_leads_qualified_lead,access_leads_qualified_lead,model_qualified_lead_form,,1,1,1,1
 access_leads_call_responses,access_leads_call_responses,model_call_responses,,1,1,1,1
-access_welcome_mail,access_welcome_mail,model_welcome_mail,,1,1,1,1
 
 access_re_allocation_wizard,access_re_allocation_wizard,model_re_allocation_leads,,1,1,1,1

@@ -270,7 +270,6 @@ class LeadsForm(models.Model):
                 self.crash_lead = 1
 
     batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id),('total_lump_sum_fee', '!=', 0)]")
-
     batch_fee = fields.Float(string="Expected Revenue", related="batch_id.lump_fee_excluding_tax")
 
     def act_call_back(self):
@@ -305,15 +304,14 @@ class LeadsForm(models.Model):
                     }
 
 
-    def act_sent_to_welcome_mail(self):
-        print('sent')
-        return {'type': 'ir.actions.act_window',
-                'name': _('Welcome Mail'),
-                'res_model': 'welcome.mail',
-                'target': 'new',
-                'view_mode': 'form',
-                'view_type': 'form',
-                'context': {'default_lead_id': self.id}, }
+    # def act_sent_to_welcome_mail(self):
+    #     return {'type': 'ir.actions.act_window',
+    #             'name': _('Welcome Mail'),
+    #             'res_model': 'welcome.mail',
+    #             'target': 'new',
+    #             'view_mode': 'form',
+    #             'view_type': 'form',
+    #             'context': {'default_lead_id': self.id}, }
 
     admission_fee_paid = fields.Boolean(string="Admission Fee Paid")
     re_allocation_date = fields.Date(string="Re Allocation Date")

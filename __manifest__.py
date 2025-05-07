@@ -25,7 +25,6 @@
         'views/student.xml',
         'views/allocation.xml',
         'data/actions.xml',
-        'views/welcome_mail.xml',
         'views/invoice.xml',
         'views/re_allocation.xml'
 
