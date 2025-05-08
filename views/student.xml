@@ -38,8 +38,8 @@
         <field name="inherit_id" ref="openeducat_core.view_op_student_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="admission_officer_id"/>
-                <field name="admission_date"/>
+                <field name="admission_officer_id" readonly="1"/>
+                <field name="admission_date" readonly="1"/>
                 <field name="lead_id" groups="base.group_no_one"/>
             </xpath>
             <xpath expr="//field[@name='batch_id']" position="after">
@@ -60,7 +60,7 @@
 
             </xpath>
             <xpath expr="//field[@name='name']" position="before">
-                <field name="admission_date"/>
+                <field name="admission_date" readonly="1"/>
 
             </xpath>
         </field>
