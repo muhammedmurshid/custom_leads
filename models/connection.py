@@ -185,9 +185,6 @@ class QualifiedLead(models.TransientModel):
                 print(self.batch_id.total_installment_fee, 'inst')
                 raise UserError(_("Installment Fee Not Added"))
 
-
-
-
     @api.constrains('birth_date')
     def _check_birthdate(self):
         for record in self:
@@ -196,7 +193,6 @@ class QualifiedLead(models.TransientModel):
                     "Birth Date can't be greater than current date!"))
 
     def act_admission(self):
-
         admission_id = self.env['op.student'].sudo().search([],order="id DESC", limit=1)
         last_number = int(admission_id.gr_no.split('/')[-1])
         new_number = last_number + 1

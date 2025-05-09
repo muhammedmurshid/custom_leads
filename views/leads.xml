@@ -102,9 +102,9 @@
                        groups="custom_leads.group_lead_team_lead,custom_leads.group_lead_manager,custom_leads.group_lead_digital_team"/>
                 <!--                <field name="tele_caller_id"/>-->
                 <field name="create_uid" groups="custom_leads.group_lead_team_lead"/>
-<!--                <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"-->
-<!--                        type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'"-->
-<!--                        class="btn-waiting-for-admission"/>-->
+                <!--                <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"-->
+                <!--                        type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'"-->
+                <!--                        class="btn-waiting-for-admission"/>-->
                 <button name="act_admission" type="object" string="Waiting for Admission Payment"
                         class="btn-convert"
                         invisible="lead_quality != 'waiting_for_admission' or student_profile_created == 1"/>
@@ -137,9 +137,9 @@
                             class="btn btn-primary me-1" invisible="state != 'new'"/>
                     <!--                    <button name="act_convert" type="object" string="Convert"-->
                     <!--                            class="btn-convert" invisible="state in ['qualified','new','lost','deal']"/>-->
-<!--                    <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"-->
-<!--                            type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'"-->
-<!--                            class="btn-waiting-for-admission"/>-->
+                    <!--                    <button name="act_transfer_to_waiting_for_admission" string="Transfer to Waiting for Admission"-->
+                    <!--                            type="object" invisible="state != 'in_progress' or lead_quality == 'waiting_for_admission'"-->
+                    <!--                            class="btn-waiting-for-admission"/>-->
                     <button name="act_admission" type="object" string="Waiting for Admission Payment"
                             class="btn-convert"
                             invisible="state != 'in_progress'  or student_profile_created == 1"/>
@@ -231,7 +231,8 @@
                                 invisible="state != 'not_connected'" class="btn-call-back"/>
                         <separator/>
 
-                        <field name="name" string="Lead Name" readonly="state == 'qualified'" required="1" style="background-color:#fae7e3;"/>
+                        <field name="name" string="Lead Name" readonly="state == 'qualified'" required="1"
+                               style="background-color:#fae7e3;"/>
                         <field name="email_address" readonly="state == 'qualified'" class="text-red-500"/>
                         <field name="phone_number" style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
 
@@ -546,15 +547,46 @@
         <field name="res_model">leads.logic</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="view_id" ref="custom_leads.tree_view_leads_logic"/>
-<!--        <field name="search_view_id" ref="custom_leads.leads_logic_search_view"/>-->
+        <field name="domain">[('crash_lead', '!=', 1)]</field>
+
+        <!--        <field name="search_view_id" ref="custom_leads.leads_logic_search_view"/>-->
         <field name="context">{'search_default_current_week': 1}</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_crash_leads_main_action">
+        <field name="name">Crash Leads</field>
+        <field name="res_model">leads.logic</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="custom_leads.tree_view_leads_logic"/>
+        <field name="domain">[('crash_lead', '=', 1)]</field>
+        <!--        <field name="search_view_id" ref="custom_leads.leads_logic_search_view"/>-->
+        <!--        <field name="context">{'search_default_current_week': 1}</field>-->
+    </record>
+
+    <record model="ir.actions.act_window" id="action_crash_leads_admission_main_action">
+        <field name="name">Crash Admissions</field>
+        <field name="res_model">leads.logic</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="custom_leads.tree_view_leads_logic"/>
+        <field name="domain">[('crash_lead', '=', 1),('lead_quality', '=', 'admission')]</field>
+        <!--        <field name="search_view_id" ref="custom_leads.leads_logic_search_view"/>-->
+        <!--        <field name="context">{'search_default_current_week': 1}</field>-->
+    </record>
+    <record model="ir.actions.act_window" id="action_crash_waiting_for_admission_main_action">
+        <field name="name">Crash Waiting for Admission</field>
+        <field name="res_model">leads.logic</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="custom_leads.tree_view_leads_logic"/>
+        <field name="domain">[('crash_lead', '=', 1),('lead_quality', '=', 'waiting_for_admission')]</field>
+        <!--        <field name="search_view_id" ref="custom_leads.leads_logic_search_view"/>-->
+        <!--        <field name="context">{'search_default_current_week': 1}</field>-->
     </record>
 
     <record id="action_list_view_of_admission" model="ir.actions.act_window">
         <field name="name">Admissions</field>
         <field name="res_model">leads.logic</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('lead_quality', '=', 'admission')]</field>
+        <field name="domain">[('lead_quality', '=', 'admission'),('crash_lead', '!=', 1)]</field>
         <field name="view_id" ref="custom_leads.list_view_of_admission"/>
         <field name="search_view_id" ref="custom_leads.leads_logic_search_view_admission"/>
         <field name="context">{'search_default_current_week': 1}</field>
@@ -564,7 +596,7 @@
         <field name="name">Waiting for Admissions</field>
         <field name="res_model">leads.logic</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('lead_quality', '=', 'waiting_for_admission')]</field>
+        <field name="domain">[('lead_quality', '=', 'waiting_for_admission'),('crash_lead', '!=', 1)]</field>
         <field name="view_id" ref="custom_leads.tree_view_leads_logic"/>
         <field name="search_view_id" ref="custom_leads.leads_logic_search_view"/>
         <field name="context">{'search_default_current_week': 1}</field>
@@ -591,7 +623,30 @@
             name="Leads"
             parent="leads_main_menu"
             sequence="1"
-            action="action_leads_main_action"/>
+            action="action_leads_main_action"
+            groups="custom_leads.group_lead_users,custom_leads.group_lead_digital_team,custom_leads.group_lead_manager,custom_leads.group_lead_tele_callers,custom_leads.group_lead_team_lead"/>
+    <menuitem
+            id="crash_leads_sub_menu"
+            name="Crash Leads"
+            parent="leads_main_menu"
+            sequence="2"
+            action="action_crash_leads_main_action"
+            groups="custom_leads.group_crash_head,custom_leads.group_crash_user"/>
+    <menuitem
+            id="crash_waiting_for_admission_sub_menu"
+            name="Crash Waiting for Admission"
+            parent="leads_main_menu"
+            sequence="4"
+            action="action_crash_waiting_for_admission_main_action"
+            groups="custom_leads.group_crash_head,custom_leads.group_crash_user"/>
+
+    <menuitem
+            id="crash_admission_sub_menu"
+            name="Crash Admission"
+            parent="leads_main_menu"
+            sequence="4"
+            action="action_crash_leads_admission_main_action"
+            groups="custom_leads.group_crash_head,custom_leads.group_crash_user"/>
     <menuitem
             id="leads_activity_menu"
             name="Tasks"
@@ -615,11 +670,13 @@
             name="Admission"
             parent="leads_main_menu"
             sequence="5"
+            groups="custom_leads.group_lead_users,custom_leads.group_lead_digital_team,custom_leads.group_lead_manager,custom_leads.group_lead_tele_callers,custom_leads.group_lead_team_lead"
             action="action_list_view_of_admission"/>
     <menuitem
             id="leads_waiting_for_admission_menu"
             name="Waiting for Admission"
             parent="leads_main_menu"
             sequence="4"
+            groups="custom_leads.group_lead_users,custom_leads.group_lead_digital_team,custom_leads.group_lead_manager,custom_leads.group_lead_tele_callers,custom_leads.group_lead_team_lead"
             action="action_list_view_of_waiting_for_admission"/>
 </odoo>
