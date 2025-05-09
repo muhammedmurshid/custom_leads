@@ -47,14 +47,14 @@
                             <table>
                                 <tr>
                                     <td style="padding-right:10px;">
-                                        <field name="name" required="1" placeholder="Student Name"/>
+                                        <field name="name" required="1" placeholder="Student Name" invisible="1"/>
                                     </td>
-<!--                                    <td style="padding-right:10px;">-->
-<!--                                        <field name="middle_name" placeholder="Middle Name"/>-->
-<!--                                    </td>-->
-<!--                                    <td style="padding-right:10px;">-->
-<!--                                        <field name="last_name" required="1" placeholder="Last Name"/>-->
-<!--                                    </td>-->
+                                    <td style="padding-right:10px;">
+                                        <field name="first_name" placeholder="First Name"/>
+                                    </td>
+                                    <td style="padding-right:10px;">
+                                        <field name="last_name" required="1" placeholder="Last Name"/>
+                                    </td>
                                 </tr>
                             </table>
                         </h2>

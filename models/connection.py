@@ -146,9 +146,9 @@ class QualifiedLead(models.TransientModel):
 
     lead_id = fields.Many2one('leads.logic', string="Lead")
     # title = fields.Many2one('res.partner.title')
-    # first_name = fields.Char(string="First Name", required=1)
+    first_name = fields.Char(string="First Name", required=1)
     # middle_name = fields.Char(string="Middle Name")
-    # last_name = fields.Char(string="Last Name", required=1)
+    last_name = fields.Char(string="Last Name", required=1)
     name = fields.Char(string="Name")
     batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id),('total_lump_sum_fee', '!=', 0)]")
     course_id = fields.Many2one('op.course', string="Course", related='batch_id.course_id')
@@ -169,15 +169,24 @@ class QualifiedLead(models.TransientModel):
         if self.email and not tools.single_email_re.match(self.email):
             raise ValidationError(_('Invalid Email! Please enter a valid email address.'))
 
-    # @api.onchange('first_name', 'middle_name', 'last_name')
-    # def _onchange_name(self):
-    #     if not self.middle_name:
-    #         self.name = str(self.first_name) + " " + str(
-    #             self.last_name
-    #         )
-    #     else:
-    #         self.name = str(self.first_name) + " " + str(
-    #             self.middle_name) + " " + str(self.last_name)
+    @api.onchange('first_name', 'last_name')
+    def _onchange_name(self):
+        self.name = str(self.first_name) + " " + str(self.last_name)
+
+    @api.onchange('fee_type')
+    def _onchange_fee_type(self):
+        print(self.fee_type, 'typeee')
+        if self.fee_type == 'lump_sum_fee':
+            if self.batch_id.total_lump_sum_fee == 0:
+                print(self.batch_id.total_lump_sum_fee, 'lump')
+                raise UserError(_("Lump Sum Fee Not Added"))
+        if self.fee_type == 'installment':
+            if self.batch_id.total_installment_fee == 0:
+                print(self.batch_id.total_installment_fee, 'inst')
+                raise UserError(_("Installment Fee Not Added"))
+
+
+
 
     @api.constrains('birth_date')
     def _check_birthdate(self):
@@ -187,6 +196,7 @@ class QualifiedLead(models.TransientModel):
                     "Birth Date can't be greater than current date!"))
 
     def act_admission(self):
+
         admission_id = self.env['op.student'].sudo().search([],order="id DESC", limit=1)
         last_number = int(admission_id.gr_no.split('/')[-1])
         new_number = last_number + 1
@@ -195,9 +205,9 @@ class QualifiedLead(models.TransientModel):
         student = self.env['op.student'].sudo().create({
             # 'title': self.title.id,
             'name': self.name,
-            # 'first_name': self.first_name,
+            'first_name': self.first_name,
             # 'middle_name': self.middle_name,
-            # 'last_name': self.last_name,
+            'last_name': self.last_name,
             'gr_no': new_gr_no,
             'gender': self.gender,
             'birth_date': self.birth_date,
