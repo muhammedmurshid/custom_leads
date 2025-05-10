@@ -276,18 +276,18 @@
                         <group string="Course -Branch-Batch">
                             <field name="preferred_course" invisible="source_name != 'Website'"/>
                             <field name="academic_year"/>
+                            <field name="batch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
+                                   readonly="state == 'qualified'"/>
                             <field name="course_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
                                    readonly="state == 'qualified'"/>
                             <field name="branch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
                                    readonly="state == 'qualified'"/>
-                            <field name="batch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
-                                   readonly="state == 'qualified'"/>
+
                         </group>
                         <group name="info" string="">
                             <!--                            <field name="lead_type" style="background-color:#fae7e3;"/>-->
                             <field name="mode_of_study"/>
                             <field name="lead_status"/>
-
                             <field name="call_response"/>
                             <field name="call_responses" widget="many2many_tags"/>
                             <!--                            <field name="second_response" string="2nd Response"/>-->
@@ -310,15 +310,14 @@
                             <field name="tele_caller_id"/>
                         </group>
                         <group string="Course Details">
-
                             <field name="course_type"/>
                             <field name="course_interested"/>
                         </group>
                         <group string="Admission Details">
-                            <field name="admission_status" readonly="state == 'qualified'"/>
+                            <field name="admission_status" readonly="state == 'qualified'" invisible="1"/>
                             <field name="student_profile_created" invisible="1"/>
                             <field name="crash_lead" invisible="1"/>
-                            <field name="admission_fee_paid"/>
+                            <field name="admission_fee_paid" invisible="1"/>
                             <field name="student_id" invisible="student_profile_created == 0"/>
                             <!--                            <field name="booking_amount" readonly="1"/>-->
                         </group>

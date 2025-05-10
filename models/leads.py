@@ -33,7 +33,7 @@ class LeadsForm(models.Model):
          ('hot', '🔥  Hot'),
          ('warm', '🌞  Warm'), ('cold', '❄️  Cold'),
          ('bad_lead', '⚠️  Bad Lead'), ('crash_lead', '💥  Crash Lead'), ('not_responding', '🚫  Not Responding')],
-        string='Lead Quality', default='new', required=1, readonly=0)
+        string='Lead Quality', default='new', required=1, readonly=0, tracking=1)
 
     # def _get_lead_quality_color(self):
     #     _logger.info("Calling _get_lead_quality_color for lead_quality: %s", self.lead_quality)
@@ -368,6 +368,9 @@ class LeadsForm(models.Model):
                   'lead_owner', 'assign_to', 'course_id', 'batch_id', 'branch_id')
     def _onchange_updated_date(self):
         print('hiii')
+        if self.batch_id:
+            self.course_id = self.batch_id.course_id.id
+            self.branch_id = self.batch_id.branch.id
         if self:
             self.last_update_date = datetime.now()
         if self.lead_quality == 'waiting_for_admission':

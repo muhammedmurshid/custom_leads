@@ -220,7 +220,9 @@ class QualifiedLead(models.TransientModel):
 
         })
         student = self.env['op.student'].sudo().search([], order="id DESC", limit=1).id
-        if self.lead_id.lead_quality == 'crash_lead':
+        print(self.batch_id.course_id.name, 'course tayyep course')
+        if self.lead_id.lead_quality == 'crash_lead' or self.course_id.tayyap_course == True:
+            print('tayyep course')
             self.lead_id.write({
                 'state': 'qualified',
                 'admission_status': True,
@@ -233,6 +235,7 @@ class QualifiedLead(models.TransientModel):
 
             })
         else:
+            print('not tayyep course')
             self.lead_id.write({
                 'state': 'qualified',
                 'admission_status': True,
