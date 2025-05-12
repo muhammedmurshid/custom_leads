@@ -198,6 +198,11 @@ class QualifiedLead(models.TransientModel):
         new_number = last_number + 1
         new_gr_no = f"L2025/{new_number}"
         print(new_gr_no, 'stuuu')
+        due_amount = 0
+        if self.fee_type == 'lump_sum_fee':
+            due_amount = self.batch_id.total_lump_sum_fee
+        elif self.fee_type == 'installment':
+            due_amount = self.batch_id.total_installment_fee
         student = self.env['op.student'].sudo().create({
             # 'title': self.title.id,
             'name': self.name,
@@ -217,6 +222,7 @@ class QualifiedLead(models.TransientModel):
             'admission_date': fields.Date.today(),
             'fee_type':self.fee_type,
             'lead_id': self.lead_id.id,
+            'due_amount': due_amount,
 
         })
         student = self.env['op.student'].sudo().search([], order="id DESC", limit=1).id
