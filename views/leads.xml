@@ -276,12 +276,14 @@
                         <group string="Course -Branch-Batch">
                             <field name="preferred_course" invisible="source_name != 'Website'"/>
                             <field name="academic_year"/>
-                            <field name="batch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
+                            <field name="branch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
                                    readonly="state == 'qualified'"/>
                             <field name="course_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
                                    readonly="state == 'qualified'"/>
-                            <field name="branch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
+                            <field name="batch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
                                    readonly="state == 'qualified'"/>
+
+
 
                         </group>
                         <group name="info" string="">
@@ -334,9 +336,7 @@
                             <field name="college_name"/>
                             <field name="last_studied_course"/>
                             <field name="academic_year_of_course_attend"/>
-
                         </group>
-
                         <group string="Dates">
                             <field name="date_of_adding"/>
                             <field name="assigned_date"/>
@@ -348,8 +348,6 @@
                             <field name="closing_date" invisible="state != 'deal'"/>
                             <field name="admission_date" invisible="state != 'qualified'"
                                    readonly="is_team_leader == 0"/>
-
-
                         </group>
 
                         <group name="lost_reason" string="Lost Reason" invisible="state != 'lost'">
