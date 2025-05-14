@@ -320,7 +320,7 @@
                             <field name="student_profile_created" invisible="1"/>
                             <field name="crash_lead" />
                             <field name="admission_fee_paid" invisible="1"/>
-                            <field name="student_id" invisible="student_profile_created == 0"/>
+                            <field name="student_id" string="Student" invisible="state != 'qualified'" readonly="1"/>
                             <!--                            <field name="booking_amount" readonly="1"/>-->
                         </group>
                         <group>

@@ -1,32 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!--    <record model="ir.ui.view" id="student_form_view_inheritance">-->
-    <!--        <field name="name">student.form.inherit</field>-->
-    <!--        <field name="model">op.student</field>-->
-    <!--        <field name="inherit_id" ref="openeducat_core.view_op_student_form"/>-->
-    <!--        <field name="arch" type="xml">-->
-    <!--            <xpath expr="//field[@name='partner_id']" position="after">-->
-    <!--                <field name="branch_id"/>-->
-    <!--                <field name="lead_id"/>-->
-    <!--                <field name="admission_officer_id"/>-->
-    <!--                <field name="admission_date"/>-->
-
-    <!--            </xpath>-->
-    <!--            <xpath expr="//field[@name='partner_id']" position="before">-->
-
-    <!--                <field name="lead_id"/>-->
-
-
-    <!--            </xpath>-->
-    <!--        </field>-->
-    <!--    </record>-->
     <record model="ir.ui.view" id="activity_leads_model_id">
         <field name="name">activity.form.inherit</field>
         <field name="model">mail.activity</field>
         <field name="inherit_id" ref="mail.mail_activity_view_form_popup"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='user_id']" position="after">
-                <field name="lead_id" string="Follow Up Lead" invisible="res_model != 'leads.logic'" />
+                <field name="lead_id" string="Follow Up Lead" invisible="res_model != 'leads.logic'"/>
                 <!--                <field name="res_model"/>-->
             </xpath>
         </field>
@@ -40,7 +20,7 @@
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="admission_officer_id" readonly="1"/>
                 <field name="admission_date" readonly="1"/>
-                <field name="lead_id" groups="base.group_no_one"/>
+                <field name="lead_id" readonly="1" string="Lead"/>
             </xpath>
             <xpath expr="//field[@name='batch_id']" position="after">
                 <field name="branch_id"/>
@@ -88,9 +68,9 @@
             </xpath>
         </field>
     </record>
-<!--    <record id="logic_base_17.action_redirect_op_students" model="ir.actions.server">-->
-<!--        <field name="context">{'search_default_current_week': 1}</field>-->
-<!--    </record>-->
+    <!--    <record id="logic_base_17.action_redirect_op_students" model="ir.actions.server">-->
+    <!--        <field name="context">{'search_default_current_week': 1}</field>-->
+    <!--    </record>-->
 
     <record id="branch_inherit_batch_form" model="ir.ui.view">
         <field name="name">Batch inherit Branch</field>
