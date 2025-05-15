@@ -232,9 +232,9 @@
                         <separator/>
 
                         <field name="name" string="Lead Name" readonly="state == 'qualified'" required="1"
-                               style="background-color:#fae7e3;"/>
+                               class="o_form_required"/>
                         <field name="email_address" readonly="state == 'qualified'" class="text-red-500"/>
-                        <field name="phone_number" style="background-color:#fae7e3;" readonly="state == 'qualified'"/>
+                        <field name="phone_number" class="o_form_required" readonly="state == 'qualified'"/>
 
                     </group>
                     <!--                    <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>-->
@@ -249,7 +249,7 @@
                             <!--                            <field name="name"/>-->
                             <!--                            <field name="email_address"/>-->
                             <!--                            <field name="phone_number"/>-->
-                            <field name="leads_source" style="background-color:#fae7e3;" options="{'no_create':True}"
+                            <field name="leads_source" class="o_form_required" options="{'no_create':True}"
                                    readonly="state == 'qualified'"/>
                             <field name="source_name" invisible="1"/>
                             <field name="incoming_source_checking" invisible="1"/>
@@ -257,7 +257,7 @@
                             <field name="incoming_source" invisible="incoming_source_checking != 1"/>
                             <field name="digital_lead_source" invisible="digital_lead != 1"
                                    required="digital_lead == 1"/>
-                            <field name="lead_quality" readonly="state == 'qualified'"/>
+                            <field name="lead_quality" readonly="state == 'qualified'" class="o_form_required" />
                             <!--                            <field name="lead_quality"-->
 
                             <!--                                   decoration-bf="lead_quality == 'hot'"-->

@@ -17,6 +17,13 @@
     .hover-text:hover .full-response {
         display: inline-block;
     }
+.o_form_required .o_input,
+.o_form_required .o_field_widget {
+border: none !important;
+ border-bottom: 1px solid red !important;
+ border-radius: 0 !important;
+ box-shadow: none !important;
+}
 
 .hover-container:hover .hover-default {
     visibility: hidden; /* Hide 'Phone' text on hover */
@@ -159,31 +166,3 @@
         display: inline-block;
         vertical-align: middle;
     }
-.o_field_widget[name="lead_quality"] select {
-    font-weight: bold;
-    background-color: #f2b680;
-}
-
-.o_field_widget[name="lead_quality"] option[value="hot"] {
-    color: red;
-}
-
-.o_field_widget[name="lead_quality"] option[value="warm"] {
-    color: orange;
-}
-
-.o_field_widget[name="lead_quality"] option[value="cold"] {
-    color: blue;
-}
-
-.o_field_widget[name="lead_quality"] option[value="bad"] {
-    color: gray;
-}
-
-.o_field_widget[name="lead_quality"] option[value="not_responding"] {
-    color: black;
-}
-
-.o_field_widget[name="lead_quality"] option[value="crash"] {
-    color: darkgray;
-}
