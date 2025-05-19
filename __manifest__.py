@@ -26,7 +26,7 @@
         'views/allocation.xml',
         'data/actions.xml',
         'views/invoice.xml',
-        'views/re_allocation.xml'
+        'views/re_allocation.xml',
 
     ],
     'assets': {

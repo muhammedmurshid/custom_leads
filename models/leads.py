@@ -213,7 +213,14 @@ class LeadsForm(models.Model):
                 vals['call_responses'] = [(4, response_obj.id)]
 
             vals['call_response'] = False  # Clear the field after saving
-
+        # if self.lead_quality == 'crash_lead':
+        #     return {'type': 'ir.actions.act_window',
+        #             'name': _('Clarification Crash Lead'),
+        #             'res_model': 'clarification.crash.lead',
+        #             'target': 'new',
+        #             'view_mode': 'form',
+        #             'view_type': 'form',
+        #             'context': {'default_lead_id': self.id}, }
         return super(LeadsForm, self).write(vals)
 
     # def act_return_to_in_progress(self):
@@ -261,13 +268,13 @@ class LeadsForm(models.Model):
             'url': self.sample,
         }
 
-    @api.onchange('lead_quality')
-    def _onchange_leads_quality(self):
-        if self.lead_quality:
-            if self.lead_quality != 'crash_lead':
-                self.crash_user_id = False
-            else:
-                self.crash_lead = 1
+    # @api.onchange('lead_quality')
+    # def _onchange_leads_quality(self):
+    #     if self.lead_quality:
+    #         if self.lead_quality != 'crash_lead':
+    #             self.crash_user_id = False
+    #         else:
+    #             self.crash_lead = 1
 
     batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id),('total_lump_sum_fee', '!=', 0)]")
     batch_fee = fields.Float(string="Expected Revenue", related="batch_id.lump_fee_excluding_tax")
@@ -381,7 +388,9 @@ class LeadsForm(models.Model):
             if self.admission_status == 0:
                 raise ValidationError(
                     "⚠️ First, you need to transfer to 'Waiting for Admission Payment.' After the admission fee is paid, you can transfer to 'Admission'.")
-
+        if self.lead_quality == 'crash_lead':
+            if self.crash_lead == 0:
+                raise ValidationError("This lead is about to be transferred to the Crash Team. Are you sure you want to proceed with this action? Please enable 'Crash Lead' before proceeding with this action ")
 
     def act_lost_lead(self):
         return {'type': 'ir.actions.act_window',
