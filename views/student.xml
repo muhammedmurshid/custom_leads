@@ -46,6 +46,21 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="student_view_op_enrollment_student_tree">
+        <field name="name">student.list.enrollment.inherit</field>
+        <field name="model">op.student</field>
+        <field name="inherit_id" ref="openeducat_core.view_op_student_tree_enrollment"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='batch_id']" position="after">
+                <field name="branch_id"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="admission_date" readonly="1"/>
+
+            </xpath>
+        </field>
+    </record>
+
     <record id="hr_employee_search_view_inherit" model="ir.ui.view">
         <field name="name">hr.employee.search.inherit</field>
         <field name="model">op.student</field>
