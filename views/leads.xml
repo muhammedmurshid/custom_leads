@@ -666,6 +666,8 @@
             id="leads_configuration_menu"
             name="Configuration"
             parent="leads_main_menu"
+            action="action_leads_sources_main_action"
+            groups="base.group_no_one"
             sequence="10"
     />
     <menuitem
