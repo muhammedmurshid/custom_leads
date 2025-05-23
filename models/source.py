@@ -5,7 +5,7 @@ class LeadsSources(models.Model):
     _inherit = 'mail.thread'
     _description = 'Leads Sources'
 
-    name = fields.Char('Name', required=True)
+    name = fields.Char('Name', required=True, tracking=1)
     digital_lead = fields.Boolean('Digital Lead', default=False)
     source = fields.Selection([('inbound_source', 'Inbound Source'), ('outbound_source', 'Outbound Source')],
                               string="Source")
