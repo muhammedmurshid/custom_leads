@@ -203,31 +203,57 @@ class QualifiedLead(models.TransientModel):
             due_amount = self.batch_id.total_lump_sum_fee
         elif self.fee_type == 'installment':
             due_amount = self.batch_id.total_installment_fee
-        student = self.env['op.student'].sudo().create({
-            # 'title': self.title.id,
-            'name': self.name,
-            'first_name': self.first_name,
-            # 'middle_name': self.middle_name,
-            'last_name': self.last_name,
-            'gr_no': new_gr_no,
-            'gender': self.gender,
-            'birth_date': self.birth_date,
-            'email': self.email,
-            'batch_id': self.batch_id.id,
-            'course_id': self.course_id.id,
-            'branch_id': self.branch_id.id,
-            'state':'batch_allocated',
-            'mobile': self.mobile,
-            'admission_officer_id': self.lead_id.lead_owner.user_id.id,
-            'admission_date': fields.Date.today(),
-            'fee_type':self.fee_type,
-            'lead_id': self.lead_id.id,
-            'due_amount': due_amount,
+        if self.lead_id.crash_lead == 1 or self.course_id.tayyap_course == True:
+            print('its crash lead')
+            student = self.env['op.student'].sudo().create({
+                # 'title': self.title.id,
+                'name': self.name,
+                'first_name': self.first_name,
+                # 'middle_name': self.middle_name,
+                'last_name': self.last_name,
+                'gr_no': new_gr_no,
+                'gender': self.gender,
+                'birth_date': self.birth_date,
+                'email': self.email,
+                'batch_id': self.batch_id.id,
+                'course_id': self.course_id.id,
+                'branch_id': self.branch_id.id,
+                'state':'batch_allocated',
+                'mobile': self.mobile,
+                'admission_officer_id': self.lead_id.lead_owner.user_id.id,
+                'admission_date': fields.Date.today(),
+                'fee_type':self.fee_type,
+                'lead_id': self.lead_id.id,
+                'due_amount': due_amount,
 
-        })
+            })
+        else:
+            print('its not crash lead')
+            student = self.env['op.student'].sudo().create({
+                # 'title': self.title.id,
+                'name': self.name,
+                'first_name': self.first_name,
+                # 'middle_name': self.middle_name,
+                'last_name': self.last_name,
+                'gr_no': new_gr_no,
+                'gender': self.gender,
+                'birth_date': self.birth_date,
+                'email': self.email,
+                'batch_id': self.batch_id.id,
+                'course_id': self.course_id.id,
+                'branch_id': self.branch_id.id,
+                'state': 'batch_allocated',
+                'mobile': self.mobile,
+                'admission_officer_id': self.lead_id.lead_owner.user_id.id,
+                # 'admission_date': fields.Date.today(),
+                'fee_type': self.fee_type,
+                'lead_id': self.lead_id.id,
+                'due_amount': due_amount,
+            })
+
         student = self.env['op.student'].sudo().search([], order="id DESC", limit=1).id
         print(self.batch_id.course_id.name, 'course tayyep course')
-        if self.lead_id.lead_quality == 'crash_lead' or self.course_id.tayyap_course == True:
+        if self.lead_id.crash_lead == 1 or self.course_id.tayyap_course == True:
             print('tayyep course')
             self.lead_id.write({
                 'state': 'qualified',
@@ -245,7 +271,7 @@ class QualifiedLead(models.TransientModel):
             self.lead_id.write({
                 'state': 'qualified',
                 'admission_status': True,
-                'admission_date': fields.Datetime.now(),
+                # 'admission_date': fields.Datetime.now(),
                 'current_status': 'admission',
                 'lead_quality': 'waiting_for_admission',
                 'student_id': student,
