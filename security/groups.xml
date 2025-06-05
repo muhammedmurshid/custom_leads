@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.module.category" id="group_lead_custom_users">
-        <field name="name">Lead Users</field>
-        <field name="sequence">21</field>
-        <field name="visible" eval="0"/>
-    </record>
+    <data noupdate="1">
+        <record model="ir.module.category" id="group_lead_custom_users">
+            <field name="name">Lead Users</field>
+            <field name="sequence">21</field>
+            <field name="visible" eval="0"/>
+        </record>
+    </data>
     <record id="group_lead_team_lead" model="res.groups">
         <field name="name">Team Lead</field>
         <field name="category_id" ref="custom_leads.group_lead_custom_users"/>
@@ -33,4 +35,5 @@
         <field name="name">Crash User</field>
         <field name="category_id" ref="custom_leads.group_lead_custom_users"/>
     </record>
+
 </odoo>

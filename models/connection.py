@@ -44,18 +44,7 @@ class ConnectionForm(models.TransientModel):
 
     def act_connect(self):
         print('hi')
-        # if self.lead_quality == 'crash_lead':
-        #     self.lead_id.write({
-        #         'lead_quality': self.lead_quality,
-        #         'expected_joining_date': self.expected_joining_date,
-        #         'crash_user_id': self.crash_user_id.id,
-        #         'current_status': 'need_follow_up',
-        #         'state': 'in_progress',
-        #         # 'lead_type': 'crash_lead',
-        #         'call_response': self.description,
-        #         'next_follow_up_date': self.due_date
-        #     })
-        # else:
+
         self.lead_id.write({
             'lead_quality': self.lead_quality,
             'expected_joining_date': self.expected_joining_date,
@@ -95,7 +84,6 @@ class ConvertLead(models.TransientModel):
     lead_owner_id = fields.Many2one('res.users', string="Lead Owner")
     add_on = fields.Boolean(string="Add On")
     add_amount = fields.Selection([('7000','7000'), ('10000','10000')], string="Add Amount")
-
 
     @api.depends('lead_id','add_amount','add_on')
     def _compute_admission_amount(self):
@@ -163,7 +151,6 @@ class QualifiedLead(models.TransientModel):
     mobile = fields.Char(string="Mobile")
     fee_type = fields.Selection([('lump_sum_fee', 'Lump Sum Fee'), ('installment', 'Installment')], string="Fee Type", required=1)
 
-
     @api.onchange('email')
     def _validate_email(self):
         if self.email and not tools.single_email_re.match(self.email):
@@ -215,6 +202,7 @@ class QualifiedLead(models.TransientModel):
                 'gender': self.gender,
                 'birth_date': self.birth_date,
                 'email': self.email,
+                'integrated_student': 0,
                 'batch_id': self.batch_id.id,
                 'course_id': self.course_id.id,
                 'branch_id': self.branch_id.id,
@@ -225,7 +213,6 @@ class QualifiedLead(models.TransientModel):
                 'fee_type':self.fee_type,
                 'lead_id': self.lead_id.id,
                 'due_amount': due_amount,
-
             })
         else:
             print('its not crash lead')
@@ -239,6 +226,7 @@ class QualifiedLead(models.TransientModel):
                 'gender': self.gender,
                 'birth_date': self.birth_date,
                 'email': self.email,
+                'integrated_student': 0,
                 'batch_id': self.batch_id.id,
                 'course_id': self.course_id.id,
                 'branch_id': self.branch_id.id,
@@ -279,4 +267,3 @@ class QualifiedLead(models.TransientModel):
                 'batch_id': self.batch_id.id,
 
             })
-
