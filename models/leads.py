@@ -303,10 +303,15 @@ class LeadsForm(models.Model):
                 ])
 
                 if duplicate:
+                    # Get the lead owner name (fallback to 'Unknown' if not set)
+                    lead_owner_name = duplicate[0].lead_owner.name if duplicate[0].lead_owner else 'Unknown'
+
                     return {
                         'warning': {
                             'title': _("Duplicate Phone Number"),
-                            'message': _("The phone number %s already exists in the system.") % record.phone_number,
+                            'message': _(
+                                "The phone number %s already exists in the system and is owned by %s."
+                            ) % (record.phone_number, lead_owner_name),
                         }
                     }
 
@@ -338,13 +343,17 @@ class LeadsForm(models.Model):
         for record in self:
             if record.phone_number:
                 last_10_digits = record.phone_number[-10:]
+
                 duplicate = self.search([
                     ('phone_number', 'like', '%' + last_10_digits),
                     ('id', '!=', record.id)
                 ])
                 if duplicate:
+                    lead_owner_name = duplicate[0].lead_owner.name if duplicate[0].lead_owner else "Unknown"
                     raise ValidationError(
-                        _('The phone number %s already exists. Please use a different number.') % record.phone_number)
+                        _('The phone number %s already exists and is owned by %s. Please use a different number.')
+                        % (record.phone_number, lead_owner_name)
+                    )
 
     def act_attempt_to_connect(self):
         # self.current_status = 'not_responding'
