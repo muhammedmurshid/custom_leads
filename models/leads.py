@@ -173,15 +173,6 @@ class LeadsForm(models.Model):
     student_profile_created = fields.Boolean(string="Student Profile Created")
     crash_lead = fields.Boolean(string="Crash Lead")
 
-    # @api.model_create_multi
-    # def create(self, vals_list):
-    #     """ Create a sequence for the student model """
-    #     for vals in vals_list:
-    #         if vals.get('reference_no', _('New')) == _('New'):
-    #             vals['reference_no'] = (self.env['ir.sequence'].
-    #                               next_by_code('leads.logic'))
-    #     return super().create(vals_list)
-
     @api.onchange('call_response')
     def _onchange_call_response(self):
         for record in self:
@@ -213,18 +204,8 @@ class LeadsForm(models.Model):
                 vals['call_responses'] = [(4, response_obj.id)]
 
             vals['call_response'] = False  # Clear the field after saving
-        # if self.lead_quality == 'crash_lead':
-        #     return {'type': 'ir.actions.act_window',
-        #             'name': _('Clarification Crash Lead'),
-        #             'res_model': 'clarification.crash.lead',
-        #             'target': 'new',
-        #             'view_mode': 'form',
-        #             'view_type': 'form',
-        #             'context': {'default_lead_id': self.id}, }
-        return super(LeadsForm, self).write(vals)
 
-    # def act_return_to_in_progress(self):
-    #     self.state = 'in_progress'
+        return super(LeadsForm, self).write(vals)
 
     @api.onchange('leads_source')
     def _onchange_leads_source(self):
@@ -268,14 +249,6 @@ class LeadsForm(models.Model):
             'url': self.sample,
         }
 
-    # @api.onchange('lead_quality')
-    # def _onchange_leads_quality(self):
-    #     if self.lead_quality:
-    #         if self.lead_quality != 'crash_lead':
-    #             self.crash_user_id = False
-    #         else:
-    #             self.crash_lead = 1
-
     batch_id = fields.Many2one('op.batch', string="Batch", domain="[('branch', '=', branch_id),('total_lump_sum_fee', '!=', 0)]")
     batch_fee = fields.Float(string="Expected Revenue", related="batch_id.lump_fee_excluding_tax")
 
@@ -297,7 +270,7 @@ class LeadsForm(models.Model):
                 last_10_digits = record.phone_number[-10:]
                 print(last_10_digits, 'last', self._origin.id)
                 # Search for any existing records with the same last 10 digits
-                duplicate = self.search([
+                duplicate = self.sudo().search([
                     ('phone_number', 'like', '%' + last_10_digits),
                     ('id', '!=', self._origin.id)
                 ])
@@ -314,16 +287,6 @@ class LeadsForm(models.Model):
                             ) % (record.phone_number, lead_owner_name),
                         }
                     }
-
-
-    # def act_sent_to_welcome_mail(self):
-    #     return {'type': 'ir.actions.act_window',
-    #             'name': _('Welcome Mail'),
-    #             'res_model': 'welcome.mail',
-    #             'target': 'new',
-    #             'view_mode': 'form',
-    #             'view_type': 'form',
-    #             'context': {'default_lead_id': self.id}, }
 
     admission_fee_paid = fields.Boolean(string="Admission Fee Paid")
     re_allocation_date = fields.Date(string="Re Allocation Date")
@@ -344,7 +307,7 @@ class LeadsForm(models.Model):
             if record.phone_number:
                 last_10_digits = record.phone_number[-10:]
 
-                duplicate = self.search([
+                duplicate = self.sudo().search([
                     ('phone_number', 'like', '%' + last_10_digits),
                     ('id', '!=', record.id)
                 ])
