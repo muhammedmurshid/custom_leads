@@ -205,6 +205,13 @@
                 <!--                    </group>-->
                 <!--                </sheet>-->
                 <sheet>
+                    <div name="button_box" position="inside">
+                        <button class="oe_stat_button" type="object" name="get_current_student_profile"
+                                icon="fa-user" string="Student Profile">
+                            <field string="Student Profile" name="student_smart_count" widget="statinfo"/>
+                        </button>
+
+                    </div>
                     <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger" invisible="state != 'lost'"/>
                     <widget name="web_ribbon" title="Qualified" bg_color="text-bg-success"
                             invisible="state != 'qualified'"/>
@@ -257,7 +264,7 @@
                             <field name="incoming_source" invisible="incoming_source_checking != 1"/>
                             <field name="digital_lead_source" invisible="digital_lead != 1"
                                    required="digital_lead == 1"/>
-                            <field name="lead_quality" readonly="state == 'qualified'" class="o_form_required" />
+                            <field name="lead_quality" readonly="state == 'qualified'" class="o_form_required"/>
                             <!--                            <field name="lead_quality"-->
 
                             <!--                                   decoration-bf="lead_quality == 'hot'"-->
@@ -282,7 +289,6 @@
                                    readonly="state == 'qualified'"/>
                             <field name="batch_id" options="{'no_quick_create': True, 'no_create_edit' : True}"
                                    readonly="state == 'qualified'"/>
-
 
 
                         </group>
@@ -318,7 +324,7 @@
                         <group string="Admission Details">
                             <field name="admission_status" readonly="state == 'qualified'" invisible="1"/>
                             <field name="student_profile_created" invisible="1"/>
-                            <field name="crash_lead" />
+                            <field name="crash_lead"/>
                             <field name="admission_fee_paid" invisible="1"/>
                             <field name="student_id" string="Student" invisible="state != 'qualified'" readonly="1"/>
                             <!--                            <field name="booking_amount" readonly="1"/>-->

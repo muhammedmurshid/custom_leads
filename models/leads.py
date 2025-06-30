@@ -232,6 +232,23 @@ class LeadsForm(models.Model):
                 modified_value = "Modified: "
                 record.sample = modified_value
 
+    def get_current_student_profile(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Student',
+            'view_mode': 'tree,form',
+            'res_model': 'op.student',
+            'domain': [('id', '=', self.student_id.id)],
+            'context': "{'create': False}"
+        }
+    def compute_count_student(self):
+        for record in self:
+            record.student_smart_count = self.env['op.student'].sudo().search_count(
+                [('id', '=', self.student_id.id)])
+
+    student_smart_count = fields.Integer(compute='compute_count_student')
+
     def get_phone_number_for_whatsapp(self):
         for rec in self:
             # modified_value = "Modified: "

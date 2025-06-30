@@ -14,7 +14,6 @@ class MailFormInherit(models.Model):
 
     lead_id = fields.Many2one('leads.logic', string="Lead")
 
-
 class LogicBaseBranches(models.Model):
     _inherit = "op.batch"
 
