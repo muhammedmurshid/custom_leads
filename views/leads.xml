@@ -339,7 +339,7 @@
                         </group>
                         <group string="Educational Details">
                             <field name="title"/>
-                            <field name="college_name"/>
+                            <field name="college_name" required="source_name == 'Seminar'"/>
                             <field name="last_studied_course"/>
                             <field name="academic_year_of_course_attend"/>
                         </group>
