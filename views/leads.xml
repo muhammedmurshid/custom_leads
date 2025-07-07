@@ -355,7 +355,6 @@
                             <field name="admission_date" invisible="state != 'qualified'"
                                    readonly="is_team_leader == 0"/>
                         </group>
-
                         <group name="lost_reason" string="Lost Reason" invisible="state != 'lost'">
                             <field name="lost_reason" style="background-color:#f54720 color:white;"/>
                         </group>

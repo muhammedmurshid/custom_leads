@@ -149,7 +149,7 @@ class QualifiedLead(models.TransientModel):
     birth_date = fields.Date('Birth Date', required=1)
     email = fields.Char(string="Email", required=1)
     mobile = fields.Char(string="Mobile")
-    fee_type = fields.Selection([('lump_sum_fee', 'Lump Sum Fee'), ('installment', 'Installment')], string="Fee Type", required=1)
+    fee_type = fields.Selection([('lump_sum_fee', 'Lump Sum Fee'), ('installment', 'Installment'), ('bajaj_finance_payment_plan','Bajaj Finance Payment Plan')], string="Fee Type", required=1)
 
     @api.onchange('email')
     def _validate_email(self):
@@ -171,6 +171,10 @@ class QualifiedLead(models.TransientModel):
             if self.batch_id.total_installment_fee == 0:
                 print(self.batch_id.total_installment_fee, 'inst')
                 raise UserError(_("Installment Fee Not Added"))
+        if self.fee_type == 'bajaj_finance_payment_plan':
+            if self.batch_id.bajaj_emi_total == 0:
+                print(self.batch_id.total_installment_fee, 'inst')
+                raise UserError(_("Bajaj Fee Not Added"))
 
     @api.constrains('birth_date')
     def _check_birthdate(self):
