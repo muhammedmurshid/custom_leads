@@ -144,7 +144,7 @@ class LeadsForm(models.Model):
                                      string='Mode of Study')
     company_id = fields.Many2one(string='Company', comodel_name='res.company', required=True,
                                  default=lambda self: self.env.company)
-    assigned_date = fields.Date(string='Assigned Date', readonly=1)
+    assigned_date = fields.Date(string='Assigned Date', compute="_compute_lead_owner", store=1)
     digital_lead = fields.Boolean(string="Digital Lead")
     digital_lead_source = fields.Selection(
         [('just_dial', 'Just Dial'), ('youtube_google', 'Youtube - Google'), ('whatsapp_campaign', 'Whatsapp Campaign'),
@@ -276,6 +276,12 @@ class LeadsForm(models.Model):
                 'target': 'new',
                 'view_mode': 'form',
                 'context': {'default_lead_id': self.id, 'default_task_owner_id': self.lead_owner.user_id.id}, }
+
+    @api.depends('lead_owner')
+    def _compute_lead_owner(self):
+        print('changed lead owner')
+        if self.lead_owner:
+            self.assigned_date = fields.Datetime.now()
 
     @api.onchange('phone_number')
     def _onchange_duplicate_phone_number(self):
